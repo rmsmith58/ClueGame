@@ -10,14 +10,21 @@ import org.junit.jupiter.api.Test;
 
 import experiment.*;
 
+/*
+ * Tests for experimental board objects and functionality
+ */
 class BoardTestsExp {
 	private TestBoard board;
-
+	
+	//initialize a new 4x4 board for each test
 	@BeforeEach
 	void setup() {
 		board = new TestBoard(4, 4);
 	}
-
+	
+	/*
+	 * Test to ensure adjacency lists are correct for individual cells in different locations.
+	 */
 	@Test
 	void testAdjacencyLists() {
 		//test adjacency for top left corner
@@ -42,9 +49,11 @@ class BoardTestsExp {
 		Assert.assertTrue(adjList.contains(board.getCell(2, 1)));
 		Assert.assertTrue(adjList.contains(board.getCell(3, 0)));
 	}
-
+	
+	//Test to ensure the generated target list for a move of length 2 starting from (0,0) is correct
+	//with no occupied spaces or spaces marked as being in a room.
 	@Test
-	void testTargetsNormal() {
+	void testTargetsEmptyTwo() {
 		//sets up the game board
 		TestBoardCell cell = board.getCell(0, 0);
 		board.calcTargets(cell, 2);
@@ -56,7 +65,28 @@ class BoardTestsExp {
 		Assert.assertTrue(targets.contains(board.getCell(2, 0)));
 		Assert.assertTrue(targets.contains(board.getCell(1, 1)));
 	}
+	
+	//Test to ensure the generated target list for a move of length 3 starting from (0,0) is correct
+	//with no occupied spaces or spaces marked as being in a room.
+	@Test
+	void testTargetsEmptyThree() {
+		//sets up the game board
+		TestBoardCell cell = board.getCell(0, 0);
+		board.calcTargets(cell, 3);
+		Set<TestBoardCell> targets = board.getTargets();
 
+		//tests all valid target spots.
+		Assert.assertEquals(6, targets.size());
+		Assert.assertTrue(targets.contains(board.getCell(3, 0)));
+		Assert.assertTrue(targets.contains(board.getCell(2, 1)));
+		Assert.assertTrue(targets.contains(board.getCell(0, 1)));
+		Assert.assertTrue(targets.contains(board.getCell(1, 2)));
+		Assert.assertTrue(targets.contains(board.getCell(0, 3)));
+		Assert.assertTrue(targets.contains(board.getCell(1, 0)));
+	}
+	
+	//Test to ensure target list for a move of length 2 starting from (0,0) is correct
+	//with an occupied space at (1,1).
 	@Test
 	void testTargetOccupied() {
 		//sets up the game board
@@ -69,5 +99,39 @@ class BoardTestsExp {
 		Assert.assertEquals(2, targets.size());
 		Assert.assertTrue(targets.contains(board.getCell(0, 2)));
 		Assert.assertTrue(targets.contains(board.getCell(2, 0)));
+	}
+	
+	//Test to ensure target list for a move of length 2 starting from (0,0) is correct
+	//with a space marked as a room at (1,0).
+	@Test
+	void testTargetRoom() {
+		//sets up the game board
+		TestBoardCell cell = board.getCell(0, 0);
+		board.calcTargets(cell, 2);
+		board.getCell(1, 0).setRoom(true);	//sets a space in a room
+		Set<TestBoardCell> targets = board.getTargets();
+
+		//test all valid targets
+		Assert.assertEquals(3, targets.size());
+		Assert.assertTrue(targets.contains(board.getCell(0, 2)));
+		Assert.assertTrue(targets.contains(board.getCell(1, 1)));
+		Assert.assertTrue(targets.contains(board.getCell(1, 0)));
+	}
+	
+	//Test to ensure target list for a move of length 2 starting from (0,0) is correct
+	//with a space marked as a room at (1,0) and an occupied space at (1,1).
+	@Test
+	void testTargetRoomAndOccupied() {
+		//sets up the game board
+		TestBoardCell cell = board.getCell(0, 0);
+		board.calcTargets(cell, 2);
+		board.getCell(1, 0).setRoom(true);	//sets a space in a room
+		board.getCell(1, 1).setOccupied(true); //sets an occupied space
+		Set<TestBoardCell> targets = board.getTargets();
+
+		//test all valid targets
+		Assert.assertEquals(2, targets.size());
+		Assert.assertTrue(targets.contains(board.getCell(0, 2)));
+		Assert.assertTrue(targets.contains(board.getCell(1, 0)));
 	}
 }

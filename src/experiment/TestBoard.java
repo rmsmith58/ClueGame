@@ -3,6 +3,15 @@ package experiment;
 import java.util.Collections;
 import java.util.Set;
 
+
+/**
+ * TestBoard: experimental class for a game board. Includes a 2 dimensional array to hold
+ * individual cell objects and a set of possible targets for a move. calcTargets will update this set
+ * depending on the starting cell and pathlength.
+ * 
+ * @author Ryne Smith and Mikayla Sherwood
+ *
+ */
 public class TestBoard {
 	private Set<TestBoardCell> targets;
 	private TestBoardCell[][] board;
