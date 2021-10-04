@@ -1,5 +1,6 @@
 package experiment;
 
+import java.util.Collections;
 import java.util.Set;
 
 public class TestBoardCell {
@@ -8,6 +9,7 @@ public class TestBoardCell {
 	private Set<TestBoardCell> adjList;
 	
 	public TestBoardCell(int row, int col) {
+		this.adjList = Collections.<TestBoardCell>emptySet();
 		//TODO do something
 	}
 	
