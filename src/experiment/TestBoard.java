@@ -1,5 +1,6 @@
 package experiment;
 
+import java.util.Collections;
 import java.util.Set;
 
 public class TestBoard {
@@ -16,11 +17,12 @@ public class TestBoard {
 	}
 	
 	public void calcTargets(TestBoardCell startCell, int pathlength) {
-		
+		//TODO implement this
+		this.targets = Collections.<TestBoardCell>emptySet();
 	}
 	
 	public Set<TestBoardCell> getTargets(){
-		return targets;
+		return this.targets;
 	}
 	 public TestBoardCell getCell(int row, int col) {
 		 TestBoardCell tbc = new TestBoardCell(1, 1);
