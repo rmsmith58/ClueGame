@@ -12,12 +12,12 @@ import experiment.*;
 
 class BoardTestsExp {
 	private TestBoard board;
-	
+
 	@BeforeEach
 	void setup() {
 		board = new TestBoard(4, 4);
 	}
-	
+
 	@Test
 	void testAdjacencyLists() {
 		//test adjacency for top left corner
@@ -43,4 +43,31 @@ class BoardTestsExp {
 		Assert.assertTrue(adjList.contains(board.getCell(3, 0)));
 	}
 
+	@Test
+	void testTargetsNormal() {
+		//sets up the game board
+		TestBoardCell cell = board.getCell(0, 0);
+		board.calcTargets(cell, 2);
+		Set<TestBoardCell> targets = board.getTargets();
+
+		//tests all valid target spots.
+		Assert.assertEquals(3, targets.size());
+		Assert.assertTrue(targets.contains(board.getCell(0, 2)));
+		Assert.assertTrue(targets.contains(board.getCell(2, 0)));
+		Assert.assertTrue(targets.contains(board.getCell(1, 1)));
+	}
+
+	@Test
+	void testTargetOccupied() {
+		//sets up the game board
+		TestBoardCell cell = board.getCell(0, 0);
+		board.calcTargets(cell, 2);
+		board.getCell(1, 1).setOccupied(true);	//sets an occupied space
+		Set<TestBoardCell> targets = board.getTargets();
+
+		//test all valid targets
+		Assert.assertEquals(2, targets.size());
+		Assert.assertTrue(targets.contains(board.getCell(0, 2)));
+		Assert.assertTrue(targets.contains(board.getCell(2, 0)));
+	}
 }
