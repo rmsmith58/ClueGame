@@ -34,7 +34,4 @@ public class TestBoardCell {
 	public Set<TestBoardCell> getAdjList(){
 		return this.adjList;
 	}
-	
-	
-	
 }
