@@ -1,7 +1,6 @@
 package experiment;
 
-import java.util.Collections;
-import java.util.Set;
+import java.util.*;
 
 
 /**
@@ -102,6 +101,7 @@ public class TestBoard {
 	}
 
 	public void calcTargets(TestBoardCell startCell, int pathlength) {
+		Set<TestBoardCell> visited = new HashSet<TestBoardCell>();
 		//TODO implement this
 		this.targets = Collections.<TestBoardCell>emptySet();
 	}
@@ -113,6 +113,21 @@ public class TestBoard {
 		if(row > this.rows-1 || col > this.cols-1 || row < 0 || col < 0)
 			return null;
 		return board[row][col];
+	}
+	
+	private void findAllTargets(TestBoardCell thisCell, int numSteps, Set<TestBoardCell> visited) {
+		for(TestBoardCell cell: thisCell.getAdjList()) {
+			//was already visited, you should skip over.
+			//if()
+			visited.add(cell);
+			if(numSteps == 1) {
+				targets.add(cell);
+			}
+			else {
+				findAllTargets(cell, numSteps, visited);
+			}
+			visited.remove(cell);
+		}
 	}
 
 }
