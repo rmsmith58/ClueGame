@@ -1,7 +1,7 @@
 package experiment;
 
 import java.util.Collections;
-import java.util.Set;
+import java.util.*;
 
 /**
  * TestBoardCell: experimental class for a single cell on a game board. Includes flags for
@@ -13,17 +13,17 @@ import java.util.Set;
 public class TestBoardCell {
 	private Boolean isInRoom;
 	private Boolean isOccupied;
-	private Set<TestBoardCell> adjList;
+	private Set<TestBoardCell> adjList;;
 	private int row, col;
 	
-	public TestBoardCell(int row, int col, TestBoard board) {
+	public TestBoardCell(int row, int col) {
 		this.row = row;
 		this.col = col;
-		//TODO do something
+		this.adjList = new HashSet<TestBoardCell>();
 	}
 	
 	public void addAdjacency(TestBoardCell cell) {
-		//TODO do something
+		this.adjList.add(cell);
 	}
 
 	public Boolean getRoom() {
