@@ -15,16 +15,28 @@ import java.util.Set;
 public class TestBoard {
 	private Set<TestBoardCell> targets;
 	private TestBoardCell[][] board;
+	private int rows, cols;
 	
 	public TestBoard(int rows, int cols) {
 		board = new TestBoardCell[rows][cols];
+		this.rows = rows;
+		this.cols = cols;
+		
 		for(int i = 0; i < rows; i++) {
 			for(int j = 0; j < cols; j++) {
-				board[i][j] = new TestBoardCell(i, j);
+				board[i][j] = new TestBoardCell(i, j, this);
 			}
 		}
 	}
 	
+	public int getRows() {
+		return rows;
+	}
+
+	public int getCols() {
+		return cols;
+	}
+
 	public void calcTargets(TestBoardCell startCell, int pathlength) {
 		//TODO implement this
 		this.targets = Collections.<TestBoardCell>emptySet();
@@ -34,8 +46,9 @@ public class TestBoard {
 		return this.targets;
 	}
 	 public TestBoardCell getCell(int row, int col) {
-		 TestBoardCell tbc = new TestBoardCell(1, 1);
-		 return tbc;
+		 if(row > this.rows-1 || col > this.cols-1 || row < 0 || col < 0)
+			 return null;
+		 return board[row][col];
 	 }
 	
 }

@@ -14,9 +14,11 @@ public class TestBoardCell {
 	private Boolean isInRoom;
 	private Boolean isOccupied;
 	private Set<TestBoardCell> adjList;
+	private int row, col;
 	
-	public TestBoardCell(int row, int col) {
-		this.adjList = Collections.<TestBoardCell>emptySet();
+	public TestBoardCell(int row, int col, TestBoard board) {
+		this.row = row;
+		this.col = col;
 		//TODO do something
 	}
 	
