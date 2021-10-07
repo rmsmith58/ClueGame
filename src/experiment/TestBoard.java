@@ -114,20 +114,19 @@ public class TestBoard {
 			return null;
 		return board[row][col];
 	}
-	
+
 	private void findAllTargets(TestBoardCell thisCell, int numSteps, Set<TestBoardCell> visited) {
 		for(TestBoardCell cell: thisCell.getAdjList()) {
-			//was already visited, you should skip over.
-			//if()
-			visited.add(cell);
-			if(numSteps == 1) {
-				targets.add(cell);
+			if(visited.contains(cell)) {
+				visited.remove(cell);
+				visited.add(cell);
+				if(numSteps == 1) {
+					targets.add(cell);
+				}
+				else {
+					findAllTargets(cell, numSteps, visited);
+				}
 			}
-			else {
-				findAllTargets(cell, numSteps, visited);
-			}
-			visited.remove(cell);
 		}
-	}
 
-}
+	}
