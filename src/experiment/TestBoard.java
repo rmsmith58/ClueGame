@@ -106,13 +106,15 @@ public class TestBoard {
 
 	public void calcTargets(TestBoardCell startCell, int pathLength) {
 		Set<TestBoardCell> visited = new HashSet<TestBoardCell>();
-		this.targets = Collections.<TestBoardCell>emptySet();
+		visited.add(startCell);
+		this.targets = new HashSet<TestBoardCell>();
 		findAllTargets(startCell, pathLength, visited);
 	}
 
 	public Set<TestBoardCell> getTargets(){
 		return this.targets;
 	}
+
 	public TestBoardCell getCell(int row, int col) {
 		if(row > this.rows-1 || col > this.cols-1 || row < 0 || col < 0)
 			return null;
@@ -121,15 +123,15 @@ public class TestBoard {
 
 	private void findAllTargets(TestBoardCell thisCell, int numSteps, Set<TestBoardCell> visited) {
 		for(TestBoardCell cell: thisCell.getAdjList()) {
-			if(visited.contains(cell)) {
-				visited.remove(cell);
+			if(!(visited.contains(cell) || cell.getOccupied())) {
 				visited.add(cell);
-				if(numSteps == 1) {
+				if(numSteps == 1 || cell.getRoom()) {
 					targets.add(cell);
 				}
 				else {
-					findAllTargets(cell, numSteps, visited);
+					findAllTargets(cell, numSteps-1, visited);
 				}
+				visited.remove(cell);
 			}
 		}
 

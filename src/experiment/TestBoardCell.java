@@ -19,6 +19,8 @@ public class TestBoardCell {
 		this.row = row;
 		this.col = col;
 		this.adjList = new HashSet<TestBoardCell>();
+		this.isOccupied = false;
+		this.isInRoom = false;
 	}
 	
 	public void addAdjacency(TestBoardCell cell) {

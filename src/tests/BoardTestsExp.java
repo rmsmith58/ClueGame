@@ -91,8 +91,8 @@ class BoardTestsExp {
 	void testTargetOccupied() {
 		//sets up the game board
 		TestBoardCell cell = board.getCell(0, 0);
-		board.calcTargets(cell, 2);
 		board.getCell(1, 1).setOccupied(true);	//sets an occupied space
+		board.calcTargets(cell, 2);
 		Set<TestBoardCell> targets = board.getTargets();
 
 		//test all valid targets
@@ -107,8 +107,8 @@ class BoardTestsExp {
 	void testTargetRoom() {
 		//sets up the game board
 		TestBoardCell cell = board.getCell(0, 0);
-		board.calcTargets(cell, 2);
 		board.getCell(1, 0).setRoom(true);	//sets a space in a room
+		board.calcTargets(cell, 2);
 		Set<TestBoardCell> targets = board.getTargets();
 
 		//test all valid targets
@@ -124,9 +124,9 @@ class BoardTestsExp {
 	void testTargetRoomAndOccupied() {
 		//sets up the game board
 		TestBoardCell cell = board.getCell(0, 0);
-		board.calcTargets(cell, 2);
 		board.getCell(1, 0).setRoom(true);	//sets a space in a room
 		board.getCell(1, 1).setOccupied(true); //sets an occupied space
+		board.calcTargets(cell, 2);
 		Set<TestBoardCell> targets = board.getTargets();
 
 		//test all valid targets
