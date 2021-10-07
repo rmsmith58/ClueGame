@@ -29,6 +29,10 @@ public class TestBoard {
 		}
 
 		//add adjacencies for each cell on board, assuming board is not 1x1
+		calcAdjacencies();
+	}
+
+	private void calcAdjacencies() {
 		for(int i = 0; i < rows; i++) {
 			for(int j = 0; j < cols; j++) {
 				//if cell is along top edge
@@ -100,10 +104,10 @@ public class TestBoard {
 		return cols;
 	}
 
-	public void calcTargets(TestBoardCell startCell, int pathlength) {
+	public void calcTargets(TestBoardCell startCell, int pathLength) {
 		Set<TestBoardCell> visited = new HashSet<TestBoardCell>();
-		//TODO implement this
 		this.targets = Collections.<TestBoardCell>emptySet();
+		findAllTargets(startCell, pathLength, visited);
 	}
 
 	public Set<TestBoardCell> getTargets(){
@@ -130,3 +134,4 @@ public class TestBoard {
 		}
 
 	}
+}
