@@ -1,0 +1,13 @@
+// Rooms and room cards
+Room, Common Area, C
+Room, Kitchen, K
+Room, Bathroom, B
+Room, Game Room, G
+Room, Library, L
+Room, Office, S
+Room, Dining Room, D
+Room, Lounge, N
+Room, Hall, E
+// other spaces on board
+Space, Unused, X
+Space, Walkway, W
