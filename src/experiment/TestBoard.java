@@ -8,14 +8,21 @@ import java.util.*;
  * individual cell objects and a set of possible targets for a move. calcTargets will update this set
  * depending on the starting cell and pathlength.
  * 
- * @author Ryne Smith and Mikayla Sherwood
+ * @author Ryne Smith
+ * @author Mikayla Sherwood
  *
  */
 public class TestBoard {
 	private Set<TestBoardCell> targets;
 	private TestBoardCell[][] board;
 	private int rows, cols;
-
+	
+	/**
+	 * Public constructor with number of rows and columns for game board.
+	 * 
+	 * @param rows
+	 * @param cols
+	 */
 	public TestBoard(int rows, int cols) {
 		board = new TestBoardCell[rows][cols];
 		this.rows = rows;
@@ -31,7 +38,11 @@ public class TestBoard {
 		//add adjacencies for each cell on board, assuming board is not 1x1
 		calcAdjacencies();
 	}
-
+	
+	/**
+	 * Calculate and update adjacent cells for all cells in game board.
+	 * 
+	 */
 	private void calcAdjacencies() {
 		for(int i = 0; i < rows; i++) {
 			for(int j = 0; j < cols; j++) {
@@ -103,7 +114,14 @@ public class TestBoard {
 	public int getCols() {
 		return cols;
 	}
-
+	
+	/**
+	 * Calculate all possible movement targets given a starting location
+	 * and path length.
+	 * 
+	 * @param startCell
+	 * @param pathLength
+	 */
 	public void calcTargets(TestBoardCell startCell, int pathLength) {
 		Set<TestBoardCell> visited = new HashSet<TestBoardCell>();
 		visited.add(startCell);
@@ -114,13 +132,29 @@ public class TestBoard {
 	public Set<TestBoardCell> getTargets(){
 		return this.targets;
 	}
-
+	
+	/**
+	 * Returns the cell at a specified location in the game board,
+	 * or null if the cell could not be found.
+	 * 
+	 * @param row
+	 * @param col
+	 * @return
+	 */
 	public TestBoardCell getCell(int row, int col) {
 		if(row > this.rows-1 || col > this.cols-1 || row < 0 || col < 0)
 			return null;
 		return board[row][col];
 	}
-
+	
+	/**
+	 * Helper function for calcTargets, recursively paths thru game board
+	 * to evaluate movement targets.
+	 * 
+	 * @param thisCell
+	 * @param numSteps
+	 * @param visited
+	 */
 	private void findAllTargets(TestBoardCell thisCell, int numSteps, Set<TestBoardCell> visited) {
 		for(TestBoardCell cell: thisCell.getAdjList()) {
 			if(!(visited.contains(cell) || cell.getOccupied())) {
