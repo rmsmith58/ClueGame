@@ -1,4 +1,4 @@
-package main;
+package clueGame;
 
 public enum DoorDirection {
 	//These are the options for our enum type, not sure whether they would take in a string or not

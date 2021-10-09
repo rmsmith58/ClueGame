@@ -1,8 +1,17 @@
-package main;
+package clueGame;
 
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * BoardCell: contains information for a single cell on the game board, including row and column location. 
+ * Also holds details for room center, secret passages, door direction, and room/occupied flags. Uses a set
+ * of other BoardCell objects to track adjacent cells.
+ * 
+ * @author Ryne Smith
+ * @author Mikayla Sherwood
+ *
+ */
 public class BoardCell {
 	private Boolean isInRoom, isOccupied, roomLabel, roomCenter;
 	//list of adjacent TestBoardCell objects

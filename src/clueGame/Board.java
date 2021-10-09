@@ -1,4 +1,4 @@
-package main;
+package clueGame;
 
 import java.util.HashSet;
 import java.util.Map;
