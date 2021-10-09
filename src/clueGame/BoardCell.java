@@ -33,6 +33,7 @@ public class BoardCell {
 		this.adjList = new HashSet<BoardCell>();
 		this.isOccupied = false;
 		this.isInRoom = false;
+		this.doorway = false;
 	}
 	
 	/**

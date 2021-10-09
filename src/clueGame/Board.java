@@ -30,6 +30,10 @@ public class Board {
 	 */
 	private Board() {
 		super();
+		//TODO remove below
+		this.numRows = 25;
+		this.numColumns = 25;
+		this.grid = new BoardCell[numRows][numColumns];
 	}
 	
 	/**
@@ -108,7 +112,7 @@ public class Board {
 	 *
 	 */
 	public Room getRoom(BoardCell cell) {
-		return null; //TODO
+		return new Room("test", new BoardCell(0,0), new BoardCell(0,0)); //TODO
 	}
 	
 	/**
@@ -116,7 +120,7 @@ public class Board {
 	 *
 	 */
 	public Room getRoom(char initial) {
-		return null; //TODO
+		return new Room("test", new BoardCell(0,0), new BoardCell(0,0)); //TODO
 	}
 	
 	/**
