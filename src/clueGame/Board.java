@@ -77,7 +77,7 @@ public class Board {
 		return numRows;
 	}
 
-	public int getNumCols() {
+	public int getNumColumns() {
 		return numColumns;
 	}
 	
@@ -101,6 +101,22 @@ public class Board {
 	public void setConfigFiles(String layoutFile, String setupFile) {
 		this.layoutConfigFile = layoutFile;
 		this.setupConfigFile = setupFile;
+	}
+	
+	/**
+	 * TODO
+	 *
+	 */
+	public Room getRoom(BoardCell cell) {
+		return null; //TODO
+	}
+	
+	/**
+	 * TODO
+	 *
+	 */
+	public Room getRoom(char initial) {
+		return null; //TODO
 	}
 	
 	/**

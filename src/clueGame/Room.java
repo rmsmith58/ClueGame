@@ -9,8 +9,19 @@ public class Room {
 	public Room(String name, BoardCell centerCell, BoardCell labelCell) {
 		this.name = name;
 		this.centerCell = centerCell;
-		this.labelCell = labelCell;
-		
+		this.labelCell = labelCell;	
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public BoardCell getCenterCell() {
+		return centerCell;
+	}
+
+	public BoardCell getLabelCell() {
+		return labelCell;
 	}
 	
 	

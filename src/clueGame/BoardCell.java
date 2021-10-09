@@ -13,13 +13,13 @@ import java.util.Set;
  *
  */
 public class BoardCell {
-	private Boolean isInRoom, isOccupied, roomLabel, roomCenter;
+	private Boolean isInRoom, isOccupied, roomLabel, roomCenter, doorway;
 	//list of adjacent TestBoardCell objects
 	private Set<BoardCell> adjList;
 	private int row, col;
 	private char initial, secretPassage;
 	private DoorDirection doorDirection;
-	
+
 	/**
 	 * Public constructor, creates cell at specified
 	 * row and column location.
@@ -61,7 +61,27 @@ public class BoardCell {
 		this.isOccupied = isOccupied;
 	}
 	
+	public char getSecretPassage() {
+		return secretPassage;
+	}
+
 	public Set<BoardCell> getAdjList(){
 		return this.adjList;
+	}
+	
+	public DoorDirection getDoorDirection() {
+		return this.doorDirection;
+	}
+	
+	public Boolean isDoorway() {
+		return this.doorway;
+	}
+	
+	public Boolean isLabel() {
+		return roomLabel;
+	}
+
+	public Boolean isRoomCenter() {
+		return roomCenter;
 	}
 }
