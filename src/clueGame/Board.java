@@ -98,6 +98,11 @@ public class Board {
 		return grid[row][col];
 	}
 	
+	public void setConfigFiles(String layoutFile, String setupFile) {
+		this.layoutConfigFile = layoutFile;
+		this.setupConfigFile = setupFile;
+	}
+	
 	/**
 	 * Calculates all possible move targets starting from startCell and
 	 * with movement range of pathLength. Populates Board.targets with results.
@@ -146,58 +151,58 @@ public class Board {
 				if(i == 0) {
 					//if cell is in top left corner
 					if(j == 0) {
-						this.grid[i][j].addAdjacency(grid[i+1][j]);
-						this.grid[i][j].addAdjacency(grid[i][j+1]);
+						this.grid[i][j].addAdj(grid[i+1][j]);
+						this.grid[i][j].addAdj(grid[i][j+1]);
 					}
 					//if cell is in top right corner
 					else if(j == this.numColumns-1) {
-						this.grid[i][j].addAdjacency(grid[i+1][j]);
-						this.grid[i][j].addAdjacency(grid[i][j-1]);
+						this.grid[i][j].addAdj(grid[i+1][j]);
+						this.grid[i][j].addAdj(grid[i][j-1]);
 					}
 					//if cell is not a corner
 					else {
-						this.grid[i][j].addAdjacency(grid[i+1][j]);
-						this.grid[i][j].addAdjacency(grid[i][j+1]);
-						this.grid[i][j].addAdjacency(grid[i][j-1]);
+						this.grid[i][j].addAdj(grid[i+1][j]);
+						this.grid[i][j].addAdj(grid[i][j+1]);
+						this.grid[i][j].addAdj(grid[i][j-1]);
 					}
 				}
 				//if cell is along bottom edge
 				else if(i == this.numRows-1) {
 					//if cell is in bottom left corner
 					if(j == 0) {
-						this.grid[i][j].addAdjacency(grid[i-1][j]);
-						this.grid[i][j].addAdjacency(grid[i][j+1]);
+						this.grid[i][j].addAdj(grid[i-1][j]);
+						this.grid[i][j].addAdj(grid[i][j+1]);
 					}
 					//if cell is in bottom right corner
 					else if(j == this.numColumns-1) {
-						this.grid[i][j].addAdjacency(grid[i-1][j]);
-						this.grid[i][j].addAdjacency(grid[i][j-1]);
+						this.grid[i][j].addAdj(grid[i-1][j]);
+						this.grid[i][j].addAdj(grid[i][j-1]);
 					}
 					//if cell is not a corner
 					else {
-						this.grid[i][j].addAdjacency(grid[i-1][j]);
-						this.grid[i][j].addAdjacency(grid[i][j+1]);
-						this.grid[i][j].addAdjacency(grid[i][j-1]);
+						this.grid[i][j].addAdj(grid[i-1][j]);
+						this.grid[i][j].addAdj(grid[i][j+1]);
+						this.grid[i][j].addAdj(grid[i][j-1]);
 					}
 				}
 				//if cell is along left edge
 				else if(j == 0) {
-					this.grid[i][j].addAdjacency(grid[i-1][j]);
-					this.grid[i][j].addAdjacency(grid[i+1][j]);
-					this.grid[i][j].addAdjacency(grid[i][j+1]);
+					this.grid[i][j].addAdj(grid[i-1][j]);
+					this.grid[i][j].addAdj(grid[i+1][j]);
+					this.grid[i][j].addAdj(grid[i][j+1]);
 				}
 				//if cell is along right edge
 				else if(j == this.numColumns-1) {
-					this.grid[i][j].addAdjacency(grid[i-1][j]);
-					this.grid[i][j].addAdjacency(grid[i+1][j]);
-					this.grid[i][j].addAdjacency(grid[i][j-1]);
+					this.grid[i][j].addAdj(grid[i-1][j]);
+					this.grid[i][j].addAdj(grid[i+1][j]);
+					this.grid[i][j].addAdj(grid[i][j-1]);
 				}
 				//if cell is not along any edge
 				else {
-					this.grid[i][j].addAdjacency(grid[i-1][j]);
-					this.grid[i][j].addAdjacency(grid[i+1][j]);
-					this.grid[i][j].addAdjacency(grid[i][j-1]);
-					this.grid[i][j].addAdjacency(grid[i][j+1]);
+					this.grid[i][j].addAdj(grid[i-1][j]);
+					this.grid[i][j].addAdj(grid[i+1][j]);
+					this.grid[i][j].addAdj(grid[i][j-1]);
+					this.grid[i][j].addAdj(grid[i][j+1]);
 				}
 			}
 		}
