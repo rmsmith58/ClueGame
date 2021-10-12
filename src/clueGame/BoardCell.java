@@ -46,6 +46,14 @@ public class BoardCell {
 		this.adjList.add(cell);
 	}
 	
+	public void setRoomLabel(Boolean roomLabel) {
+		this.roomLabel = roomLabel;
+	}
+
+	public void setRoomCenter(Boolean roomCenter) {
+		this.roomCenter = roomCenter;
+	}
+	
 	public char getInitial() {
 		return initial;
 	}
@@ -82,8 +90,16 @@ public class BoardCell {
 		return this.doorDirection;
 	}
 	
+	public void setDoorDirection(DoorDirection dir) {
+		this.doorDirection = dir;
+	}
+	
 	public Boolean isDoorway() {
 		return this.doorway;
+	}
+	
+	public void setDoorway(Boolean door) {
+		this.doorway = door;
 	}
 	
 	public Boolean isLabel() {

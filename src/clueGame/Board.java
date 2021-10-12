@@ -25,9 +25,7 @@ public class Board {
 	private String layoutConfigFile, setupConfigFile;
 	private Map<Character, Room> roomMap;
 	private static Board theInstance = new Board();
-	private final static String SETUP_CONFIG_PATH = "src/data/ClueSetup.txt";
-	private final static String LAYOUT_CONFIG_PATH = "src/data/BoardLayout.csv";
-	
+
 	/**
 	 * Private constructor to ensure only one instance is created.
 	 * 
@@ -36,37 +34,28 @@ public class Board {
 	 */
 	private Board() {
 		super();
-		//TODO remove below
-		this.numRows = 25;
-		this.numColumns = 25;
-		this.grid = new BoardCell[numRows][numColumns];
 	}
-	
+
 	/**
 	 * Initializes board, including grid setup and initialization of all
 	 * BoardCell objects contained in the grid.
 	 * 
 	 */
 	public void initialize() {
-		//initialize all cells on board
-		for(int i = 0; i < this.numRows; i++) {
-			for(int j = 0; j < this.numColumns; j++) {
-				grid[i][j] = new BoardCell(i, j);
-			}
-		}
+		this.loadSetupConfig();
+		this.loadLayoutConfig();
 
 		//add adjacencies for each cell on board, assuming board is not 1x1
 		calcAdjacencies();
 	}
-	
+
 	/**
 	 * Loads setup configuration file.
 	 * 
 	 */
 	public void loadSetupConfig() {
-		//assuming it is safe to hardcode setup config file location
 		try{
-			Scanner in = new Scanner(new File(this.SETUP_CONFIG_PATH));
+			Scanner in = new Scanner(new File(this.setupConfigFile));
 			while(in.hasNext()) {
 				String line = in.nextLine();
 				String[] lineValues = line.split(", ");
@@ -81,26 +70,66 @@ public class Board {
 			System.out.println("Error attempting to read Setup Config");
 		}
 	}
-	
+
 	/**
 	 * Loads layout configuration file.
 	 * 
 	 */
 	public void loadLayoutConfig() {
-		//assuming it is safe to hardcode layout config file location
 		try{
-			Scanner in = new Scanner(new File(this.LAYOUT_CONFIG_PATH));
+			Scanner in = new Scanner(new File(this.layoutConfigFile));
 			ArrayList<ArrayList<String>> layoutConfig = new ArrayList();
 			while(in.hasNext()) {
 				String[] line = in.nextLine().split(",");
 				layoutConfig.add((ArrayList<String>) Arrays.asList(line));
 			}
-	
+
+			this.numColumns = layoutConfig.get(0).size();
+			this.numRows = layoutConfig.size();
+			this.grid = new BoardCell[this.numRows][this.numColumns];
+
+			//initialize all cells on board
+			for(int i = 0; i < this.numRows; i++) {
+				for(int j = 0; j < this.numColumns; j++) {
+					grid[i][j] = new BoardCell(i, j);
+
+					String config = layoutConfig.get(i).get(j);
+					grid[i][j].setInitial(config.charAt(0));
+
+					if(config.length() > 1) {
+						switch (config.charAt(1)){
+						case '#':
+							grid[i][j].setRoomLabel(true);
+							break;
+						case '*':
+							grid[i][j].setRoomCenter(true);
+							break;
+						case '^':
+							grid[i][j].setDoorway(true);
+							grid[i][j].setDoorDirection(DoorDirection.UP);
+							break;
+						case 'v':
+							grid[i][j].setDoorway(true);
+							grid[i][j].setDoorDirection(DoorDirection.DOWN);
+							break;
+						case '>':
+							grid[i][j].setDoorway(true);
+							grid[i][j].setDoorDirection(DoorDirection.RIGHT);
+							break;
+						case '<':
+							grid[i][j].setDoorway(true);
+							grid[i][j].setDoorDirection(DoorDirection.LEFT);
+							break;
+						}
+					}
+				}
+
+			}
 		} catch(Exception e) {
 			System.out.println("Error attempting to read Setup Config");
 		}
 	}
-	
+
 	/**
 	 * Returns the only Board instance.
 	 * @return thisInstance
@@ -108,7 +137,7 @@ public class Board {
 	public static Board getInstance() {
 		return theInstance;
 	}
-	
+
 	public int getNumRows() {
 		return numRows;
 	}
@@ -116,11 +145,11 @@ public class Board {
 	public int getNumColumns() {
 		return numColumns;
 	}
-	
+
 	public Set<BoardCell> getTargets(){
 		return this.targets;
 	}
-	
+
 	/**
 	 * Returns the BoardCell contained at a specific location of the game grid.
 	 * 
@@ -133,12 +162,12 @@ public class Board {
 			return null;
 		return grid[row][col];
 	}
-	
+
 	public void setConfigFiles(String layoutFile, String setupFile) {
 		this.layoutConfigFile = layoutFile;
 		this.setupConfigFile = setupFile;
 	}
-	
+
 	/**
 	 * Returns the associated Room object for any cell
 	 *
@@ -146,7 +175,7 @@ public class Board {
 	public Room getRoom(BoardCell cell) {
 		return this.roomMap.get(cell.getInitial());
 	}
-	
+
 	/**
 	 * Returns the associated Room object for a given initial
 	 *
@@ -154,7 +183,7 @@ public class Board {
 	public Room getRoom(char initial) {
 		return this.roomMap.get(initial);
 	}
-	
+
 	/**
 	 * Calculates all possible move targets starting from startCell and
 	 * with movement range of pathLength. Populates Board.targets with results.
@@ -168,7 +197,7 @@ public class Board {
 		this.targets = new HashSet<BoardCell>();
 		findAllTargets(startCell, pathLength, visited);
 	}
-	
+
 	/**
 	 * Helper function for calcTargets, recursively explores board to
 	 * determine possible movement locations.
@@ -191,7 +220,7 @@ public class Board {
 		}
 
 	}
-	
+
 	/**
 	 * For all cells in board, find adjacent cells and add them to
 	 * that cell's adjacencies list.
