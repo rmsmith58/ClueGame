@@ -5,6 +5,8 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Scanner;
 import java.util.Set;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * Board: creates a single instance of itself to hold information
@@ -88,8 +90,11 @@ public class Board {
 		//assuming it is safe to hardcode layout config file location
 		try{
 			Scanner in = new Scanner(new File(this.LAYOUT_CONFIG_PATH));
-			BoardCell bc = new BoardCell(1, 1);
-			bc.seti
+			ArrayList<ArrayList<String>> layoutConfig = new ArrayList();
+			while(in.hasNext()) {
+				String[] line = in.nextLine().split(",");
+				layoutConfig.add((ArrayList<String>) Arrays.asList(line));
+			}
 	
 		} catch(Exception e) {
 			System.out.println("Error attempting to read Setup Config");
