@@ -35,7 +35,7 @@ public class BoardCell {
 		this.isInRoom = false;
 		this.doorway = false;
 	}
-	
+
 	/**
 	 * Adds a TestBoardCell object to the adjacency list
 	 * for this cell.
@@ -44,6 +44,14 @@ public class BoardCell {
 	 */
 	public void addAdj(BoardCell cell) {
 		this.adjList.add(cell);
+	}
+	
+	public char getInitial() {
+		return initial;
+	}
+
+	public void setInitial(char initial) {
+		this.initial = initial;
 	}
 
 	public Boolean getRoom() {

@@ -1,7 +1,9 @@
 package clueGame;
 
+import java.io.File;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.Scanner;
 import java.util.Set;
 
 /**
@@ -21,6 +23,8 @@ public class Board {
 	private String layoutConfigFile, setupConfigFile;
 	private Map<Character, Room> roomMap;
 	private static Board theInstance = new Board();
+	private final static String SETUP_CONFIG_PATH = "src/data/ClueSetup.txt";
+	private final static String LAYOUT_CONFIG_PATH = "src/data/BoardLayout.csv";
 	
 	/**
 	 * Private constructor to ensure only one instance is created.
@@ -58,7 +62,22 @@ public class Board {
 	 * 
 	 */
 	public void loadSetupConfig() {
-		
+		//assuming it is safe to hardcode setup config file location
+		try{
+			Scanner in = new Scanner(new File(this.SETUP_CONFIG_PATH));
+			while(in.hasNext()) {
+				String line = in.nextLine();
+				String[] lineValues = line.split(", ");
+				if(lineValues.length > 0 && (lineValues[0] == "Room" || lineValues[0] == "Space")) {
+					String roomName = lineValues[1];
+					String roomInitial = lineValues[2];
+					Room newRoom = new Room(roomName);
+					this.roomMap.put(roomInitial.charAt(0), newRoom);
+				}
+			}
+		} catch(Exception e) {
+			System.out.println("Error attempting to read Setup Config");
+		}
 	}
 	
 	/**
@@ -66,7 +85,15 @@ public class Board {
 	 * 
 	 */
 	public void loadLayoutConfig() {
-		
+		//assuming it is safe to hardcode layout config file location
+		try{
+			Scanner in = new Scanner(new File(this.LAYOUT_CONFIG_PATH));
+			BoardCell bc = new BoardCell(1, 1);
+			bc.seti
+	
+		} catch(Exception e) {
+			System.out.println("Error attempting to read Setup Config");
+		}
 	}
 	
 	/**
@@ -108,19 +135,19 @@ public class Board {
 	}
 	
 	/**
-	 * TODO
+	 * Returns the associated Room object for any cell
 	 *
 	 */
 	public Room getRoom(BoardCell cell) {
-		return new Room("test", new BoardCell(0,0), new BoardCell(0,0)); //TODO
+		return this.roomMap.get(cell.getInitial());
 	}
 	
 	/**
-	 * TODO
+	 * Returns the associated Room object for a given initial
 	 *
 	 */
 	public Room getRoom(char initial) {
-		return new Room("test", new BoardCell(0,0), new BoardCell(0,0)); //TODO
+		return this.roomMap.get(initial);
 	}
 	
 	/**
