@@ -31,7 +31,22 @@ public class BoardAdjTarget {
 	// These cells are LIGHT ORANGE on the planning spreadsheet
 	@Test
 	public void testAdjacenciesRooms() {
+		// we want to test a couple of different rooms.
+		// First, the Lounge that only has a single door
+		Set<BoardCell> testList = board.getAdjList(2, 10);
+		assertEquals(1, testList.size());
+		assertTrue(testList.contains(board.getCell(6, 10)));
 
+		// Second, the Office that only has a single door but a secret room
+		Set<BoardCell> testList = board.getAdjList(11, 2);
+		assertEquals(2, testList.size());
+		assertTrue(testList.contains(board.getCell(8, 5)));
+		assertTrue(testList.contains(board.getCell(9, 21)));
+
+		// Lastly, the Bathroom that only has a single door
+		testList = board.getAdjList(20, 11);
+		assertEquals(1, testList.size());
+		assertTrue(testList.contains(board.getCell(19, 17)));
 	}
 
 	// Ensure door locations include their rooms and also additional walkways
@@ -51,7 +66,7 @@ public class BoardAdjTarget {
 		assertTrue(testList.contains(board.getCell(7, 16)));
 		assertTrue(testList.contains(board.getCell(6, 17)));
 		assertTrue(testList.contains(board.getCell(3, 20)));
-		
+
 		testList = board.getAdjList(12, 18);
 		assertEquals(4, testList.size());
 		assertTrue(testList.contains(board.getCell(9, 21)));
@@ -84,7 +99,7 @@ public class BoardAdjTarget {
 		assertTrue(testList.contains(board.getCell(18, 16)));
 		assertTrue(testList.contains(board.getCell(19, 17)));
 		assertTrue(testList.contains(board.getCell(20, 16)));
-		
+
 		// Test the edge of the board in a narrow walkway.
 		testList = board.getAdjList(6, 23);
 		assertEquals(1, testList.size());
@@ -138,7 +153,7 @@ public class BoardAdjTarget {
 	// These are LIGHT BLUE on the planning spreadsheet
 	@Test
 	public void testTargetsAtDoor() {
-		
+
 	}
 
 	// Test to make sure occupied locations do not cause problems
