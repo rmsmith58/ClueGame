@@ -7,6 +7,7 @@ import java.util.Scanner;
 import java.util.Set;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 
 /**
  * Board: creates a single instance of itself to hold information
@@ -54,6 +55,7 @@ public class Board {
 	 * 
 	 */
 	public void loadSetupConfig() {
+		this.roomMap = new HashMap<Character, Room>();
 		try{
 			Scanner in = new Scanner(new File(this.setupConfigFile));
 			while(in.hasNext()) {
@@ -67,7 +69,9 @@ public class Board {
 				}
 			}
 		} catch(Exception e) {
-			System.out.println("Error attempting to read Setup Config");
+			System.out.println("Error attempting to read Setup Config:");
+			System.out.println(e.getMessage());
+			e.printStackTrace();
 		}
 	}
 
@@ -81,7 +85,10 @@ public class Board {
 			ArrayList<ArrayList<String>> layoutConfig = new ArrayList();
 			while(in.hasNext()) {
 				String[] line = in.nextLine().split(",");
-				layoutConfig.add((ArrayList<String>) Arrays.asList(line));
+				ArrayList<String> row = new ArrayList<String>();
+				for(String str: line)
+					row.add(str);
+				layoutConfig.add(row);
 			}
 
 			this.numColumns = layoutConfig.get(0).size();
@@ -126,7 +133,9 @@ public class Board {
 
 			}
 		} catch(Exception e) {
-			System.out.println("Error attempting to read Setup Config");
+			System.out.println("Error attempting to read Layout Config");
+			System.out.println(e.getMessage());
+			e.printStackTrace();
 		}
 	}
 
@@ -138,18 +147,22 @@ public class Board {
 		return theInstance;
 	}
 
+	
 	public int getNumRows() {
 		return numRows;
 	}
 
+	
 	public int getNumColumns() {
 		return numColumns;
 	}
 
+	
 	public Set<BoardCell> getTargets(){
 		return this.targets;
 	}
 
+	
 	/**
 	 * Returns the BoardCell contained at a specific location of the game grid.
 	 * 
@@ -163,10 +176,12 @@ public class Board {
 		return grid[row][col];
 	}
 
+	
 	public void setConfigFiles(String layoutFile, String setupFile) {
-		this.layoutConfigFile = layoutFile;
-		this.setupConfigFile = setupFile;
+		this.layoutConfigFile = "data/" + layoutFile;
+		this.setupConfigFile = "data/" + setupFile;
 	}
+	
 
 	/**
 	 * Returns the associated Room object for any cell
@@ -176,6 +191,7 @@ public class Board {
 		return this.roomMap.get(cell.getInitial());
 	}
 
+	
 	/**
 	 * Returns the associated Room object for a given initial
 	 *
@@ -184,6 +200,7 @@ public class Board {
 		return this.roomMap.get(initial);
 	}
 
+	
 	/**
 	 * Calculates all possible move targets starting from startCell and
 	 * with movement range of pathLength. Populates Board.targets with results.
@@ -198,6 +215,7 @@ public class Board {
 		findAllTargets(startCell, pathLength, visited);
 	}
 
+	
 	/**
 	 * Helper function for calcTargets, recursively explores board to
 	 * determine possible movement locations.
@@ -221,6 +239,7 @@ public class Board {
 
 	}
 
+	
 	/**
 	 * For all cells in board, find adjacent cells and add them to
 	 * that cell's adjacencies list.
