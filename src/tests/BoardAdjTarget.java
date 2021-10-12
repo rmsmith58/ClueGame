@@ -139,21 +139,86 @@ public class BoardAdjTarget {
 	// These are LIGHT BLUE on the planning spreadsheet
 	@Test
 	public void testTargetsInCommonArea() {
+		// test a roll of 1
+		board.calcTargets(board.getCell(3, 20), 1);
+		Set<BoardCell> targets= board.getTargets();
+		assertEquals(1, targets.size());
+		assertTrue(targets.contains(board.getCell(6, 16)));	
 
+		// test a roll of 3
+		board.calcTargets(board.getCell(3, 20), 3);
+		targets= board.getTargets();
+		assertEquals(6, targets.size());
+		assertTrue(targets.contains(board.getCell(6, 14)));
+		assertTrue(targets.contains(board.getCell(6, 18)));	
+		assertTrue(targets.contains(board.getCell(8, 16)));	
+
+		// test a roll of 4
+		board.calcTargets(board.getCell(3, 20), 4);
+		targets= board.getTargets();
+		assertEquals(9, targets.size());
+		assertTrue(targets.contains(board.getCell(6, 13)));
+		assertTrue(targets.contains(board.getCell(6, 19)));	
+		assertTrue(targets.contains(board.getCell(9, 16)));
+		assertTrue(targets.contains(board.getCell(4, 15)));
 	}
 
 	// Tests out of room center, 1, 3 and 4
 	// These are LIGHT BLUE on the planning spreadsheet
 	@Test
 	public void testTargetsInWalkway() {
+		// test a roll of 1
+		board.calcTargets(board.getCell(16, 11), 1);
+		Set<BoardCell> targets= board.getTargets();
+		assertEquals(3, targets.size());
+		assertTrue(targets.contains(board.getCell(16, 10)));
+		assertTrue(targets.contains(board.getCell(17, 11)));
 
+		// test a roll of 3
+		board.calcTargets(board.getCell(16, 11), 3);
+		targets= board.getTargets();
+		assertEquals(4, targets.size());
+		assertTrue(targets.contains(board.getCell(16, 9)));
+		assertTrue(targets.contains(board.getCell(16, 14)));	
+		assertTrue(targets.contains(board.getCell(17, 10)));	
+
+		// test a roll of 4
+		board.calcTargets(board.getCell(16, 11), 4);
+		targets= board.getTargets();
+		assertEquals(4, targets.size());
+		assertTrue(targets.contains(board.getCell(16, 8)));
+		assertTrue(targets.contains(board.getCell(16, 14)));	
+		assertTrue(targets.contains(board.getCell(17, 9)));
 	}
 
 	// Tests out of room center, 1, 3 and 4
 	// These are LIGHT BLUE on the planning spreadsheet
 	@Test
 	public void testTargetsAtDoor() {
+		// test a roll of 1
+		board.calcTargets(board.getCell(19, 17), 1);
+		Set<BoardCell> targets= board.getTargets();
+		assertEquals(4, targets.size());
+		assertTrue(targets.contains(board.getCell(18, 17)));	
+		assertTrue(targets.contains(board.getCell(20, 17)));
+		assertTrue(targets.contains(board.getCell(21, 21)));
 
+		// test a roll of 3
+		board.calcTargets(board.getCell(19, 17), 3);
+		targets= board.getTargets();
+		assertEquals(6, targets.size());
+		assertTrue(targets.contains(board.getCell(18, 16)));
+		assertTrue(targets.contains(board.getCell(20, 16)));	
+		assertTrue(targets.contains(board.getCell(18, 18)));	
+
+		// test a roll of 4
+		board.calcTargets(board.getCell(19, 17), 4);
+		targets= board.getTargets();
+		assertEquals(7, targets.size());
+		assertTrue(targets.contains(board.getCell(16, 17)));
+		assertTrue(targets.contains(board.getCell(22, 17)));	
+		assertTrue(targets.contains(board.getCell(21, 16)));
+		assertTrue(targets.contains(board.getCell(18, 19)));
 	}
 
 	// Test to make sure occupied locations do not cause problems
