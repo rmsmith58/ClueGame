@@ -1,6 +1,7 @@
 package clueGame;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Scanner;
@@ -43,9 +44,14 @@ public class Board {
 	 * 
 	 */
 	public void initialize() {
-		this.loadSetupConfig();
-		this.loadLayoutConfig();
-
+		try {
+			this.loadSetupConfig();
+			this.loadLayoutConfig();
+		} catch(Exception e) {
+			System.out.println("Error: " + e.getClass().getName());
+			System.out.println(e.getMessage());
+		}
+			
 		//add adjacencies for each cell on board, assuming board is not 1x1
 		calcAdjacencies();
 	}
@@ -53,95 +59,101 @@ public class Board {
 	/**
 	 * Loads setup configuration file.
 	 * 
+	 * @throws BadConfigFormatException
+	 * @throws FileNotFoundException
+	 * 
 	 */
-	public void loadSetupConfig() {
+	public void loadSetupConfig() throws FileNotFoundException, BadConfigFormatException{
 		this.roomMap = new HashMap<Character, Room>();
-		try{
-			Scanner in = new Scanner(new File(this.setupConfigFile));
-			while(in.hasNext()) {
-				String line = in.nextLine();
-				String[] lineValues = line.split(", ");
-				if(lineValues.length > 0 && (lineValues[0].equals("Room") || lineValues[0].equals("Space"))) {
-					String roomName = lineValues[1];
-					String roomInitial = lineValues[2];
-					Room newRoom = new Room(roomName);
-					this.roomMap.put(roomInitial.charAt(0), newRoom);
-				}
+		Scanner in = new Scanner(new File(this.setupConfigFile));
+		while(in.hasNext()) {
+			String line = in.nextLine();
+			String[] lineValues = line.split(", ");
+			if(lineValues.length > 0 && (lineValues[0].equals("Room") || lineValues[0].equals("Space"))) {
+				String roomName = lineValues[1];
+				String roomInitial = lineValues[2];
+				Room newRoom = new Room(roomName);
+				this.roomMap.put(roomInitial.charAt(0), newRoom);
 			}
-		} catch(Exception e) {
-			System.out.println("Error attempting to read Setup Config:");
-			System.out.println(e.getMessage());
-			e.printStackTrace();
+			else if(!lineValues[0].substring(0, 2).equals("//"))
+				throw new BadConfigFormatException("Unkown room type encountered in setup configuration: " + lineValues[0]);
 		}
+
 	}
 
 	/**
 	 * Loads layout configuration file.
 	 * 
+	 * @throws BadConfigFormatException
+	 * @throws FileNotFoundException
 	 */
-	public void loadLayoutConfig() {
-		try{
-			Scanner in = new Scanner(new File(this.layoutConfigFile));
-			ArrayList<ArrayList<String>> layoutConfig = new ArrayList();
-			while(in.hasNext()) {
-				String[] line = in.nextLine().split(",");
-				ArrayList<String> row = new ArrayList<String>();
-				for(String str: line)
-					row.add(str);
-				if(row.size() > 0)
-					layoutConfig.add(row);
-			}
+	public void loadLayoutConfig() throws FileNotFoundException, BadConfigFormatException{
+		Scanner in = new Scanner(new File(this.layoutConfigFile));
+		ArrayList<ArrayList<String>> layoutConfig = new ArrayList();
+		while(in.hasNext()) {
+			String[] line = in.nextLine().split(",");
+			ArrayList<String> row = new ArrayList<String>();
+			for(String str: line)
+				row.add(str);
+			if(row.size() > 0)
+				layoutConfig.add(row);
+		}
 
-			this.numColumns = layoutConfig.get(0).size();
-			this.numRows = layoutConfig.size();
-			this.grid = new BoardCell[this.numRows][this.numColumns];
+		this.numColumns = layoutConfig.get(0).size();
+		this.numRows = layoutConfig.size();
+		this.grid = new BoardCell[this.numRows][this.numColumns];
+		
+		//check to make sure all rows are same size
+		for(ArrayList<String> row: layoutConfig) {
+			if(row.size() != this.numColumns)
+				throw new BadConfigFormatException("Inconsistent number of columns in layout configuration.");
+		}
 
-			//initialize all cells on board
-			for(int i = 0; i < this.numRows; i++) {
-				for(int j = 0; j < this.numColumns; j++) {
-					grid[i][j] = new BoardCell(i, j);
+		//initialize all cells on board
+		for(int i = 0; i < this.numRows; i++) {
+			for(int j = 0; j < this.numColumns; j++) {
+				grid[i][j] = new BoardCell(i, j);
 
-					String config = layoutConfig.get(i).get(j);
-					grid[i][j].setInitial(config.charAt(0));
+				String config = layoutConfig.get(i).get(j);
+				
+				//throw exception if room initial was not found in setup config
+				if(this.roomMap.get(config.charAt(0)) == null )
+					throw new BadConfigFormatException("Unkown room symbol encountered in layout configuration: " + config.charAt(0));
+				
+				grid[i][j].setInitial(config.charAt(0));
 
-					if(config.length() > 1) {
-						switch (config.charAt(1)){
-						case '#':
-							grid[i][j].setRoomLabel(true);
-							this.roomMap.get(grid[i][j].getInitial()).setLabelCell(grid[i][j]);
-							break;
-						case '*':
-							grid[i][j].setRoomCenter(true);
-							this.roomMap.get(grid[i][j].getInitial()).setCenterCell(grid[i][j]);
-							break;
-						case '^':
-							grid[i][j].setDoorway(true);
-							grid[i][j].setDoorDirection(DoorDirection.UP);
-							break;
-						case 'v':
-							grid[i][j].setDoorway(true);
-							grid[i][j].setDoorDirection(DoorDirection.DOWN);
-							break;
-						case '>':
-							grid[i][j].setDoorway(true);
-							grid[i][j].setDoorDirection(DoorDirection.RIGHT);
-							break;
-						case '<':
-							grid[i][j].setDoorway(true);
-							grid[i][j].setDoorDirection(DoorDirection.LEFT);
-							break;
-						default:
-							grid[i][j].setSecretPassage(config.charAt(1));
-							break;
-						}
+				if(config.length() > 1) {
+					switch (config.charAt(1)){
+					case '#':
+						grid[i][j].setRoomLabel(true);
+						this.roomMap.get(grid[i][j].getInitial()).setLabelCell(grid[i][j]);
+						break;
+					case '*':
+						grid[i][j].setRoomCenter(true);
+						this.roomMap.get(grid[i][j].getInitial()).setCenterCell(grid[i][j]);
+						break;
+					case '^':
+						grid[i][j].setDoorway(true);
+						grid[i][j].setDoorDirection(DoorDirection.UP);
+						break;
+					case 'v':
+						grid[i][j].setDoorway(true);
+						grid[i][j].setDoorDirection(DoorDirection.DOWN);
+						break;
+					case '>':
+						grid[i][j].setDoorway(true);
+						grid[i][j].setDoorDirection(DoorDirection.RIGHT);
+						break;
+					case '<':
+						grid[i][j].setDoorway(true);
+						grid[i][j].setDoorDirection(DoorDirection.LEFT);
+						break;
+					default:
+						grid[i][j].setSecretPassage(config.charAt(1));
+						break;
 					}
 				}
-
 			}
-		} catch(Exception e) {
-			System.out.println("Error attempting to read Layout Config");
-			System.out.println(e.getMessage());
-			e.printStackTrace();
 		}
 	}
 
