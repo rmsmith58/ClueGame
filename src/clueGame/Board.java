@@ -88,7 +88,8 @@ public class Board {
 				ArrayList<String> row = new ArrayList<String>();
 				for(String str: line)
 					row.add(str);
-				layoutConfig.add(row);
+				if(row.size() > 0)
+					layoutConfig.add(row);
 			}
 
 			this.numColumns = layoutConfig.get(0).size();
