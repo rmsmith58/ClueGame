@@ -225,7 +225,37 @@ public class BoardAdjTarget {
 	// These are RED on the planning spreadsheet
 	@Test
 	public void testTargetsOccupied() {
+		// test a roll of 3 blocked 2 down
+		board.getCell(16, 9).setOccupied(true);
+		board.calcTargets(board.getCell(16, 11), 3);
+		board.getCell(16, 9).setOccupied(false);
+		Set<BoardCell> targets = board.getTargets();
+		assertEquals(3, targets.size());
+		assertTrue(targets.contains(board.getCell(16, 13)));
+		assertTrue(targets.contains(board.getCell(17, 12)));	
+		assertFalse( targets.contains( board.getCell(16, 9))) ;
+		
 
+
+		// check leaving a room with a blocked doorway (Note: this space was a test for doorDirection.)
+		board.getCell(18, 5).setOccupied(true);
+		board.calcTargets(board.getCell(21, 3), 3);
+		board.getCell(18, 5).setOccupied(false);
+		targets= board.getTargets();
+		assertEquals(0, targets.size());
+		assertFalse(targets.contains(board.getCell(18, 5)));
+
+		// check if we can access a room, even though its flagged as occupied
+		board.getCell(21, 21).setOccupied(true);
+		board.getCell(18, 17).setOccupied(true);
+		board.calcTargets(board.getCell(8, 17), 1);
+		board.getCell(21, 21).setOccupied(false);
+		board.getCell(18, 17).setOccupied(false);
+		targets= board.getTargets();
+		assertEquals(3, targets.size());
+		assertTrue(targets.contains(board.getCell(20, 17)));	
+		assertTrue(targets.contains(board.getCell(19, 16)));	
+		assertTrue(targets.contains(board.getCell(21, 21)));
 	}
 
 }
