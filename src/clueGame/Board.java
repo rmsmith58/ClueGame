@@ -61,7 +61,7 @@ public class Board {
 			while(in.hasNext()) {
 				String line = in.nextLine();
 				String[] lineValues = line.split(", ");
-				if(lineValues.length > 0 && (lineValues[0] == "Room" || lineValues[0] == "Space")) {
+				if(lineValues.length > 0 && (lineValues[0].equals("Room") || lineValues[0].equals("Space"))) {
 					String roomName = lineValues[1];
 					String roomInitial = lineValues[2];
 					Room newRoom = new Room(roomName);
@@ -107,9 +107,11 @@ public class Board {
 						switch (config.charAt(1)){
 						case '#':
 							grid[i][j].setRoomLabel(true);
+							this.roomMap.get(grid[i][j].getInitial()).setLabelCell(grid[i][j]);
 							break;
 						case '*':
 							grid[i][j].setRoomCenter(true);
+							this.roomMap.get(grid[i][j].getInitial()).setCenterCell(grid[i][j]);
 							break;
 						case '^':
 							grid[i][j].setDoorway(true);
@@ -126,6 +128,9 @@ public class Board {
 						case '<':
 							grid[i][j].setDoorway(true);
 							grid[i][j].setDoorDirection(DoorDirection.LEFT);
+							break;
+						default:
+							grid[i][j].setSecretPassage(config.charAt(1));
 							break;
 						}
 					}

@@ -22,7 +22,7 @@ public class BoardCell {
 
 	/**
 	 * Public constructor, creates cell at specified
-	 * row and column location.
+	 * row and column location. All boolean values default to false.
 	 * 
 	 * @param row
 	 * @param col
@@ -34,6 +34,8 @@ public class BoardCell {
 		this.isOccupied = false;
 		this.isInRoom = false;
 		this.doorway = false;
+		this.roomLabel = false;
+		this.roomCenter = false;
 	}
 
 	/**
@@ -80,6 +82,10 @@ public class BoardCell {
 	
 	public char getSecretPassage() {
 		return secretPassage;
+	}
+	
+	public void setSecretPassage(char destination) {
+		this.secretPassage = destination;
 	}
 
 	public Set<BoardCell> getAdjList(){
