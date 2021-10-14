@@ -1,5 +1,13 @@
 package clueGame;
 
+/**
+ * Room: contains information for a room identified in the config files, including room name and
+ * pointers to the BoardCell objects acting as room label and center locations.
+ * 
+ * @author Ryne Smith
+ * @author Mikayla Sherwood
+ *
+ */
 public class Room {
 	private String name;
 	private BoardCell centerCell;

@@ -48,6 +48,10 @@ public class BoardCell {
 		this.adjList.add(cell);
 	}
 	
+	public Set<BoardCell> getAdjList(){
+		return this.adjList;
+	}
+	
 	public void setRoomLabel(Boolean roomLabel) {
 		this.roomLabel = roomLabel;
 	}
@@ -86,10 +90,6 @@ public class BoardCell {
 	
 	public void setSecretPassage(char destination) {
 		this.secretPassage = destination;
-	}
-
-	public Set<BoardCell> getAdjList(){
-		return this.adjList;
 	}
 	
 	public DoorDirection getDoorDirection() {
