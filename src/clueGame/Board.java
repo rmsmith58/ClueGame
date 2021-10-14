@@ -325,4 +325,14 @@ public class Board {
 			}
 		}
 	}
+	
+	/**
+	 * Get adjacency list for a cell located at provided coordinates
+	 * @param rowLocation
+	 * @param colLocation
+	 * 
+	 */
+	public Set<BoardCell> getAdjList(int rowLocation, int colLocation){
+		return this.grid[rowLocation][colLocation].getAdjList();
+	}
 }
