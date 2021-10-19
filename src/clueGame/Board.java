@@ -132,7 +132,7 @@ public class Board {
 				
 				//throw exception if room initial was not found in setup config
 				if(this.roomMap.get(config.charAt(0)) == null )
-					throw new BadConfigFormatException("Unkown room symbol encountered in layout configuration: " + config.charAt(0));
+					throw new BadConfigFormatException("Unknown room symbol encountered in layout configuration: " + config.charAt(0));
 				
 				//populate cell room initial
 				grid[i][j].setInitial(config.charAt(0));
@@ -151,21 +151,26 @@ public class Board {
 					case '^':
 						grid[i][j].setDoorway(true);
 						grid[i][j].setDoorDirection(DoorDirection.UP);
+						this.roomMap.get(grid[i-1][j].getInitial()).addDoorway(grid[i][j]);
 						break;
 					case 'v':
 						grid[i][j].setDoorway(true);
 						grid[i][j].setDoorDirection(DoorDirection.DOWN);
+						this.roomMap.get(grid[i+1][j].getInitial()).addDoorway(grid[i][j]);
 						break;
 					case '>':
 						grid[i][j].setDoorway(true);
 						grid[i][j].setDoorDirection(DoorDirection.RIGHT);
+						this.roomMap.get(grid[i][j+1].getInitial()).addDoorway(grid[i][j]);
 						break;
 					case '<':
 						grid[i][j].setDoorway(true);
 						grid[i][j].setDoorDirection(DoorDirection.LEFT);
+						this.roomMap.get(grid[i-1][j-1].getInitial()).addDoorway(grid[i][j]);
 						break;
 					default:
 						grid[i][j].setSecretPassage(config.charAt(1));
+						this.roomMap.get(grid[i][j].getInitial()).setSecretPassageDestinationInitial(config.charAt(1));
 						break;
 					}
 				}
@@ -290,62 +295,101 @@ public class Board {
 	private void calcAdjacencies() {
 		for(int i = 0; i < numRows; i++) {
 			for(int j = 0; j < numColumns; j++) {
+				//if cell is a room center only add doorways and secret passages to adj list
+				if(this.grid[i][j].isDoorway()) {
+					for(BoardCell door: this.roomMap.get(grid[i][j].getInitial()).getDoorways()) {
+						this.grid[i][j].addAdj(door); 
+						door.addAdj(this.grid[i][j]);
+					}
+					if(this.roomMap.get(grid[i][j].getInitial()).getSecretPassageDestinationInitial() != '0') {
+						this.grid[i][j].addAdj(
+								this.roomMap.get(this.roomMap.get(grid[i][j].getInitial()).getSecretPassageDestinationInitial()).getCenterCell());
+					}
+				}
+				//if cell is room cell but not the center
+				else if(this.grid[i][j].getInitial() != 'W' || this.grid[i][j].getInitial() != 'X') {
+					continue;
+				}
 				//if cell is along top edge
 				if(i == 0) {
 					//if cell is in top left corner
 					if(j == 0) {
-						this.grid[i][j].addAdj(grid[i+1][j]);
-						this.grid[i][j].addAdj(grid[i][j+1]);
+						if(this.grid[i+1][j].getInitial() == this.grid[i][j].getInitial())
+							this.grid[i][j].addAdj(grid[i+1][j]);
+						if(this.grid[i][j+1].getInitial() == this.grid[i][j].getInitial())
+							this.grid[i][j].addAdj(grid[i][j+1]);
 					}
 					//if cell is in top right corner
 					else if(j == this.numColumns-1) {
-						this.grid[i][j].addAdj(grid[i+1][j]);
-						this.grid[i][j].addAdj(grid[i][j-1]);
+						if(this.grid[i+1][j].getInitial() == this.grid[i][j].getInitial())
+							this.grid[i][j].addAdj(grid[i+1][j]);
+						if(this.grid[i][j-1].getInitial() == this.grid[i][j].getInitial())
+							this.grid[i][j].addAdj(grid[i][j-1]);
 					}
 					//if cell is not a corner
 					else {
-						this.grid[i][j].addAdj(grid[i+1][j]);
-						this.grid[i][j].addAdj(grid[i][j+1]);
-						this.grid[i][j].addAdj(grid[i][j-1]);
+						if(this.grid[i+1][j].getInitial() == this.grid[i][j].getInitial())
+							this.grid[i][j].addAdj(grid[i+1][j]);
+						if(this.grid[i][j+1].getInitial() == this.grid[i][j].getInitial())
+							this.grid[i][j].addAdj(grid[i][j+1]);
+						if(this.grid[i][j-1].getInitial() == this.grid[i][j].getInitial())
+							this.grid[i][j].addAdj(grid[i][j-1]);
 					}
 				}
 				//if cell is along bottom edge
 				else if(i == this.numRows-1) {
 					//if cell is in bottom left corner
 					if(j == 0) {
-						this.grid[i][j].addAdj(grid[i-1][j]);
-						this.grid[i][j].addAdj(grid[i][j+1]);
+						if(this.grid[i-1][j].getInitial() == this.grid[i][j].getInitial())
+							this.grid[i][j].addAdj(grid[i-1][j]);
+						if(this.grid[i][j+1].getInitial() == this.grid[i][j].getInitial())
+							this.grid[i][j].addAdj(grid[i][j+1]);
 					}
 					//if cell is in bottom right corner
 					else if(j == this.numColumns-1) {
-						this.grid[i][j].addAdj(grid[i-1][j]);
-						this.grid[i][j].addAdj(grid[i][j-1]);
+						if(this.grid[i-1][j].getInitial() == this.grid[i][j].getInitial())
+							this.grid[i][j].addAdj(grid[i-1][j]);
+						if(this.grid[i][j-1].getInitial() == this.grid[i][j].getInitial())
+							this.grid[i][j].addAdj(grid[i][j-1]);
 					}
 					//if cell is not a corner
 					else {
-						this.grid[i][j].addAdj(grid[i-1][j]);
-						this.grid[i][j].addAdj(grid[i][j+1]);
-						this.grid[i][j].addAdj(grid[i][j-1]);
+						if(this.grid[i-1][j].getInitial() == this.grid[i][j].getInitial())
+							this.grid[i][j].addAdj(grid[i-1][j]);
+						if(this.grid[i][j+1].getInitial() == this.grid[i][j].getInitial())
+							this.grid[i][j].addAdj(grid[i][j+1]);
+						if(this.grid[i][j-1].getInitial() == this.grid[i][j].getInitial())
+							this.grid[i][j].addAdj(grid[i][j-1]);
 					}
 				}
 				//if cell is along left edge
 				else if(j == 0) {
-					this.grid[i][j].addAdj(grid[i-1][j]);
-					this.grid[i][j].addAdj(grid[i+1][j]);
-					this.grid[i][j].addAdj(grid[i][j+1]);
+					if(this.grid[i-1][j].getInitial() == this.grid[i][j].getInitial())
+						this.grid[i][j].addAdj(grid[i-1][j]);
+					if(this.grid[i+1][j].getInitial() == this.grid[i][j].getInitial())
+						this.grid[i][j].addAdj(grid[i+1][j]);
+					if(this.grid[i][j+1].getInitial() == this.grid[i][j].getInitial())
+						this.grid[i][j].addAdj(grid[i][j+1]);
 				}
 				//if cell is along right edge
 				else if(j == this.numColumns-1) {
-					this.grid[i][j].addAdj(grid[i-1][j]);
-					this.grid[i][j].addAdj(grid[i+1][j]);
-					this.grid[i][j].addAdj(grid[i][j-1]);
+					if(this.grid[i-1][j].getInitial() == this.grid[i][j].getInitial())
+						this.grid[i][j].addAdj(grid[i-1][j]);
+					if(this.grid[i+1][j].getInitial() == this.grid[i][j].getInitial())
+						this.grid[i][j].addAdj(grid[i+1][j]);
+					if(this.grid[i][j-1].getInitial() == this.grid[i][j].getInitial())
+						this.grid[i][j].addAdj(grid[i][j-1]);
 				}
 				//if cell is not along any edge
 				else {
-					this.grid[i][j].addAdj(grid[i-1][j]);
-					this.grid[i][j].addAdj(grid[i+1][j]);
-					this.grid[i][j].addAdj(grid[i][j-1]);
-					this.grid[i][j].addAdj(grid[i][j+1]);
+					if(this.grid[i-1][j].getInitial() == this.grid[i][j].getInitial())
+						this.grid[i][j].addAdj(grid[i-1][j]);
+					if(this.grid[i+1][j].getInitial() == this.grid[i][j].getInitial())
+						this.grid[i][j].addAdj(grid[i+1][j]);
+					if(this.grid[i][j-1].getInitial() == this.grid[i][j].getInitial())
+						this.grid[i][j].addAdj(grid[i][j-1]);
+					if(this.grid[i][j+1].getInitial() == this.grid[i][j].getInitial())
+						this.grid[i][j].addAdj(grid[i][j+1]);
 				}
 			}
 		}

@@ -1,5 +1,8 @@
 package clueGame;
 
+import java.util.HashSet;
+import java.util.Set;
+
 /**
  * Room: contains information for a room identified in the config files, including room name and
  * pointers to the BoardCell objects acting as room label and center locations.
@@ -12,6 +15,8 @@ public class Room {
 	private String name;
 	private BoardCell centerCell;
 	private BoardCell labelCell;
+	private Set<BoardCell> doorways;
+	private char secretPassageDestinationInitial;
 
 	//constructor with only name parameter
 	public Room(String name) {
@@ -23,6 +28,7 @@ public class Room {
 		this.name = name;
 		this.centerCell = centerCell;
 		this.labelCell = labelCell;	
+		this.doorways = new HashSet<BoardCell>();
 	}
 
 	public String getName() {
@@ -46,5 +52,19 @@ public class Room {
 		this.labelCell = labelCell;
 	}
 	
+	public void addDoorway(BoardCell doorway) {
+		this.doorways.add(doorway);
+	}
 	
+	public Set<BoardCell> getDoorways(){
+		return this.doorways;
+	}
+
+	public char getSecretPassageDestinationInitial() {
+		return secretPassageDestinationInitial;
+	}
+
+	public void setSecretPassageDestinationInitial(char secretPassageDestinationInitial) {
+		this.secretPassageDestinationInitial = secretPassageDestinationInitial;
+	}
 }
