@@ -16,11 +16,14 @@ public class Room {
 	private BoardCell centerCell;
 	private BoardCell labelCell;
 	private Set<BoardCell> doorways;
+	private Boolean hasSecretPassage;
 	private char secretPassageDestinationInitial;
 
 	//constructor with only name parameter
 	public Room(String name) {
 		this.name = name;
+		this.doorways = new HashSet<BoardCell>();
+		this.hasSecretPassage = false;
 	}
 
 	//constructor with all parameters
@@ -29,6 +32,7 @@ public class Room {
 		this.centerCell = centerCell;
 		this.labelCell = labelCell;	
 		this.doorways = new HashSet<BoardCell>();
+		this.hasSecretPassage = false;
 	}
 
 	public String getName() {
@@ -67,4 +71,14 @@ public class Room {
 	public void setSecretPassageDestinationInitial(char secretPassageDestinationInitial) {
 		this.secretPassageDestinationInitial = secretPassageDestinationInitial;
 	}
+
+	public Boolean hasSecretPassage() {
+		return hasSecretPassage;
+	}
+
+	public void setHasSecretPassage(Boolean hasSecretPassage) {
+		this.hasSecretPassage = hasSecretPassage;
+	}
+	
+	
 }

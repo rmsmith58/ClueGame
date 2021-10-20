@@ -51,6 +51,7 @@ public class Board {
 		} catch(Exception e) {
 			System.out.println("Error: " + e.getClass().getName());
 			System.out.println(e.getMessage());
+			e.printStackTrace();
 		}
 	}
 
@@ -126,7 +127,12 @@ public class Board {
 		for(int i = 0; i < this.numRows; i++) {
 			for(int j = 0; j < this.numColumns; j++) {
 				grid[i][j] = new BoardCell(i, j);
-				
+			}
+		}
+		
+		//setup rooms
+		for(int i = 0; i < this.numRows; i++) {
+			for(int j = 0; j < this.numColumns; j++) {
 				//get config data for this cell
 				String config = layoutConfig.get(i).get(j);
 				
@@ -137,7 +143,7 @@ public class Board {
 				//populate cell room initial
 				grid[i][j].setInitial(config.charAt(0));
 				
-				//populate any other data for cell and set flags as needed
+				//populate room data
 				if(config.length() > 1) {
 					switch (config.charAt(1)){
 					case '#':
@@ -147,6 +153,30 @@ public class Board {
 					case '*':
 						grid[i][j].setRoomCenter(true);
 						this.roomMap.get(grid[i][j].getInitial()).setCenterCell(grid[i][j]);
+						break;
+					}
+				}
+			}
+		}
+		
+		//setup other data
+		for(int i = 0; i < this.numRows; i++) {
+			for(int j = 0; j < this.numColumns; j++) {
+				//get config data for this cell
+				String config = layoutConfig.get(i).get(j);
+
+				//throw exception if room initial was not found in setup config
+				if(this.roomMap.get(config.charAt(0)) == null )
+					throw new BadConfigFormatException("Unknown room symbol encountered in layout configuration: " + config.charAt(0));
+
+				//populate cell room initial
+				grid[i][j].setInitial(config.charAt(0));
+
+				//populate room data
+				if(config.length() > 1) {
+					switch (config.charAt(1)){
+					case '*':
+					case '#':
 						break;
 					case '^':
 						grid[i][j].setDoorway(true);
@@ -166,10 +196,11 @@ public class Board {
 					case '<':
 						grid[i][j].setDoorway(true);
 						grid[i][j].setDoorDirection(DoorDirection.LEFT);
-						this.roomMap.get(grid[i-1][j-1].getInitial()).addDoorway(grid[i][j]);
+						this.roomMap.get(grid[i][j-1].getInitial()).addDoorway(grid[i][j]);
 						break;
 					default:
 						grid[i][j].setSecretPassage(config.charAt(1));
+						this.roomMap.get(grid[i][j].getInitial()).setHasSecretPassage(true);
 						this.roomMap.get(grid[i][j].getInitial()).setSecretPassageDestinationInitial(config.charAt(1));
 						break;
 					}
@@ -295,23 +326,27 @@ public class Board {
 	private void calcAdjacencies() {
 		for(int i = 0; i < numRows; i++) {
 			for(int j = 0; j < numColumns; j++) {
+				
+				if(i == 21 && j == 2){
+					System.out.println("Debuggggggging");
+				}
 				//if cell is a room center only add doorways and secret passages to adj list
-				if(this.grid[i][j].isDoorway()) {
+				if(this.grid[i][j].isRoomCenter()) {
 					for(BoardCell door: this.roomMap.get(grid[i][j].getInitial()).getDoorways()) {
 						this.grid[i][j].addAdj(door); 
 						door.addAdj(this.grid[i][j]);
 					}
-					if(this.roomMap.get(grid[i][j].getInitial()).getSecretPassageDestinationInitial() != '0') {
+					if(this.roomMap.get(grid[i][j].getInitial()).hasSecretPassage()) {
 						this.grid[i][j].addAdj(
 								this.roomMap.get(this.roomMap.get(grid[i][j].getInitial()).getSecretPassageDestinationInitial()).getCenterCell());
 					}
 				}
 				//if cell is room cell but not the center
-				else if(this.grid[i][j].getInitial() != 'W' || this.grid[i][j].getInitial() != 'X') {
+				else if(this.grid[i][j].getInitial() != 'W' && this.grid[i][j].getInitial() != 'X') {
 					continue;
 				}
 				//if cell is along top edge
-				if(i == 0) {
+				else if(i == 0) {
 					//if cell is in top left corner
 					if(j == 0) {
 						if(this.grid[i+1][j].getInitial() == this.grid[i][j].getInitial())
