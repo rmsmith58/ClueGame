@@ -24,7 +24,7 @@ public class Board {
 	private Set<BoardCell> targets;
 	private BoardCell[][] grid;
 	private int numRows, numColumns;
-	private String layoutConfigFile, setupConfigFile; //assuming all config files will be located in the src/data directory
+	private String layoutConfigFile, setupConfigFile;
 	private Map<Character, Room> roomMap; //this will be populated from setup config file
 	private static Board theInstance = new Board();
 
@@ -137,7 +137,7 @@ public class Board {
 				grid[i][j] = new BoardCell(i, j);
 			}
 		}
-
+			//TODO check if consecutive for loops are needed for room label/center setup or if they can be combined into one loop
 		//setup rooms
 		for(int i = 0; i < this.numRows; i++) {
 			for(int j = 0; j < this.numColumns; j++) {
@@ -362,7 +362,10 @@ public class Board {
 	 * For all cells in board, find adjacent cells and add them to
 	 * that cell's adjacencies list.
 	 */
-	private void calcAdjacencies() {
+	private void calcAdjacencies() { //TODO FIX THIS, change if statement approach:
+		/*
+		 * if cell is NOT on (top edge, left edge, right edge, bottom edge) add adjacent cell to (above, right, left below)
+		 */
 		//loop thru all cells on board and calculate adjacencies for each
 		for(int i = 0; i < numRows; i++) {
 			for(int j = 0; j < numColumns; j++) {
