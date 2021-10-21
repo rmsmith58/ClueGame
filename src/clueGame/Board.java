@@ -33,14 +33,23 @@ public class Board {
 	 */
 	private Board() {
 		super();
+		
+		//intialize the targets array for this board
+		this.targets = new HashSet<BoardCell>();
+		
+		//initialize roomMap for this instance
+		this.roomMap = new HashMap<Character, Room>();
 	}
 
 	/**
 	 * Initializes board, including grid setup and initialization of all
 	 * BoardCell objects contained in the grid. Handles errors throw in config file loading.
+	 * Also initializes target set and roomMap for this board.
 	 * 
 	 */
 	public void initialize() {
+
+		
 		//catch and handle any errors from config file loading
 		try {
 			this.loadSetupConfig();
@@ -56,16 +65,14 @@ public class Board {
 	}
 
 	/**
-	 * Loads setup configuration file using filename supplied in .
+	 * Loads setup configuration file using this.setupConfigFile. Populates this.roomMap using data
+	 * from config file and throws errors as needed for bad formatting in the config file.
 	 * 
 	 * @throws BadConfigFormatException
 	 * @throws FileNotFoundException
 	 * 
 	 */
 	public void loadSetupConfig() throws FileNotFoundException, BadConfigFormatException{
-		//initialize roomMap for this instance
-		this.roomMap = new HashMap<Character, Room>();
-
 		//open input buffer
 		Scanner in = new Scanner(new File(this.setupConfigFile));
 
@@ -88,7 +95,8 @@ public class Board {
 	}
 
 	/**
-	 * Loads layout configuration file.
+	 * Loads layout configuration file using this.layoutConfigFile. Initializes and populates this.grid with information
+	 * in config file. Throws errors for bad formatting as needed.
 	 * 
 	 * @throws BadConfigFormatException
 	 * @throws FileNotFoundException
@@ -143,9 +151,10 @@ public class Board {
 				//populate cell room initial
 				grid[i][j].setInitial(config.charAt(0));
 
-				//populate room data
+				//populate room center and label data
 				if(config.length() > 1) {
 					switch (config.charAt(1)){
+					//for room labels or centers set the correct flag and update the room object with the label/center cell
 					case '#':
 						grid[i][j].setRoomLabel(true);
 						this.roomMap.get(grid[i][j].getInitial()).setLabelCell(grid[i][j]);
@@ -159,7 +168,7 @@ public class Board {
 			}
 		}
 
-		//setup other data
+		//setup other cell data such as doorways and secret passages
 		for(int i = 0; i < this.numRows; i++) {
 			for(int j = 0; j < this.numColumns; j++) {
 				//get config data for this cell
@@ -175,9 +184,11 @@ public class Board {
 				//populate room data
 				if(config.length() > 1) {
 					switch (config.charAt(1)){
+					//ignore room centers and labels as we already handled those
 					case '*':
 					case '#':
 						break;
+					//for any doorway set the correct flags in the BoardCell and update the room object to keep track of it's doorways
 					case '^':
 						grid[i][j].setDoorway(true);
 						grid[i][j].setDoorDirection(DoorDirection.UP);
@@ -198,6 +209,7 @@ public class Board {
 						grid[i][j].setDoorDirection(DoorDirection.LEFT);
 						this.roomMap.get(grid[i][j-1].getInitial()).addDoorway(grid[i][j]);
 						break;
+					//for any secret passages set the correct flags in BoardCell and add the secret passage to the room object
 					default:
 						grid[i][j].setSecretPassage(config.charAt(1));
 						this.roomMap.get(grid[i][j].getInitial()).setHasSecretPassage(true);
@@ -236,6 +248,7 @@ public class Board {
 	 * @return grid[row][col]
 	 */
 	public BoardCell getCell(int row, int col) {
+		//return null if the requested location is invalid
 		if(row > this.numRows-1 || col > this.numColumns-1 || row < 0 || col < 0)
 			return null;
 		return grid[row][col];
@@ -257,16 +270,26 @@ public class Board {
 		return this.roomMap.get(initial);
 	}
 
+	/**
+	 * Returns the number of rows for this board
+	 * 
+	 */
 	public int getNumRows() {
 		return numRows;
 	}
 
-
+	/**
+	 * Returns the number of columns for this board
+	 * 
+	 */
 	public int getNumColumns() {
 		return numColumns;
 	}
 
-
+	/**
+	 * Returns the current target cell set in this board
+	 * 
+	 */
 	public Set<BoardCell> getTargets(){
 		return this.targets;
 	}
@@ -279,9 +302,14 @@ public class Board {
 	 * @param pathLength
 	 */
 	public void calcTargets(BoardCell startCell, int pathLength) {
+		//initialize visited set for helper function
 		Set<BoardCell> visited = new HashSet<BoardCell>();
 		visited.add(startCell);
-		this.targets = new HashSet<BoardCell>();
+		
+		//reset targets set
+		this.targets.clear();
+		
+		//call recursive helper function
 		findAllTargets(startCell, pathLength, visited);
 	}
 
@@ -335,12 +363,10 @@ public class Board {
 	 * that cell's adjacencies list.
 	 */
 	private void calcAdjacencies() {
+		//loop thru all cells on board and calculate adjacencies for each
 		for(int i = 0; i < numRows; i++) {
 			for(int j = 0; j < numColumns; j++) {
 
-				if(i == 21 && j == 2){
-					System.out.println("Debuggggggging");
-				}
 				//if cell is a room center only add doorways and secret passages to adj list
 				if(this.grid[i][j].isRoomCenter()) {
 					for(BoardCell door: this.roomMap.get(grid[i][j].getInitial()).getDoorways()) {
@@ -352,27 +378,31 @@ public class Board {
 								this.roomMap.get(this.roomMap.get(grid[i][j].getInitial()).getSecretPassageDestinationInitial()).getCenterCell());
 					}
 				}
-				//if cell is room cell but not the center
+				
+				//if cell is room cell but not the center don't add any adjancencies
 				else if(this.grid[i][j].getInitial() != 'W' && this.grid[i][j].getInitial() != 'X') {
 					continue;
 				}
-				//if cell is along top edge
+				
+				//if cell is along top edge check if it is on the right or left corner or in the middle
 				else if(i == 0) {
-					//if cell is in top left corner
+					//if cell is in top left corner adjacent cells are to the right and below
+					//only add adjacencies if cells share the same room
 					if(j == 0) {
 						if(this.grid[i+1][j].getInitial() == this.grid[i][j].getInitial())
 							this.grid[i][j].addAdj(grid[i+1][j]);
 						if(this.grid[i][j+1].getInitial() == this.grid[i][j].getInitial())
 							this.grid[i][j].addAdj(grid[i][j+1]);
 					}
-					//if cell is in top right corner
+					//if cell is in top right corner adjacent cells are to the left and below
+					//only add adjacencies if the cells share the same room
 					else if(j == this.numColumns-1) {
 						if(this.grid[i+1][j].getInitial() == this.grid[i][j].getInitial())
 							this.grid[i][j].addAdj(grid[i+1][j]);
 						if(this.grid[i][j-1].getInitial() == this.grid[i][j].getInitial())
 							this.grid[i][j].addAdj(grid[i][j-1]);
 					}
-					//if cell is not a corner
+					//if cell is not a corner adjacencies are left, right, and below if in the same room
 					else {
 						if(this.grid[i+1][j].getInitial() == this.grid[i][j].getInitial())
 							this.grid[i][j].addAdj(grid[i+1][j]);
@@ -382,23 +412,24 @@ public class Board {
 							this.grid[i][j].addAdj(grid[i][j-1]);
 					}
 				}
-				//if cell is along bottom edge
+				
+				//if cell is along bottom edge check if it is a corner or not
 				else if(i == this.numRows-1) {
-					//if cell is in bottom left corner
+					//if cell is in bottom left corner adjacencies are above and to the right if in same room
 					if(j == 0) {
 						if(this.grid[i-1][j].getInitial() == this.grid[i][j].getInitial())
 							this.grid[i][j].addAdj(grid[i-1][j]);
 						if(this.grid[i][j+1].getInitial() == this.grid[i][j].getInitial())
 							this.grid[i][j].addAdj(grid[i][j+1]);
 					}
-					//if cell is in bottom right corner
+					//if cell is in bottom right corner adjancencies are left and above if in the same room
 					else if(j == this.numColumns-1) {
 						if(this.grid[i-1][j].getInitial() == this.grid[i][j].getInitial())
 							this.grid[i][j].addAdj(grid[i-1][j]);
 						if(this.grid[i][j-1].getInitial() == this.grid[i][j].getInitial())
 							this.grid[i][j].addAdj(grid[i][j-1]);
 					}
-					//if cell is not a corner
+					//if cell is not a corner adjacencies are left, right, and above if in same room
 					else {
 						if(this.grid[i-1][j].getInitial() == this.grid[i][j].getInitial())
 							this.grid[i][j].addAdj(grid[i-1][j]);
@@ -408,7 +439,9 @@ public class Board {
 							this.grid[i][j].addAdj(grid[i][j-1]);
 					}
 				}
-				//if cell is along left edge
+				
+				//if cell is along left edge adjacencies are right, above, and below if in same room
+				//corners have already been accounted for
 				else if(j == 0) {
 					if(this.grid[i-1][j].getInitial() == this.grid[i][j].getInitial())
 						this.grid[i][j].addAdj(grid[i-1][j]);
@@ -417,7 +450,9 @@ public class Board {
 					if(this.grid[i][j+1].getInitial() == this.grid[i][j].getInitial())
 						this.grid[i][j].addAdj(grid[i][j+1]);
 				}
-				//if cell is along right edge
+				
+				//if cell is along right edge adjancencies are left, above, and below if in same room
+				//corners have already been acounted for
 				else if(j == this.numColumns-1) {
 					if(this.grid[i-1][j].getInitial() == this.grid[i][j].getInitial())
 						this.grid[i][j].addAdj(grid[i-1][j]);
@@ -426,7 +461,8 @@ public class Board {
 					if(this.grid[i][j-1].getInitial() == this.grid[i][j].getInitial())
 						this.grid[i][j].addAdj(grid[i][j-1]);
 				}
-				//if cell is not along any edge
+				
+				//if cell is not along any edge adjancencies are above, below, right, and left if in same room
 				else {
 					if(this.grid[i-1][j].getInitial() == this.grid[i][j].getInitial())
 						this.grid[i][j].addAdj(grid[i-1][j]);
