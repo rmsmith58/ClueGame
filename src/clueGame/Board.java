@@ -45,7 +45,7 @@ public class Board {
 		try {
 			this.loadSetupConfig();
 			this.loadLayoutConfig();
-			
+
 			//add adjacencies for each cell on board, assuming board is not 1x1
 			calcAdjacencies();
 		} catch(Exception e) {
@@ -65,14 +65,14 @@ public class Board {
 	public void loadSetupConfig() throws FileNotFoundException, BadConfigFormatException{
 		//initialize roomMap for this instance
 		this.roomMap = new HashMap<Character, Room>();
-		
+
 		//open input buffer
 		Scanner in = new Scanner(new File(this.setupConfigFile));
-		
+
 		while(in.hasNext()) {
 			String line = in.nextLine();
 			String[] lineValues = line.split(", ");
-			
+
 			//lines containing relevant data will start with "Room" or "Space"
 			if(lineValues.length > 0 && (lineValues[0].equals("Room") || lineValues[0].equals("Space"))) {
 				//grab room data and initialize a new Room object, then add it to this.roomMap
@@ -95,28 +95,28 @@ public class Board {
 	 */
 	public void loadLayoutConfig() throws FileNotFoundException, BadConfigFormatException{
 		Scanner in = new Scanner(new File(this.layoutConfigFile));
-		
+
 		//local multidimensional array to be used to hold layout data
 		ArrayList<ArrayList<String>> layoutConfig = new ArrayList();
-		
+
 		//populate layoutConfig with data from layout config file
 		while(in.hasNext()) {
 			String[] line = in.nextLine().split(",");
 			ArrayList<String> row = new ArrayList<String>();
-			
+
 			for(String str: line)
 				row.add(str);
-			
+
 			if(row.size() > 0)
 				layoutConfig.add(row);
 		}
-		
+
 		//grab the dimensions and update this.numRows and this.numColumns
 		//(using the first row to define the expected number of columns)
 		this.numColumns = layoutConfig.get(0).size();
 		this.numRows = layoutConfig.size();
 		this.grid = new BoardCell[this.numRows][this.numColumns];
-		
+
 		//loop again to check that all rows have expected number of columns, throw exception otherwise
 		for(ArrayList<String> row: layoutConfig) {
 			if(row.size() != this.numColumns)
@@ -129,20 +129,20 @@ public class Board {
 				grid[i][j] = new BoardCell(i, j);
 			}
 		}
-		
+
 		//setup rooms
 		for(int i = 0; i < this.numRows; i++) {
 			for(int j = 0; j < this.numColumns; j++) {
 				//get config data for this cell
 				String config = layoutConfig.get(i).get(j);
-				
+
 				//throw exception if room initial was not found in setup config
 				if(this.roomMap.get(config.charAt(0)) == null )
 					throw new BadConfigFormatException("Unknown room symbol encountered in layout configuration: " + config.charAt(0));
-				
+
 				//populate cell room initial
 				grid[i][j].setInitial(config.charAt(0));
-				
+
 				//populate room data
 				if(config.length() > 1) {
 					switch (config.charAt(1)){
@@ -158,7 +158,7 @@ public class Board {
 				}
 			}
 		}
-		
+
 		//setup other data
 		for(int i = 0; i < this.numRows; i++) {
 			for(int j = 0; j < this.numColumns; j++) {
@@ -208,7 +208,7 @@ public class Board {
 			}
 		}
 	}
-	
+
 	/**
 	 * Updates filenames to be used for loading config files. Assumes these files will be located in the src/data directory
 	 * 
@@ -219,7 +219,7 @@ public class Board {
 		this.layoutConfigFile = "data/" + layoutConfigFilename;
 		this.setupConfigFile = "data/" + setupConfigFilename;
 	}
-	
+
 	/**
 	 * Returns the only Board instance.
 	 * @return thisInstance
@@ -240,7 +240,7 @@ public class Board {
 			return null;
 		return grid[row][col];
 	}
-	
+
 	/**
 	 * Returns the associated Room object for any cell
 	 *
@@ -248,7 +248,7 @@ public class Board {
 	public Room getRoom(BoardCell cell) {
 		return this.roomMap.get(cell.getInitial());
 	}
-	
+
 	/**
 	 * Returns the associated Room object for a given initial
 	 *
@@ -256,21 +256,21 @@ public class Board {
 	public Room getRoom(char initial) {
 		return this.roomMap.get(initial);
 	}
-	
+
 	public int getNumRows() {
 		return numRows;
 	}
 
-	
+
 	public int getNumColumns() {
 		return numColumns;
 	}
 
-	
+
 	public Set<BoardCell> getTargets(){
 		return this.targets;
 	}
-	
+
 	/**
 	 * Calculates all possible move targets starting from startCell and
 	 * with movement range of pathLength. Populates Board.targets with results.
@@ -284,7 +284,7 @@ public class Board {
 		this.targets = new HashSet<BoardCell>();
 		findAllTargets(startCell, pathLength, visited);
 	}
-	
+
 	/**
 	 * Get adjacency list for a cell located at provided coordinates
 	 * @param rowLocation
@@ -294,7 +294,7 @@ public class Board {
 	public Set<BoardCell> getAdjList(int rowLocation, int colLocation){
 		return this.grid[rowLocation][colLocation].getAdjList();
 	}
-	
+
 	/**
 	 * Helper function for calcTargets, recursively explores board to
 	 * determine possible movement locations.
@@ -307,7 +307,13 @@ public class Board {
 		for(BoardCell cell: thisCell.getAdjList()) {
 			if(!(visited.contains(cell) || cell.getOccupied())) {
 				visited.add(cell);
-				if(numSteps == 1 || cell.getRoom()) {
+
+				//this ensures we are only adding the center of the other room when there is secret passage
+				//way or else the target list builds of the other center of the room.
+				if(cell.isRoomCenter() == true) {
+					targets.add(cell);
+				}
+				else if(numSteps == 1 || cell.getRoom()) {
 					targets.add(cell);
 				}
 				else {
@@ -315,10 +321,15 @@ public class Board {
 				}
 				visited.remove(cell);
 			}
+			//when the room is occupied, we still need to add it to our target list because another player can
+			//also enter the room.
+			else if(cell.getOccupied() && cell.isRoomCenter()) {
+				targets.add(cell);
+			}
 		}
 
 	}
-	
+
 	/**
 	 * For all cells in board, find adjacent cells and add them to
 	 * that cell's adjacencies list.
@@ -326,7 +337,7 @@ public class Board {
 	private void calcAdjacencies() {
 		for(int i = 0; i < numRows; i++) {
 			for(int j = 0; j < numColumns; j++) {
-				
+
 				if(i == 21 && j == 2){
 					System.out.println("Debuggggggging");
 				}
