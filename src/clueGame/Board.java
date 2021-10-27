@@ -380,6 +380,7 @@ public class Board {
 						this.grid[i][j].addAdj(
 								this.roomMap.get(this.roomMap.get(grid[i][j].getInitial()).getSecretPassageDestinationInitial()).getCenterCell());
 					}
+					continue;
 				}
 				
 				//if cell is room cell but not the center don't add any adjancencies
@@ -407,7 +408,7 @@ public class Board {
 				
 				//if cell is not on the right edge add adjacencies to the right
 				//only add cells that share the same initial
-				if(i != this.numColumns - 1 && this.grid[i][j+1].getInitial() == this.grid[i][j].getInitial()) {
+				if(j != this.numColumns - 1 && this.grid[i][j+1].getInitial() == this.grid[i][j].getInitial()) {
 					this.grid[i][j].addAdj(grid[i][j+1]);
 				}
 			}
