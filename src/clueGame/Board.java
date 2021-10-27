@@ -367,44 +367,44 @@ public class Board {
 			for(int j = 0; j < numColumns; j++) {
 
 				//if cell is a room center only add doorways and secret passages to adj list
-				if(this.grid[i][j].isRoomCenter()) {
+				if(grid[i][j].isRoomCenter()) {
 					for(BoardCell door: this.roomMap.get(grid[i][j].getInitial()).getDoorways()) {
-						this.grid[i][j].addAdj(door); 
-						door.addAdj(this.grid[i][j]);
+						grid[i][j].addAdj(door); 
+						door.addAdj(grid[i][j]);
 					}
-					if(this.roomMap.get(grid[i][j].getInitial()).hasSecretPassage()) {
+					if(roomMap.get(grid[i][j].getInitial()).hasSecretPassage()) {
 						grid[i][j].addAdj(roomMap.get(roomMap.get(grid[i][j].getInitial()).getSecretPassageDestinationInitial()).getCenterCell());
 					}
 					continue;
 				}
 				
 				//if cell is room cell but not the center don't add any adjancencies
-				else if(this.grid[i][j].getInitial() != 'W' && this.grid[i][j].getInitial() != 'X') {
+				else if(grid[i][j].getInitial() != 'W' && grid[i][j].getInitial() != 'X') {
 					continue;
 				}
 				
 				//if cell is not on the top edge add adjacencies above
 				//only add cells that share the same initial
-				if(i != 0 && this.grid[i-1][j].getInitial() == this.grid[i][j].getInitial()) {
-					this.grid[i][j].addAdj(grid[i-1][j]);
+				if(i != 0 && grid[i-1][j].getInitial() == grid[i][j].getInitial()) {
+					grid[i][j].addAdj(grid[i-1][j]);
 				}
 				
 				//if cell is not on the bottom edge add adjacencies below
 				//only add cells that share the same initial
-				if(i != this.numRows - 1 && this.grid[i+1][j].getInitial() == this.grid[i][j].getInitial()) {
-					this.grid[i][j].addAdj(grid[i+1][j]);
+				if(i != numRows - 1 && grid[i+1][j].getInitial() == grid[i][j].getInitial()) {
+					grid[i][j].addAdj(grid[i+1][j]);
 				}
 				
 				//if cell is not on the left edge add adjacencies to the left
 				//only add cells that share the same initial
-				if(j != 0 && this.grid[i][j-1].getInitial() == this.grid[i][j].getInitial()) {
-					this.grid[i][j].addAdj(grid[i][j-1]);
+				if(j != 0 && grid[i][j-1].getInitial() == grid[i][j].getInitial()) {
+					grid[i][j].addAdj(grid[i][j-1]);
 				}
 				
 				//if cell is not on the right edge add adjacencies to the right
 				//only add cells that share the same initial
-				if(j != this.numColumns - 1 && this.grid[i][j+1].getInitial() == this.grid[i][j].getInitial()) {
-					this.grid[i][j].addAdj(grid[i][j+1]);
+				if(j != numColumns - 1 && grid[i][j+1].getInitial() == grid[i][j].getInitial()) {
+					grid[i][j].addAdj(grid[i][j+1]);
 				}
 			}
 		}

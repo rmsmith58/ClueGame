@@ -49,7 +49,7 @@ public class BoardCell {
 	}
 	
 	public Set<BoardCell> getAdjList(){
-		return this.adjList;
+		return adjList;
 	}
 	
 	public void setRoomLabel(Boolean roomLabel) {
@@ -93,7 +93,7 @@ public class BoardCell {
 	}
 	
 	public DoorDirection getDoorDirection() {
-		return this.doorDirection;
+		return doorDirection;
 	}
 	
 	public void setDoorDirection(DoorDirection dir) {
@@ -101,7 +101,7 @@ public class BoardCell {
 	}
 	
 	public Boolean isDoorway() {
-		return this.doorway;
+		return doorway;
 	}
 	
 	public void setDoorway(Boolean door) {
