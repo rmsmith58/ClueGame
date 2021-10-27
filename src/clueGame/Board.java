@@ -123,29 +123,29 @@ public class Board {
 		//(using the first row to define the expected number of columns)
 		this.numColumns = layoutConfig.get(0).size();
 		this.numRows = layoutConfig.size();
-		this.grid = new BoardCell[this.numRows][this.numColumns];
+		this.grid = new BoardCell[numRows][numColumns];
 
 		//loop again to check that all rows have expected number of columns, throw exception otherwise
 		for(ArrayList<String> row: layoutConfig) {
-			if(row.size() != this.numColumns)
+			if(row.size() != numColumns)
 				throw new BadConfigFormatException("Inconsistent number of columns in layout configuration.");
 		}
 
 		//initialize all cells on board
-		for(int i = 0; i < this.numRows; i++) {
-			for(int j = 0; j < this.numColumns; j++) {
+		for(int i = 0; i < numRows; i++) {
+			for(int j = 0; j < numColumns; j++) {
 				grid[i][j] = new BoardCell(i, j);
 			}
 		}
 			//TODO check if consecutive for loops are needed for room label/center setup or if they can be combined into one loop
 		//setup rooms
-		for(int i = 0; i < this.numRows; i++) {
-			for(int j = 0; j < this.numColumns; j++) {
+		for(int i = 0; i < numRows; i++) {
+			for(int j = 0; j < numColumns; j++) {
 				//get config data for this cell
 				String config = layoutConfig.get(i).get(j);
 
 				//throw exception if room initial was not found in setup config
-				if(this.roomMap.get(config.charAt(0)) == null )
+				if(roomMap.get(config.charAt(0)) == null )
 					throw new BadConfigFormatException("Unknown room symbol encountered in layout configuration: " + config.charAt(0));
 
 				//populate cell room initial
@@ -157,11 +157,11 @@ public class Board {
 					//for room labels or centers set the correct flag and update the room object with the label/center cell
 					case '#':
 						grid[i][j].setRoomLabel(true);
-						this.roomMap.get(grid[i][j].getInitial()).setLabelCell(grid[i][j]);
+						roomMap.get(grid[i][j].getInitial()).setLabelCell(grid[i][j]);
 						break;
 					case '*':
 						grid[i][j].setRoomCenter(true);
-						this.roomMap.get(grid[i][j].getInitial()).setCenterCell(grid[i][j]);
+						roomMap.get(grid[i][j].getInitial()).setCenterCell(grid[i][j]);
 						break;
 					}
 				}
@@ -169,13 +169,13 @@ public class Board {
 		}
 
 		//setup other cell data such as doorways and secret passages
-		for(int i = 0; i < this.numRows; i++) {
-			for(int j = 0; j < this.numColumns; j++) {
+		for(int i = 0; i < numRows; i++) {
+			for(int j = 0; j < numColumns; j++) {
 				//get config data for this cell
 				String config = layoutConfig.get(i).get(j);
 
 				//throw exception if room initial was not found in setup config
-				if(this.roomMap.get(config.charAt(0)) == null )
+				if(roomMap.get(config.charAt(0)) == null )
 					throw new BadConfigFormatException("Unknown room symbol encountered in layout configuration: " + config.charAt(0));
 
 				//populate cell room initial
@@ -192,28 +192,28 @@ public class Board {
 					case '^':
 						grid[i][j].setDoorway(true);
 						grid[i][j].setDoorDirection(DoorDirection.UP);
-						this.roomMap.get(grid[i-1][j].getInitial()).addDoorway(grid[i][j]);
+						roomMap.get(grid[i-1][j].getInitial()).addDoorway(grid[i][j]);
 						break;
 					case 'v':
 						grid[i][j].setDoorway(true);
 						grid[i][j].setDoorDirection(DoorDirection.DOWN);
-						this.roomMap.get(grid[i+1][j].getInitial()).addDoorway(grid[i][j]);
+						roomMap.get(grid[i+1][j].getInitial()).addDoorway(grid[i][j]);
 						break;
 					case '>':
 						grid[i][j].setDoorway(true);
 						grid[i][j].setDoorDirection(DoorDirection.RIGHT);
-						this.roomMap.get(grid[i][j+1].getInitial()).addDoorway(grid[i][j]);
+						roomMap.get(grid[i][j+1].getInitial()).addDoorway(grid[i][j]);
 						break;
 					case '<':
 						grid[i][j].setDoorway(true);
 						grid[i][j].setDoorDirection(DoorDirection.LEFT);
-						this.roomMap.get(grid[i][j-1].getInitial()).addDoorway(grid[i][j]);
+						roomMap.get(grid[i][j-1].getInitial()).addDoorway(grid[i][j]);
 						break;
 					//for any secret passages set the correct flags in BoardCell and add the secret passage to the room object
 					default:
 						grid[i][j].setSecretPassage(config.charAt(1));
-						this.roomMap.get(grid[i][j].getInitial()).setHasSecretPassage(true);
-						this.roomMap.get(grid[i][j].getInitial()).setSecretPassageDestinationInitial(config.charAt(1));
+						roomMap.get(grid[i][j].getInitial()).setHasSecretPassage(true);
+						roomMap.get(grid[i][j].getInitial()).setSecretPassageDestinationInitial(config.charAt(1));
 						break;
 					}
 				}
@@ -249,7 +249,7 @@ public class Board {
 	 */
 	public BoardCell getCell(int row, int col) {
 		//return null if the requested location is invalid
-		if(row > this.numRows-1 || col > this.numColumns-1 || row < 0 || col < 0)
+		if(row > numRows-1 || col > numColumns-1 || row < 0 || col < 0)
 			return null;
 		return grid[row][col];
 	}
@@ -259,7 +259,7 @@ public class Board {
 	 *
 	 */
 	public Room getRoom(BoardCell cell) {
-		return this.roomMap.get(cell.getInitial());
+		return roomMap.get(cell.getInitial());
 	}
 
 	/**
@@ -267,7 +267,7 @@ public class Board {
 	 *
 	 */
 	public Room getRoom(char initial) {
-		return this.roomMap.get(initial);
+		return roomMap.get(initial);
 	}
 
 	/**
@@ -291,7 +291,7 @@ public class Board {
 	 * 
 	 */
 	public Set<BoardCell> getTargets(){
-		return this.targets;
+		return targets;
 	}
 
 	/**
@@ -307,7 +307,7 @@ public class Board {
 		visited.add(startCell);
 		
 		//reset targets set
-		this.targets.clear();
+		targets.clear();
 		
 		//call recursive helper function
 		findAllTargets(startCell, pathLength, visited);
@@ -320,7 +320,7 @@ public class Board {
 	 * 
 	 */
 	public Set<BoardCell> getAdjList(int rowLocation, int colLocation){
-		return this.grid[rowLocation][colLocation].getAdjList();
+		return grid[rowLocation][colLocation].getAdjList();
 	}
 
 	/**
@@ -352,7 +352,6 @@ public class Board {
 				targets.add(cell);
 			}
 		}
-
 	}
 
 	/**
