@@ -362,7 +362,7 @@ public class Board {
 	 * For all cells in board, find adjacent cells and add them to
 	 * that cell's adjacencies list.
 	 */
-	private void calcAdjacencies() { //TODO FIX THIS, change if statement approach:
+	private void calcAdjacencies() {
 		/*
 		 * if cell is NOT on (top edge, left edge, right edge, bottom edge) add adjacent cell to (above, right, left below)
 		 */
@@ -377,8 +377,7 @@ public class Board {
 						door.addAdj(this.grid[i][j]);
 					}
 					if(this.roomMap.get(grid[i][j].getInitial()).hasSecretPassage()) {
-						this.grid[i][j].addAdj(
-								this.roomMap.get(this.roomMap.get(grid[i][j].getInitial()).getSecretPassageDestinationInitial()).getCenterCell());
+						grid[i][j].addAdj(roomMap.get(roomMap.get(grid[i][j].getInitial()).getSecretPassageDestinationInitial()).getCenterCell());
 					}
 					continue;
 				}
