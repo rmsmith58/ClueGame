@@ -338,10 +338,7 @@ public class Board {
 
 				//this ensures we are only adding the center of the other room when there is secret passage
 				//way or else the target list builds of the other center of the room.
-				if(cell.isRoomCenter() == true) {
-					targets.add(cell);
-				}
-				else if(numSteps == 1 || cell.getRoom()) {
+				if(cell.isRoomCenter() || numSteps == 1) {
 					targets.add(cell);
 				}
 				else {
