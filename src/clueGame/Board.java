@@ -387,8 +387,26 @@ public class Board {
 					continue;
 				}
 				
+				//if cell is not on the top edge add adjacencies above
+				//only add cells that share the same initial
+				if(i != 0 && this.grid[i-1][j].getInitial() == this.grid[i][j].getInitial()) {
+					this.grid[i][j].addAdj(grid[i-1][j]);
+				}
+				
+				//if cell is not on the bottom edge add adjacencies below
+				//only add cells that share the same initial
+				if(i != this.numRows - 1 && this.grid[i+1][j].getInitial() == this.grid[i][j].getInitial()) {
+					this.grid[i][j].addAdj(grid[i+1][j]);
+				}
+				
+				//if cell is not on the left edge add adjacencies to the right
+				//only add cells that share the same initial
+				if(j != 0 && this.grid[i][j-1].getInitial() == this.grid[i][j].getInitial()) {
+					this.grid[i][j].addAdj(grid[i][j-1]);
+				}
+				
 				//if cell is along top edge check if it is on the right or left corner or in the middle
-				else if(i == 0) {
+				else if(i == 0 && this.grid[i+1][j].getInitial() == this.grid[i][j].getInitial()) {
 					//if cell is in top left corner adjacent cells are to the right and below
 					//only add adjacencies if cells share the same room
 					if(j == 0) {
@@ -416,66 +434,7 @@ public class Board {
 					}
 				}
 				
-				//if cell is along bottom edge check if it is a corner or not
-				else if(i == this.numRows-1) {
-					//if cell is in bottom left corner adjacencies are above and to the right if in same room
-					if(j == 0) {
-						if(this.grid[i-1][j].getInitial() == this.grid[i][j].getInitial())
-							this.grid[i][j].addAdj(grid[i-1][j]);
-						if(this.grid[i][j+1].getInitial() == this.grid[i][j].getInitial())
-							this.grid[i][j].addAdj(grid[i][j+1]);
-					}
-					//if cell is in bottom right corner adjancencies are left and above if in the same room
-					else if(j == this.numColumns-1) {
-						if(this.grid[i-1][j].getInitial() == this.grid[i][j].getInitial())
-							this.grid[i][j].addAdj(grid[i-1][j]);
-						if(this.grid[i][j-1].getInitial() == this.grid[i][j].getInitial())
-							this.grid[i][j].addAdj(grid[i][j-1]);
-					}
-					//if cell is not a corner adjacencies are left, right, and above if in same room
-					else {
-						if(this.grid[i-1][j].getInitial() == this.grid[i][j].getInitial())
-							this.grid[i][j].addAdj(grid[i-1][j]);
-						if(this.grid[i][j+1].getInitial() == this.grid[i][j].getInitial())
-							this.grid[i][j].addAdj(grid[i][j+1]);
-						if(this.grid[i][j-1].getInitial() == this.grid[i][j].getInitial())
-							this.grid[i][j].addAdj(grid[i][j-1]);
-					}
-				}
 				
-				//if cell is along left edge adjacencies are right, above, and below if in same room
-				//corners have already been accounted for
-				else if(j == 0) {
-					if(this.grid[i-1][j].getInitial() == this.grid[i][j].getInitial())
-						this.grid[i][j].addAdj(grid[i-1][j]);
-					if(this.grid[i+1][j].getInitial() == this.grid[i][j].getInitial())
-						this.grid[i][j].addAdj(grid[i+1][j]);
-					if(this.grid[i][j+1].getInitial() == this.grid[i][j].getInitial())
-						this.grid[i][j].addAdj(grid[i][j+1]);
-				}
-				
-				//if cell is along right edge adjancencies are left, above, and below if in same room
-				//corners have already been acounted for
-				else if(j == this.numColumns-1) {
-					if(this.grid[i-1][j].getInitial() == this.grid[i][j].getInitial())
-						this.grid[i][j].addAdj(grid[i-1][j]);
-					if(this.grid[i+1][j].getInitial() == this.grid[i][j].getInitial())
-						this.grid[i][j].addAdj(grid[i+1][j]);
-					if(this.grid[i][j-1].getInitial() == this.grid[i][j].getInitial())
-						this.grid[i][j].addAdj(grid[i][j-1]);
-				}
-				
-				//if cell is not along any edge adjancencies are above, below, right, and left if in same room
-				else {
-					if(this.grid[i-1][j].getInitial() == this.grid[i][j].getInitial())
-						this.grid[i][j].addAdj(grid[i-1][j]);
-					if(this.grid[i+1][j].getInitial() == this.grid[i][j].getInitial())
-						this.grid[i][j].addAdj(grid[i+1][j]);
-					if(this.grid[i][j-1].getInitial() == this.grid[i][j].getInitial())
-						this.grid[i][j].addAdj(grid[i][j-1]);
-					if(this.grid[i][j+1].getInitial() == this.grid[i][j].getInitial())
-						this.grid[i][j].addAdj(grid[i][j+1]);
-				}
 			}
 		}
 	}
