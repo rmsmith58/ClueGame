@@ -11,3 +11,20 @@ Room, Hall, E
 // other spaces on board
 Space, Unused, X
 Space, Walkway, W
+// Example player and card formats below:
+// Player, isAI, Name, r, g, b
+// Card, name, type
+Player, false, You, 255, 0, 0
+Player, true, Phil Hopkins, 0, 255, 0
+Player, true, Lisa Johnson, 0, 0, 255
+Player, true, Judy Edwards, 255, 0, 255
+Player, true, Timothy Weah, 255, 255, 0
+Player, true, Dale Jenkins, 255, 155, 0
+// Room and Player cards will be automatically generated
+// only weapon cards need to be defined here
+Card, Baseball Bat, WEAPON
+Card, Steak Knife, WEAPON
+Card, Cyanide, WEAPON
+Card, Revolver, WEAPON
+Card, Piano Wire, WEAPON
+Card, Axe, WEAPON
