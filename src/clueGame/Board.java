@@ -27,6 +27,7 @@ public class Board {
 	private String layoutConfigFile, setupConfigFile;
 	private Map<Character, Room> roomMap; //this will be populated from setup config file
 	private static Board theInstance = new Board();
+	private Card[] deck;
 
 	/**
 	 * Private constructor to ensure only one instance is created.
@@ -321,6 +322,11 @@ public class Board {
 	 */
 	public Set<BoardCell> getAdjList(int rowLocation, int colLocation){
 		return grid[rowLocation][colLocation].getAdjList();
+	}
+	
+	//Function to help deal the cards among the players.
+	public void deal() {
+		
 	}
 
 	/**
