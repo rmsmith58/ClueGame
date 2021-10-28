@@ -24,6 +24,8 @@ public abstract class Player {
 		this.color = color;
 	}
 	
-	private void updateHand(Card card);
+	private void updateHand(Card card) {
+		this.hand.add(card);
+	}
 	
 }
