@@ -28,6 +28,8 @@ public class Board {
 	private Map<Character, Room> roomMap; //this will be populated from setup config file
 	private static Board theInstance = new Board();
 	private Card[] deck;
+	private ArrayList<Player> players;
+	private Solution theAnswer;
 
 	/**
 	 * Private constructor to ensure only one instance is created.
@@ -61,7 +63,6 @@ public class Board {
 		} catch(Exception e) {
 			System.out.println("Error: " + e.getClass().getName());
 			System.out.println(e.getMessage());
-			e.printStackTrace();
 		}
 	}
 
@@ -138,7 +139,7 @@ public class Board {
 				grid[i][j] = new BoardCell(i, j);
 			}
 		}
-			//TODO check if consecutive for loops are needed for room label/center setup or if they can be combined into one loop
+		//TODO check if consecutive for loops are needed for room label/center setup or if they can be combined into one loop
 		//setup rooms
 		for(int i = 0; i < numRows; i++) {
 			for(int j = 0; j < numColumns; j++) {
