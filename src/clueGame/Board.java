@@ -90,6 +90,9 @@ public class Board {
 				Room newRoom = new Room(roomName);
 				this.roomMap.put(roomInitial.charAt(0), newRoom);
 			}
+			//TODO account for People and weapon data in the setup file
+			//need to generate card objects for all people, weapons, and rooms
+			
 			//if we encounter anything other than a line starting with "Room", "Space", or "//" throw an error for bad formatting
 			else if(!lineValues[0].substring(0, 2).equals("//"))
 				throw new BadConfigFormatException("Unknown room type encountered in setup configuration: " + lineValues[0]);
@@ -139,7 +142,7 @@ public class Board {
 				grid[i][j] = new BoardCell(i, j);
 			}
 		}
-		//TODO check if consecutive for loops are needed for room label/center setup or if they can be combined into one loop
+		//TODO (possibly for next refactor) check if consecutive for loops are needed for room label/center setup or if they can be combined into one loop
 		//setup rooms
 		for(int i = 0; i < numRows; i++) {
 			for(int j = 0; j < numColumns; j++) {
@@ -286,6 +289,10 @@ public class Board {
 	 */
 	public int getNumColumns() {
 		return numColumns;
+	}
+	
+	public ArrayList<Player> getPlayers() {
+		return players;
 	}
 
 	/**

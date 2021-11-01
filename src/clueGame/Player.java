@@ -19,11 +19,40 @@ public abstract class Player {
 	protected Boolean isAI;
 	protected int row, column;
 	
-	public Player(String name, Color color) {
+	public Player(String name, Color color, int rowLoc, int colLoc) {
 		this.name = name;
 		this.color = color;
+		this.row = rowLoc;
+		this.column = colLoc;
 	}
 	
+	//some getters only for testing
+	
+	public String getName() {
+		return name;
+	}
+
+	public Color getColor() {
+		return color;
+	}
+
+	public Boolean isAI() {
+		return isAI;
+	}
+
+	public int getRow() {
+		return row;
+	}
+
+	public int getColumn() {
+		return column;
+	}
+	
+	public void setLocation(int rowLoc, int colLoc) {
+		this.row = rowLoc;
+		this.column = colLoc;
+	}
+
 	private void updateHand(Card card) {
 		this.hand.add(card);
 	}
