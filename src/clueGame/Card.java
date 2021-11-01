@@ -3,7 +3,7 @@ package clueGame;
 import clueGame.Board;
 import clueGame.BoardCell;
 
-public class Card implements Comparable{
+public class Card {
 	private String cardName;
 	private CardType cardType;
 	

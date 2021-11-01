@@ -8,13 +8,16 @@ import static org.junit.Assert.assertTrue;
 import java.awt.Color;
 import java.util.Set;
 
+import org.junit.Assert;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import clueGame.Board;
 import clueGame.BoardCell;
 import clueGame.Card;
+import clueGame.CardType;
 import clueGame.Player;
+import clueGame.Solution;
 
 public class GameSetupTests {
 	// We make the Board static because we can load it one time and 
@@ -55,13 +58,27 @@ public class GameSetupTests {
 		for(Card card: deck) {
 			assertNotNull(card.getCardName());
 			assertNotNull(card.getCardType());
+			if(card.getCardType() != CardType.PERSON
+					&& card.getCardType() != CardType.ROOM
+					&& card.getCardType() != CardType.WEAPON) {
+				Assert.fail();
+			}
 		}
 	}
 	
-	//Check that the Solution object has been correctly populated with one of each card type
+	//Check that the Solution object has been correctly populated with one of each card type,
+	//as well as assuring all players have 3 cards in their hand
 	@Test
 	public void handsPopulated() {
+		Card[] solution = board.getSolution().getSolution();
+		assertEquals(3, solution.length);
+		assertEquals(CardType.PERSON, solution[0].getCardType());
+		assertEquals(CardType.ROOM, solution[1].getCardType());
+		assertEquals(CardType.WEAPON, solution[2].getCardType());
 		
+		for(Player player: board.getPlayers()) {
+			assertEquals(3, player.getHand().size());
+		}
 	}
 	
 }
