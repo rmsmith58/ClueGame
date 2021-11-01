@@ -11,8 +11,8 @@ import java.awt.Color;
  *
  */
 public class ComputerPlayer extends Player {
-	public ComputerPlayer(String name, Color color) {
-		super(name, color);
+	public ComputerPlayer(String name, Color color, int rowLocation, int colLocation) {
+		super(name, color, rowLocation, colLocation);
 		this.isAI = false;
 	}
 }
