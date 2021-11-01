@@ -3,19 +3,30 @@ package clueGame;
 import clueGame.Board;
 import clueGame.BoardCell;
 
-public class Card {
+public class Card implements Comparable{
 	private String cardName;
-	private CardType card;
+	private CardType cardType;
 	
 	//Constructor that is taking in the cardName and CardType.
 	public Card(String cardName, CardType card) {
 		super();
 		this.cardName = cardName;
-		this.card = card;
+		this.cardType = card;
 	}
 	
-	//
-	public boolean equals(BoardCell target, CardType card) {
-		return true;
+	public boolean equals(Card card) {
+		if(this.cardName.equals(card.getCardName())
+				&& this.cardType.equals(card.getCardType())) {
+			return true;
+		}
+		return false;
+	}
+
+	public String getCardName() {
+		return cardName;
+	}
+
+	public CardType getCardType() {
+		return cardType;
 	}
 }

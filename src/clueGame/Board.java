@@ -294,6 +294,14 @@ public class Board {
 	public ArrayList<Player> getPlayers() {
 		return players;
 	}
+	
+	public Card[] getDeck() {
+		return deck;
+	}
+
+	public Solution getSolution() {
+		return theAnswer;
+	}
 
 	/**
 	 * Returns the current target cell set in this board

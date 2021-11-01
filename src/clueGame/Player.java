@@ -47,14 +47,18 @@ public abstract class Player {
 	public int getColumn() {
 		return column;
 	}
-	
-	public void setLocation(int rowLoc, int colLoc) {
-		this.row = rowLoc;
-		this.column = colLoc;
+
+	public ArrayList<Card> getHand() {
+		return hand;
 	}
 
 	private void updateHand(Card card) {
 		this.hand.add(card);
+	}
+	
+	public void setLocation(int rowLoc, int colLoc) {
+		this.row = rowLoc;
+		this.column = colLoc;
 	}
 	
 }

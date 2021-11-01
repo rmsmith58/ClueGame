@@ -12,7 +12,7 @@ Room, Hall, E
 Space, Unused, X
 Space, Walkway, W
 // Example player and card formats below:
-// Player, isAI, rowLocation, colLocation, Name, r, g, b
+// Player, isAI, rowLocation, colLocation, Name, color
 // Card, name, type
 Player, false, 7, 6, You, red
 Player, true, 11, 16, Phil Hopkins, green

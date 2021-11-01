@@ -2,6 +2,7 @@ package tests;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.awt.Color;
@@ -12,6 +13,7 @@ import org.junit.jupiter.api.Test;
 
 import clueGame.Board;
 import clueGame.BoardCell;
+import clueGame.Card;
 import clueGame.Player;
 
 public class GameSetupTests {
@@ -41,31 +43,24 @@ public class GameSetupTests {
 		assertEquals(6, board.getPlayers().get(2).getColumn());
 		assertEquals("Judy Edwards", board.getPlayers().get(3).getName());
 		assertEquals(Color.yellow, board.getPlayers().get(4).getColor());
-	}
-	
-	//Test to make sure the human player is loaded in correctly.
-	//It checks their location, color, and name.
-	@Test
-	public void humanPlayerLoaded() {
-		
-	}
-	
-	//Test a computer player to make sure it is loaded correctly
-	@Test
-	public void compPlayerLoaded() {
-		
+		assertTrue(board.getPlayers().get(5).isAI());
 	}
 	
 	//Test to see if all the card are loaded in correctly.
 	//There are 9 rooms, 6 players and 6 weapons.
 	@Test
 	public void allCardsLoaded() {
-		
+		Card[] deck = board.getDeck();
+		assertEquals(21, deck.length);
+		for(Card card: deck) {
+			assertNotNull(card.getCardName());
+			assertNotNull(card.getCardType());
+		}
 	}
 	
 	//Check that the Solution object has been correctly populated with one of each card type
 	@Test
-	public void answerPopulated() {
+	public void handsPopulated() {
 		
 	}
 	
