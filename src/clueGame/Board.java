@@ -32,6 +32,8 @@ public class Board {
 	private ArrayList<Card> deck;
 	private ArrayList<Player> players;
 	private Solution theAnswer;
+	//TODO it might be better to have these as local variables in deal()? double check this
+	//TODO also fix typo in line below
 	private Card solutionRoom, solutionPerson, soltionWeapon;
 
 	/**
@@ -52,6 +54,8 @@ public class Board {
 		this.theAnswer = new Solution();
 	}
 
+	//TODO possibly reorder the functions in board, maybe alphabetically
+	
 	/**
 	 * Initializes board, including grid setup and initialization of all
 	 * BoardCell objects contained in the grid. Handles errors throw in config file loading.
@@ -119,7 +123,7 @@ public class Board {
 				Integer colLoc = new Integer(lineValues[3]);
 				String name = lineValues[4];
 				Color color = new Color(new Integer(lineValues[5]), new Integer(lineValues[6]), new Integer(lineValues[7]));
-				if(isAI) {
+				if(!isAI) {
 					Player player = new HumanPlayer(name, color, rowLoc, colLoc);
 					this.players.add(player);
 				}
@@ -347,6 +351,33 @@ public class Board {
 
 	public Solution getSolution() {
 		return theAnswer;
+	}
+	
+	/**
+	 * Resets all data structures associated with this board, to prepare for another data load/initialization.
+	 * Only intended for use in testing.
+	 * 
+	 */
+	public void resetBoard() {
+		this.grid = null;
+		numRows = 0; 
+		numColumns = 0;
+		layoutConfigFile = null;
+		setupConfigFile = null;
+		solutionRoom = null;
+		solutionPerson = null;
+		soltionWeapon = null;
+		
+		//intialize the targets array for this board
+		this.targets = new HashSet<BoardCell>();
+				
+		//initialize roomMap for this instance
+		this.roomMap = new HashMap<Character, Room>();
+				
+		//intialize other variables for this instance
+		this.deck = new ArrayList<Card>();
+		this.players = new ArrayList<Player>();
+		this.theAnswer = new Solution();
 	}
 
 	/**

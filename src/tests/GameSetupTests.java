@@ -11,6 +11,7 @@ import java.util.Set;
 import java.util.ArrayList;
 
 import org.junit.Assert;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -37,19 +38,25 @@ public class GameSetupTests {
 		board.initialize();
 	}
 	
+	@AfterEach
+	public void reset() {
+		board.resetBoard();
+	}
+	
 	//Test to see if all the players are loaded correctly.
 	//It checks for 6 players, with 1 human and 5 computer players, some of the players names, color, and location.
 	@Test
 	public void allPlayersLoaded() {
-		assertEquals(6, board.getPlayers().size());
+		ArrayList<Player> players = board.getPlayers();
+		assertEquals(6, players.size());
 		//Checking fields for several players
 		//players should be populated in order from the setup config so we can access by index
-		assertFalse(board.getPlayers().get(0).isAI());
-		assertEquals(11, board.getPlayers().get(1).getRow());
-		assertEquals(6, board.getPlayers().get(2).getColumn());
-		assertEquals("Judy Edwards", board.getPlayers().get(3).getName());
-		assertEquals(Color.yellow, board.getPlayers().get(4).getColor());
-		assertTrue(board.getPlayers().get(5).isAI());
+		assertFalse(players.get(0).isAI());
+		assertEquals(11, players.get(1).getRow());
+		assertEquals(6, players.get(2).getColumn());
+		assertEquals("Judy Edwards", players.get(3).getName());
+		assertEquals(Color.yellow, players.get(4).getColor());
+		assertTrue(players.get(5).isAI());
 	}
 	
 	//Test to see if all the card are loaded in correctly.
