@@ -10,6 +10,7 @@ import java.util.Set;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Random;
 
 /**
  * Board: creates a single instance of itself to hold information
@@ -31,6 +32,7 @@ public class Board {
 	private ArrayList<Card> deck;
 	private ArrayList<Player> players;
 	private Solution theAnswer;
+	private Card solutionRoom, solutionPerson, soltionWeapon;
 
 	/**
 	 * Private constructor to ensure only one instance is created.
@@ -365,7 +367,78 @@ public class Board {
 	
 	//Function to help deal the cards among the players.
 	public void deal() {
+		ArrayList<Card> dealDeck = deck;
+		solutionDeal(dealDeck);
 		
+		Random rand = new Random();
+		Card current;
+		int count = 0;
+		do {
+			int randIndex = rand.nextInt(dealDeck.size());
+			current = dealDeck.get(randIndex);
+			switch(count) {
+			case 1: 
+				players.get(0).updateHand(current);
+				dealDeck.remove(randIndex);
+				count += 1;
+				break;
+			case 2:
+				players.get(1).updateHand(current);
+				dealDeck.remove(randIndex);
+				count += 1;
+				break;
+			case 3:
+				players.get(2).updateHand(current);
+				dealDeck.remove(randIndex);
+				count += 1;
+				break;
+			case 4:
+				players.get(3).updateHand(current);
+				dealDeck.remove(randIndex);
+				count += 1;
+				break;
+			case 5:
+				players.get(4).updateHand(current);
+				dealDeck.remove(randIndex);
+				count += 1;
+				break;
+			case 6:
+				players.get(5).updateHand(current);
+				dealDeck.remove(randIndex);
+				count = 0;
+				break;
+			}
+			
+		}while(dealDeck.size() != 0);
+	}
+	
+	private void solutionDeal(ArrayList<Card> deck) {
+		Random rand = new Random();
+		Card current;
+		boolean roomHolder = false, personHolder = false, weaponHolder = false;
+		do{
+			int randIndex = rand.nextInt(deck.size());
+			current = deck.get(randIndex);
+			
+			if(current.getCardType() == CardType.ROOM && roomHolder != true) {
+				solutionRoom = current;
+				deck.remove(randIndex);
+				roomHolder = true;
+			}
+			else if(current.getCardType() == CardType.PERSON && personHolder != true) {
+				solutionPerson = current;
+				deck.remove(randIndex);
+				personHolder = true;
+			}
+			else if(current.getCardType() == CardType.WEAPON && weaponHolder != true) {
+				soltionWeapon = current;
+				deck.remove(randIndex);
+				weaponHolder = true;
+			}
+		
+		}while(roomHolder != true && personHolder != true && weaponHolder != true);
+		
+		theAnswer.setSolution(solutionRoom, solutionPerson, soltionWeapon);
 	}
 
 	/**

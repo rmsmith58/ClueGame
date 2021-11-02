@@ -8,6 +8,7 @@ import static org.junit.Assert.assertTrue;
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Set;
+import java.util.ArrayList;
 
 import org.junit.Assert;
 import org.junit.jupiter.api.BeforeAll;
