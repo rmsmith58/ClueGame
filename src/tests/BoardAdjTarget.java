@@ -6,6 +6,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.Set;
 
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
@@ -25,6 +26,11 @@ public class BoardAdjTarget {
 		board.setConfigFiles("BoardLayout.csv", "ClueSetup.txt");		
 		// Initialize will load config files 
 		board.initialize();
+	}
+	
+	@AfterAll
+	public static void reset() {
+		board.resetBoard();
 	}
 
 	// Ensure that player does not move around within room

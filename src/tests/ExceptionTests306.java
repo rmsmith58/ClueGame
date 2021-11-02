@@ -8,11 +8,13 @@ package tests;
 import java.io.FileNotFoundException;
 
 import org.junit.Test;
+import org.junit.jupiter.api.AfterAll;
+
 import clueGame.BadConfigFormatException;
 import clueGame.Board;
 
 public class ExceptionTests306 {
-
+	
 	// Test that an exception is thrown for a config file that does not
 	// have the same number of columns for each row
 	@Test(expected = BadConfigFormatException.class)

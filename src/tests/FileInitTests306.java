@@ -9,6 +9,7 @@ package tests;
 import static org.junit.Assert.*;
 
 import org.junit.Assert;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
@@ -35,6 +36,11 @@ public class FileInitTests306 {
 		board.setConfigFiles("ClueLayout306.csv", "ClueSetup306.txt");
 		// Initialize will load BOTH config files
 		board.initialize();
+	}
+	
+	@AfterAll
+	public static void reset() {
+		board.resetBoard();
 	}
 
 	@Test

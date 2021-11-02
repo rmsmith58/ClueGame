@@ -11,6 +11,7 @@ import java.util.Set;
 import java.util.ArrayList;
 
 import org.junit.Assert;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -88,6 +89,12 @@ public class GameSetupTests {
 		assertEquals(CardType.WEAPON, solution[2].getCardType());
 		
 		for(Player player: board.getPlayers()) {
+			//if(3 != player.getHand().size()) {
+				System.out.println(player.getName());
+				for(Card card: player.getHand()) {
+					System.out.println("--" + card.getCardName());
+				}
+			//}
 			assertEquals(3, player.getHand().size());
 		}
 	}
