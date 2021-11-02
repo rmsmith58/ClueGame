@@ -1,5 +1,6 @@
 package clueGame;
 
+import java.awt.Color;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.HashSet;
@@ -27,7 +28,7 @@ public class Board {
 	private String layoutConfigFile, setupConfigFile;
 	private Map<Character, Room> roomMap; //this will be populated from setup config file
 	private static Board theInstance = new Board();
-	private Card[] deck;
+	private ArrayList<Card> deck;
 	private ArrayList<Player> players;
 	private Solution theAnswer;
 
@@ -82,20 +83,42 @@ public class Board {
 			String line = in.nextLine();
 			String[] lineValues = line.split(", ");
 
-			//lines containing relevant data will start with "Room" or "Space"
-			if(lineValues.length > 0 && (lineValues[0].equals("Room") || lineValues[0].equals("Space"))) {
+			//lines containing room data will start with "Room"
+			//also create a card for every room
+			if(lineValues.length > 0 && (lineValues[0].equals("Room"))) {
+				//grab room data and initialize a new Room object, then add it to this.roomMap
+				String roomName = lineValues[1];
+				String roomInitial = lineValues[2];
+				Room newRoom = new Room(roomName);
+				this.roomMap.put(roomInitial.charAt(0), newRoom);
+				Card roomCard = new Card(roomName, CardType.ROOM);
+				this.deck.add(roomCard);
+			}
+			
+			//for "Space" lines intialize a room object only
+			else if(lineValues.length > 0 && lineValues[0].equals("Space")) {
 				//grab room data and initialize a new Room object, then add it to this.roomMap
 				String roomName = lineValues[1];
 				String roomInitial = lineValues[2];
 				Room newRoom = new Room(roomName);
 				this.roomMap.put(roomInitial.charAt(0), newRoom);
 			}
+			
+			//for "Player" lines initialize a new player object and create a PERSON card
+			else if(lineValues.length > 0 && lineValues[0].equals("Player")) {
+				Boolean isAI = lineValues[1];
+				Integer rowLoc = new Integer(lineValues[2]);
+				Integer colLoc = new Integer(lineValues[3]);
+				String name = lineValues[4];
+				Color color = Color.getColor(lineValues[5]);
+			}
+			
 			//TODO account for People and weapon data in the setup file
 			//need to generate card objects for all people, weapons, and rooms
 			
 			//if we encounter anything other than a line starting with "Room", "Space", or "//" throw an error for bad formatting
 			else if(!lineValues[0].substring(0, 2).equals("//"))
-				throw new BadConfigFormatException("Unknown room type encountered in setup configuration: " + lineValues[0]);
+				throw new BadConfigFormatException("Unknown data type encountered in setup configuration: " + lineValues[0]);
 		}
 	}
 
@@ -295,7 +318,7 @@ public class Board {
 		return players;
 	}
 	
-	public Card[] getDeck() {
+	public ArrayList<Card> getDeck() {
 		return deck;
 	}
 
