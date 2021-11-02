@@ -73,7 +73,6 @@ public class Board {
 			System.out.println(e.getMessage());
 		}
 		
-		deal();
 	}
 
 	/**

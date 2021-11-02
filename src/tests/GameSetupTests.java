@@ -12,6 +12,7 @@ import java.util.ArrayList;
 
 import org.junit.Assert;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import clueGame.Board;
@@ -26,8 +27,8 @@ public class GameSetupTests {
 	// then do all the tests. 
 	private static Board board;
 
-	@BeforeAll
-	public static void setUp() {
+	@BeforeEach
+	public void setUp() {
 		// Board is singleton, get the only instance
 		board = Board.getInstance();
 		// set the file names to use my config files
@@ -72,6 +73,7 @@ public class GameSetupTests {
 	//as well as assuring all players have 3 cards in their hand
 	@Test
 	public void handsPopulated() {
+		board.deal();
 		Card[] solution = board.getSolution().getSolution();
 		assertEquals(3, solution.length);
 		assertEquals(CardType.PERSON, solution[0].getCardType());
