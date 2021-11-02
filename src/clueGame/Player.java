@@ -52,7 +52,8 @@ public abstract class Player {
 		return hand;
 	}
 
-	private void updateHand(Card card) {
+	//Was private, but didn't know why?
+	public void updateHand(Card card) {
 		this.hand.add(card);
 	}
 	

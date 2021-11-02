@@ -7,6 +7,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.awt.Color;
 import java.util.Set;
+import java.util.ArrayList;
 
 import org.junit.Assert;
 import org.junit.jupiter.api.BeforeAll;
@@ -53,8 +54,8 @@ public class GameSetupTests {
 	//There are 9 rooms, 6 players and 6 weapons.
 	@Test
 	public void allCardsLoaded() {
-		Card[] deck = board.getDeck();
-		assertEquals(21, deck.length);
+		ArrayList<Card> deck = board.getDeck();
+		assertEquals(21, deck.size());
 		for(Card card: deck) {
 			assertNotNull(card.getCardName());
 			assertNotNull(card.getCardType());
