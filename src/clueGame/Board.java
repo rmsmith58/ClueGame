@@ -457,9 +457,9 @@ public class Board {
 				weaponHolder = true;
 			}
 		
-		}while(roomHolder != true && personHolder != true && weaponHolder != true);
+		}while(roomHolder != true || personHolder != true || weaponHolder != true);
 		
-		theAnswer.setSolution(solutionRoom, solutionPerson, soltionWeapon);
+		theAnswer.setSolution(solutionPerson, solutionRoom, soltionWeapon);
 	}
 
 	/**
