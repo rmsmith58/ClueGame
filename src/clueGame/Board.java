@@ -45,6 +45,11 @@ public class Board {
 		
 		//initialize roomMap for this instance
 		this.roomMap = new HashMap<Character, Room>();
+		
+		//intialize other variables for this instance
+		this.deck = new ArrayList<Card>();
+		this.players = new ArrayList<Player>();
+		this.theAnswer = new Solution();
 	}
 
 	/**
@@ -67,6 +72,8 @@ public class Board {
 			System.out.println("Error: " + e.getClass().getName());
 			System.out.println(e.getMessage());
 		}
+		
+		deal();
 	}
 
 	/**
@@ -108,15 +115,30 @@ public class Board {
 			
 			//for "Player" lines initialize a new player object and create a PERSON card
 			else if(lineValues.length > 0 && lineValues[0].equals("Player")) {
-				Boolean isAI = lineValues[1];
+				Boolean isAI = new Boolean(lineValues[1]);
 				Integer rowLoc = new Integer(lineValues[2]);
 				Integer colLoc = new Integer(lineValues[3]);
 				String name = lineValues[4];
-				Color color = Color.getColor(lineValues[5]);
+				Color color = new Color(new Integer(lineValues[5]), new Integer(lineValues[6]), new Integer(lineValues[7]));
+				if(isAI) {
+					Player player = new HumanPlayer(name, color, rowLoc, colLoc);
+					this.players.add(player);
+				}
+				else {
+					Player player = new ComputerPlayer(name, color, rowLoc, colLoc);
+					this.players.add(player);
+				}
+				Card playerCard = new Card(name, CardType.PERSON);
+				this.deck.add(playerCard);
 			}
 			
-			//TODO account for People and weapon data in the setup file
-			//need to generate card objects for all people, weapons, and rooms
+			//for "card" lines initialize a new card of specified type
+			else if(lineValues.length > 0 && lineValues[0].equals("Card")) {
+				String name = lineValues[1];
+				CardType type = CardType.valueOf(lineValues[2]);
+				Card card = new Card(name, type);
+				this.deck.add(card);
+			}
 			
 			//if we encounter anything other than a line starting with "Room", "Space", or "//" throw an error for bad formatting
 			else if(!lineValues[0].substring(0, 2).equals("//"))
@@ -377,38 +399,37 @@ public class Board {
 			int randIndex = rand.nextInt(dealDeck.size());
 			current = dealDeck.get(randIndex);
 			switch(count) {
-			case 1: 
+			case 0: 
 				players.get(0).updateHand(current);
 				dealDeck.remove(randIndex);
 				count += 1;
 				break;
-			case 2:
+			case 1:
 				players.get(1).updateHand(current);
 				dealDeck.remove(randIndex);
 				count += 1;
 				break;
-			case 3:
+			case 2:
 				players.get(2).updateHand(current);
 				dealDeck.remove(randIndex);
 				count += 1;
 				break;
-			case 4:
+			case 3:
 				players.get(3).updateHand(current);
 				dealDeck.remove(randIndex);
 				count += 1;
 				break;
-			case 5:
+			case 4:
 				players.get(4).updateHand(current);
 				dealDeck.remove(randIndex);
 				count += 1;
 				break;
-			case 6:
+			case 5:
 				players.get(5).updateHand(current);
 				dealDeck.remove(randIndex);
 				count = 0;
 				break;
 			}
-			
 		}while(dealDeck.size() != 0);
 	}
 	

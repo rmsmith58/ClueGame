@@ -3,9 +3,9 @@ import java.util.ArrayList;
 
 public enum CardType {
 	//9 rooms, 6 players and 6 weapons
-	ROOM("Common Area", "Kitchen", "Bathroom", "Game Room", "Library", "Office", "Dining Room", "Lounge", "Hall"), 
-	PERSON("Phil Hopkins", "Lisa Johnson", "Judy Edwards", "Timothy Weah", "Dale Jenkins", "You"), 
-	WEAPON("Baseball Bat", "Steak Knife", "Cyanide", "Revolver", "Piano Wire", "Axe");
+	ROOM("ROOM"), 
+	PERSON("PERSON"), 
+	WEAPON("WEAPON");
 	
 	private String cardName;
 	private ArrayList<String> rooms;

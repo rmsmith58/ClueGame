@@ -24,6 +24,7 @@ public abstract class Player {
 		this.color = color;
 		this.row = rowLoc;
 		this.column = colLoc;
+		this.hand = new ArrayList<Card>();
 	}
 	
 	//some getters only for testing
@@ -52,7 +53,6 @@ public abstract class Player {
 		return hand;
 	}
 
-	//Was private, but didn't know why?
 	public void updateHand(Card card) {
 		this.hand.add(card);
 	}

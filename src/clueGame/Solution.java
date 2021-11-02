@@ -3,6 +3,10 @@ package clueGame;
 public class Solution {
 	private Card person, room, weapon;
 	
+	public Solution() {
+		super();
+	}
+	
 	public void setSolution(Card person, Card room, Card weapon) {
 		this.person=person;
 		this.room=room;

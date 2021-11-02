@@ -12,14 +12,14 @@ Room, Hall, E
 Space, Unused, X
 Space, Walkway, W
 // Example player and card formats below:
-// Player, isAI, rowLocation, colLocation, Name, color
+// Player, isAI, rowLocation, colLocation, Name, r, g, b
 // Card, name, type
-Player, false, 7, 6, You, red
-Player, true, 11, 16, Phil Hopkins, green
-Player, true, 16, 6, Lisa Johnson, blue
-Player, true, 6, 12, Judy Edwards, magenta
-Player, true, 17, 18, Timothy Weah, yellow
-Player, true, 19, 6, Dale Jenkins, orange
+Player, false, 7, 6, You, 255, 0, 0
+Player, true, 11, 16, Phil Hopkins, 0, 255, 0
+Player, true, 16, 6, Lisa Johnson, 0, 0, 255
+Player, true, 6, 12, Judy Edwards, 255, 0, 255
+Player, true, 17, 18, Timothy Weah, 255, 255, 0
+Player, true, 19, 6, Dale Jenkins, 255, 155, 0
 // Room and Player cards will be automatically generated
 // only weapon cards need to be defined here
 Card, Baseball Bat, WEAPON
