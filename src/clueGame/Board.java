@@ -324,6 +324,15 @@ public class Board {
 	public Room getRoom(char initial) {
 		return roomMap.get(initial);
 	}
+	
+	public Boolean checkAccusation(Card person, Card room, Card weapon) {
+		Card[] solution = this.theAnswer.getSolution();
+		if(person.equals(solution[0])
+				&& room.equals(solution[1])
+				&& weapon.equals(solution[2]))
+			return true;
+		return false;
+	}
 
 	/**
 	 * Returns the number of rows for this board
