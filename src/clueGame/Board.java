@@ -55,6 +55,7 @@ public class Board {
 	}
 
 	//TODO possibly reorder the functions in board, maybe alphabetically
+	//TODO check that all instance variable for all classes in project are private
 	
 	/**
 	 * Initializes board, including grid setup and initialization of all
@@ -360,6 +361,11 @@ public class Board {
 
 	public Solution getSolution() {
 		return theAnswer;
+	}
+	
+	//only for testing purposes
+	public void setSolution(Solution newSolution) {
+		this.theAnswer = newSolution;
 	}
 	
 	/**
