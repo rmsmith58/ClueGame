@@ -2,6 +2,9 @@ package tests;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.awt.Color;
+
+import org.junit.Assert;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -10,6 +13,8 @@ import org.junit.jupiter.api.Test;
 import clueGame.Board;
 import clueGame.Card;
 import clueGame.CardType;
+import clueGame.ComputerPlayer;
+import clueGame.Player;
 import clueGame.Solution;
 
 class GameSolutionTest {
@@ -55,11 +60,70 @@ class GameSolutionTest {
 	//Tests to verify Player.disproveSuggestion is working correctly
 	@Test
 	void disproveSuggestion() {
+		Card room1 = new Card("Lounge", CardType.ROOM);
+		Card room2 = new Card("Kitchen", CardType.ROOM);
+		Card weapon1 = new Card("Baseball Bat", CardType.WEAPON);
+		Card weapon2 = new Card("Revolver", CardType.WEAPON); 
+		Card person1 = new Card("Mr. Smith", CardType.PERSON);
+		Card person2 = new Card("Ms. Sherwood", CardType.PERSON);
 		
+		ComputerPlayer player = new ComputerPlayer("AI", Color.red, 0, 0);
+		player.updateHand(person2);
+		player.updateHand(room2);
+		player.updateHand(weapon2);
+		
+		//case if player has no matching cards, should return null
+		AssertEquals(null, player.disproveSuggestion(new Solution(person1, room1, weapon1)));
+		
+		//case if player has 1 matching card, should return the matching card
+		AssertEquals(person2, player.disproveSuggestion(new Solution(person2, room1, weapon1)));
+		AssertEquals(room2, player.disproveSuggestion(new Solution(person1, room2, weapon1)));
+		AssertEquals(weapon2, player.disproveSuggestion(new Solution(person1, room1, weapon2)));
+		
+		//case if player has more than 1 matching card, should return one of the matching cards
+		if(player.disproveSuggestion(new Solution(person2, room2, weapon1)) != person2 
+				&& player.disproveSuggestion(new Solution(person2, room2, weapon1)) != room2) {
+			Assert.fail();
+		}	
 	}
 	
 	//Tests to verify Board.handleSuggestion is working correctly
 	@Test
-	void 
+	void handleSuggestions() {
+		Card room1 = new Card("Lounge", CardType.ROOM);
+		Card room2 = new Card("Kitchen", CardType.ROOM);
+		Card room3 = new Card("Study", CardType.ROOM);
+		Card weapon1 = new Card("Baseball Bat", CardType.WEAPON);
+		Card weapon2 = new Card("Revolver", CardType.WEAPON);
+		Card weapon3 = new Card("Knife", CardType.WEAPON);
+		Card person1 = new Card("Mr. Smith", CardType.PERSON);
+		Card person2 = new Card("Ms. Sherwood", CardType.PERSON);
+		
+		ComputerPlayer accuser = new ComputerPlayer("accuser", Color.red, 0, 0);
+		ComputerPlayer player1 = new ComputerPlayer("player1", Color.blue, 0, 0);
+		ComputerPlayer player2 = new ComputerPlayer("player2", Color.green, 0, 0);
+		
+		accuser.updateHand(person1);
+		accuser.updateHand(room1);
+		accuser.updateHand(weapon1);
+		
+		player1.updateHand(room2);
+		player2.updateHand(person2);
+		
+		//case where no player can disprove suggestion, expected return null
+		assertEquals(null, board.handleSuggestion(accuser, new Solution(person3, room3, weapon2)));
+		
+		//case where only the accuser can disprove suggestion, expected return null
+		assertEquals(null, board.handleSuggestion(accuser, new Solution(person1, room3, weapon2)));
+		
+		//case where only player1 can disprove suggestion, expected return player1's card
+		assertEquals(room2, board.handleSuggestion(accuser, new Solution(person3, room2, weapon2)));
+		
+		//case where only player2 can disprove suggestion, expected return player2's card
+		assertEquals(person2, board.handleSuggestion(accuser, new Solution(person2, room3, weapon2)));
+		
+		//case where player1 and player2 can disprove suggestion, expected return is player1's card (player 2 should not be reached)
+		assertEquals(room2, board.handleSuggestion(accuser, newSolution(person2, room2, weapon2)));
+	}
 
 }
