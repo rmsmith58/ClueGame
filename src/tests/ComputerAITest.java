@@ -39,21 +39,41 @@ public class ComputerAITest {
 		board.setConfigFiles("BoardLayout.csv", "ClueSetup.txt");		
 		// Initialize will load config files 
 		board.initialize();
+		
+		/* Not sure if I will need this. I really need to read first.
+		// Creates the soltuion deck
+		Solution test = new Solution();
+		Card room = new Card("Bathroom", CardType.ROOM);
+		Card person = new Card("Phil Hopkins", CardType.PERSON);
+		Card weapon = new Card("Cyanide", CardType.WEAPON);
+		test.setSolution(person, room, weapon);
+		
+		//Creates test card in the AI hand.
+		//Set AI computer to Dale Jenkins.
+		
+		Card judyCard = new Card("Judy Edwards", CardType.PERSON);
+		Card hallCard = new Card("Hall", CardType.ROOM);
+		Card axeCard = new Card("Axe", CardType.WEAPON);
+		board.getPlayers().
+		*/
+		//Creates test card in the Players hand.
+		
 	}
 
 	@AfterEach
 	public void reset() {
+		//We reset the board to not add on additional Players or Cards.
 		board.resetBoard();
 	}
 	
 	//Test the logic within selectTarget in the computer class.
-	//This is done by declare a 
 	@Test
 	public void selectTargets() {
 		
+		
 	}
 	
-	//Tests the logic 
+	//Tests the logic on how a computer creates the suggestion.
 	@Test
 	public void createSuggestion() {
 		

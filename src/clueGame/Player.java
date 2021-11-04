@@ -16,6 +16,7 @@ public abstract class Player {
 	private String name;
 	private Color color;
 	private ArrayList<Card> hand;
+	private ArrayList<Card> seen = hand;
 	protected Boolean isAI;
 	protected int row, column;
 	
@@ -60,6 +61,10 @@ public abstract class Player {
 	public void setLocation(int rowLoc, int colLoc) {
 		this.row = rowLoc;
 		this.column = colLoc;
+	}
+	
+	public void updateSeen(Card card) {
+		this.seen.add(card);
 	}
 	
 }
