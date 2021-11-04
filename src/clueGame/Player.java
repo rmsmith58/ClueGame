@@ -53,6 +53,10 @@ public abstract class Player {
 	public ArrayList<Card> getHand() {
 		return hand;
 	}
+	
+	public ArrayList<Card> getSeen() {
+		return seen;
+	}
 
 	public void updateHand(Card card) {
 		this.hand.add(card);

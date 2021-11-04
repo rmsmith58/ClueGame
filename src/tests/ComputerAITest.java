@@ -93,7 +93,7 @@ public class ComputerAITest {
 		unseen.removeAll(player.getHand());
 		
 		//Holds all the suggestions created and doesn't duplicate.
-		Set<Solution> suggestions;
+		Set<Solution> suggestions = null;
 
 		//randomly generates suggestions.
 		for(int i = 0; i < 100; i++) {
