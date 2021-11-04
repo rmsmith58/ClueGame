@@ -19,9 +19,9 @@ public class ComputerPlayer extends Player {
 	public Soltuion createSuggestion() {
 		//If the player is in a room in need to create a suggestion.
 		//The weapon and person is randomly chosen out of the unseen list, and the room is the room the player is in.
-		BoardCell location = new BoardCell(player.getRowLocation(), player.getcolLocation());
+		BoardCell location = new BoardCell(row, column);
 		if(location.isRoomCenter()) {
-			
+			Card room = new Card();
 		}
 		
 	}
