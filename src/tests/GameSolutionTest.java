@@ -73,12 +73,12 @@ class GameSolutionTest {
 		player.updateHand(weapon2);
 		
 		//case if player has no matching cards, should return null
-		AssertEquals(null, player.disproveSuggestion(new Solution(person1, room1, weapon1)));
+		assertEquals(null, player.disproveSuggestion(new Solution(person1, room1, weapon1)));
 		
 		//case if player has 1 matching card, should return the matching card
-		AssertEquals(person2, player.disproveSuggestion(new Solution(person2, room1, weapon1)));
-		AssertEquals(room2, player.disproveSuggestion(new Solution(person1, room2, weapon1)));
-		AssertEquals(weapon2, player.disproveSuggestion(new Solution(person1, room1, weapon2)));
+		assertEquals(person2, player.disproveSuggestion(new Solution(person2, room1, weapon1)));
+		assertEquals(room2, player.disproveSuggestion(new Solution(person1, room2, weapon1)));
+		assertEquals(weapon2, player.disproveSuggestion(new Solution(person1, room1, weapon2)));
 		
 		//case if player has more than 1 matching card, should return one of the matching cards
 		if(player.disproveSuggestion(new Solution(person2, room2, weapon1)) != person2 
@@ -97,7 +97,7 @@ class GameSolutionTest {
 		Card weapon2 = new Card("Revolver", CardType.WEAPON);
 		Card weapon3 = new Card("Knife", CardType.WEAPON);
 		Card person1 = new Card("Mr. Smith", CardType.PERSON);
-		Card person2 = new Card("Ms. Sherwood", CardType.PERSON);
+		Card person3 = new Card("Flint Lockwood", CardType.PERSON);
 		
 		ComputerPlayer accuser = new ComputerPlayer("accuser", Color.red, 0, 0);
 		ComputerPlayer player1 = new ComputerPlayer("player1", Color.blue, 0, 0);
@@ -108,22 +108,27 @@ class GameSolutionTest {
 		accuser.updateHand(weapon1);
 		
 		player1.updateHand(room2);
-		player2.updateHand(person2);
+		player2.updateHand(weapon2);
+		
+		board.resetBoard();
+		board.addPlayer(accuser);
+		board.addPlayer(player1);
+		board.addPlayer(player2);
 		
 		//case where no player can disprove suggestion, expected return null
-		assertEquals(null, board.handleSuggestion(accuser, new Solution(person3, room3, weapon2)));
+		assertEquals(null, board.handleSuggestion(accuser, new Solution(person3, room3, weapon3)));
 		
 		//case where only the accuser can disprove suggestion, expected return null
-		assertEquals(null, board.handleSuggestion(accuser, new Solution(person1, room3, weapon2)));
+		assertEquals(null, board.handleSuggestion(accuser, new Solution(person1, room3, weapon3)));
 		
 		//case where only player1 can disprove suggestion, expected return player1's card
-		assertEquals(room2, board.handleSuggestion(accuser, new Solution(person3, room2, weapon2)));
+		assertEquals(room2, board.handleSuggestion(accuser, new Solution(person3, room2, weapon3)));
 		
 		//case where only player2 can disprove suggestion, expected return player2's card
-		assertEquals(person2, board.handleSuggestion(accuser, new Solution(person2, room3, weapon2)));
+		assertEquals(weapon2, board.handleSuggestion(accuser, new Solution(person3, room3, weapon2)));
 		
 		//case where player1 and player2 can disprove suggestion, expected return is player1's card (player 2 should not be reached)
-		assertEquals(room2, board.handleSuggestion(accuser, newSolution(person2, room2, weapon2)));
+		assertEquals(room2, board.handleSuggestion(accuser, new Solution(person3, room2, weapon2)));
 	}
 
 }

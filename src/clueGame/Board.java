@@ -287,6 +287,22 @@ public class Board {
 		this.layoutConfigFile = "data/" + layoutConfigFilename;
 		this.setupConfigFile = "data/" + setupConfigFilename;
 	}
+	
+	/**
+	 * Given a Solution (suggestion) and Player (accuser) object, checks all non-accusing players in order to check
+	 * if they can disprove the suggestion. Returns the Card object that was used to disprove, or null if no player
+	 * could disprove the accusation.
+	 */
+	public Card handleSuggestion(Player accuser, Solution suggestion) {
+		for (Player player: this.players) {
+			if (player != accuser) {
+				Card disprove = player.disproveSuggestion(suggestion);
+				if(disprove != null)
+					return disprove;
+			}
+		}
+		return null;
+	}
 
 	/**
 	 * Returns the only Board instance.
@@ -393,6 +409,11 @@ public class Board {
 		this.deck = new ArrayList<Card>();
 		this.players = new ArrayList<Player>();
 		this.theAnswer = new Solution();
+	}
+	
+	//only for testing
+	public void addPlayer(Player player) {
+		this.players.add(player);
 	}
 
 	/**

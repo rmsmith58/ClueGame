@@ -28,6 +28,20 @@ public abstract class Player {
 		this.hand = new ArrayList<Card>();
 	}
 	
+	/**
+	 * Given a suggestion, return a card that matches part of the suggestion if one exists in the player's hand.
+	 * If no matching card can be found, return null
+	 */
+	public Card disproveSuggestion(Solution suggestion) {
+		for(Card card: this.hand) {
+			if (card == suggestion.getPerson()
+					|| card == suggestion.getRoom()
+					|| card == suggestion.getWeapon())
+				return card;
+		}
+		return null;
+	}
+	
 	//some getters only for testing
 	
 	public String getName() {
