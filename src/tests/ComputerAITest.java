@@ -7,6 +7,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.awt.Color;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.ArrayList;
 
@@ -61,7 +62,7 @@ public class ComputerAITest {
 	public void selectTargets() {
 		//test when the player is on a walkway
 		ComputerPlayer player = new ComputerPlayer("AI", Color.red, 11, 16);
-		Set<BoardCell> targets = null;
+		Set<BoardCell> targets = new HashSet<BoardCell>();
 		for(int i = 0; i < 100; i++) {
 			targets.add(player.selectTargets());
 		}
@@ -93,7 +94,7 @@ public class ComputerAITest {
 		unseen.removeAll(player.getHand());
 		
 		//Holds all the suggestions created and doesn't duplicate.
-		Set<Solution> suggestions = null;
+		Set<Solution> suggestions = new HashSet<Solution>();
 
 		//randomly generates suggestions.
 		for(int i = 0; i < 100; i++) {
