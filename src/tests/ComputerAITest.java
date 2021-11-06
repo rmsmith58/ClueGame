@@ -195,9 +195,9 @@ public class ComputerAITest {
 
 		//Creates random solutions from the created card.
 		Solution sol1 = new Solution(person1, weapon1, roomSug);
-		Solution sol2= new Solution(person1, weapon2, roomSug);
-		Solution sol3= new Solution(person2, weapon1, roomSug);
-		Solution sol4= new Solution(person2, weapon2, roomSug);
+		Solution sol2 = new Solution(person1, weapon2, roomSug);
+		Solution sol3 = new Solution(person2, weapon1, roomSug);
+		Solution sol4 = new Solution(person2, weapon2, roomSug);
 
 		//Checks to see if these random suggestions were made.
 		assertTrue(suggestions.contains(sol1));

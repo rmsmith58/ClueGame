@@ -15,6 +15,7 @@ import java.util.ArrayList;
 public class ComputerPlayer extends Player {
 	private ArrayList<Card> unseen;
 	private ArrayList<Room> seenRoom;
+	private Solution sol;
 	private Board board;
 	
 	public ComputerPlayer(String name, Color color, int rowLocation, int colLocation, Board board) {
