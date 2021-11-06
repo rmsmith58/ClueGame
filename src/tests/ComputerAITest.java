@@ -6,6 +6,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.awt.Color;
+import java.lang.annotation.Target;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
@@ -70,12 +71,12 @@ public class ComputerAITest {
 		ArrayList <Card> tempUnseen = new ArrayList<Card>();
 		Card room1 = new Card("Bathroom", CardType.ROOM);
 		Card room2 = new Card("Hall", CardType.ROOM);
-		Card person1 = new Card("Phil Hopkins", CardType.ROOM);
-		Card person2 = new Card("Judy Edwards", CardType.ROOM);
-		Card person3 = new Card("You", CardType.ROOM);
-		Card weapon1 = new Card("Cyanide", CardType.ROOM);
-		Card weapon2 = new Card("Axe", CardType.ROOM);
-		Card weapon3 = new Card("Steak Knife", CardType.ROOM);
+		Card person1 = new Card("Phil Hopkins", CardType.PERSON);
+		Card person2 = new Card("Judy Edwards", CardType.PERSON);
+		Card person3 = new Card("You", CardType.PERSON);
+		Card weapon1 = new Card("Cyanide", CardType.WEAPON);
+		Card weapon2 = new Card("Axe", CardType.WEAPON);
+		Card weapon3 = new Card("Steak Knife", CardType.WEAPON);
 
 		tempUnseen.add(room1);
 		tempUnseen.add(room2);
@@ -104,10 +105,10 @@ public class ComputerAITest {
 		seenRoom.add(sRoom5);
 		seenRoom.add(sRoom6);
 		
-		
+		player.setSeenRoom(seenRoom);
 		
 		//creates the target list;
-		Set<BoardCell> testTarget = new HashSet<BoardCell>();
+		ArrayList<BoardCell> testTarget = new ArrayList<BoardCell>();
 		BoardCell target1 = new BoardCell(10, 16);
 		BoardCell target2 = new BoardCell(11, 15);
 		BoardCell target3 = new BoardCell(11, 17);
@@ -117,19 +118,38 @@ public class ComputerAITest {
 		testTarget.add(target2);
 		testTarget.add(target3);
 		testTarget.add(target4);
+		
 
-		assertTrue(targets.contains(board.getCell(10, 16)));
-		assertTrue(targets.contains(board.getCell(11, 15)));
-		assertTrue(targets.contains(board.getCell(11, 17)));
-
+		for(int i = 0; i < 100; i++) {
+			targets.add(player.selectTargets(testTarget));
+		}
+		assertTrue(targets.contains(testTarget.get(0)));
+		assertTrue(targets.contains(testTarget.get(1)));
+		assertTrue(targets.contains(testTarget.get(2)));
+		
+		//clear and reset the target list.
+		testTarget.clear();
+		targets.clear();
+		
+		BoardCell target5 = new BoardCell(7, 5);
+		BoardCell target6 = new BoardCell(8, 6);
+		BoardCell target7 = new BoardCell(11, 2);
+		
+		testTarget.add(target5);
+		testTarget.add(target6);
+		testTarget.add(target7);
+		
 		//test when he player is near a door to a room in their seen list.
 		player.setLocation(8, 5);
 		Room testRoom = new Room("Office");
 		seenRoom.add(testRoom);
 		
-		assertTrue(targets.contains(board.getCell(7, 5)));
-		assertTrue(targets.contains(board.getCell(8, 6)));
-		assertFalse(targets.contains(board.getCell(11, 2)));
+		for(int i = 0; i < 100; i++) {
+			targets.add(player.selectTargets(testTarget));
+		}
+		assertTrue(targets.contains(testTarget.get(0)));
+		assertTrue(targets.contains(testTarget.get(1)));
+		assertTrue(targets.contains(testTarget.get(2)));
 	}
 
 	//Tests the logic on how a computer creates the suggestion.
@@ -143,12 +163,12 @@ public class ComputerAITest {
 		ArrayList <Card> tempUnseen = new ArrayList<Card>();
 		Card room1 = new Card("Bathroom", CardType.ROOM);
 		Card room2 = new Card("Hall", CardType.ROOM);
-		Card person1 = new Card("Phil Hopkins", CardType.ROOM);
-		Card person2 = new Card("Judy Edwards", CardType.ROOM);
-		Card person3 = new Card("You", CardType.ROOM);
-		Card weapon1 = new Card("Cyanide", CardType.ROOM);
-		Card weapon2 = new Card("Axe", CardType.ROOM);
-		Card weapon3 = new Card("Steak Knife", CardType.ROOM);
+		Card person1 = new Card("Phil Hopkins", CardType.PERSON);
+		Card person2 = new Card("Judy Edwards", CardType.PERSON);
+		Card person3 = new Card("You", CardType.PERSON);
+		Card weapon1 = new Card("Cyanide", CardType.WEAPON);
+		Card weapon2 = new Card("Axe", CardType.WEAPON);
+		Card weapon3 = new Card("Steak Knife", CardType.WEAPON);
 
 		tempUnseen.add(room1);
 		tempUnseen.add(room2);
@@ -171,16 +191,13 @@ public class ComputerAITest {
 
 		//Only one room card the player can only make a suggestion in the room they are in.
 		Card roomSug = new Card("Game Room", CardType.ROOM);
-		Card person1Sug = new Card("Lisa Johnson", CardType.PERSON);
-		Card person2Sug = new Card("Judy Edwards", CardType.PERSON);
-		Card weapon1Sug = new Card("Axe", CardType.WEAPON);
-		Card weapon2Sug = new Card("Cyanide", CardType.PERSON);
+		tempUnseen.add(roomSug);
 
 		//Creates random solutions from the created card.
-		Solution sol1 = new Solution(person1Sug, weapon1Sug, roomSug);
-		Solution sol2= new Solution(person1Sug, weapon2Sug, roomSug);
-		Solution sol3= new Solution(person2Sug, weapon1Sug, roomSug);
-		Solution sol4= new Solution(person2Sug, weapon2Sug, roomSug);
+		Solution sol1 = new Solution(person1, weapon1, roomSug);
+		Solution sol2= new Solution(person1, weapon2, roomSug);
+		Solution sol3= new Solution(person2, weapon1, roomSug);
+		Solution sol4= new Solution(person2, weapon2, roomSug);
 
 		//Checks to see if these random suggestions were made.
 		assertTrue(suggestions.contains(sol1));
@@ -201,12 +218,13 @@ public class ComputerAITest {
 
 		//Only one room card the player can only make a suggestion in the room they are in.
 		Card room2Sug = new Card("Lounge", CardType.ROOM);
+		tempUnseen.add(room2Sug);
 
 		//Creates random solutions from the created card.
-		Solution solt1 = new Solution(person1Sug, weapon1Sug, room2Sug);
-		Solution solt2= new Solution(person1Sug, weapon2Sug, room2Sug);
-		Solution solt3= new Solution(person2Sug, weapon1Sug, room2Sug);
-		Solution solt4= new Solution(person2Sug, weapon2Sug, room2Sug);
+		Solution solt1 = new Solution(person1, weapon1, room2Sug);
+		Solution solt2 = new Solution(person1, weapon2, room2Sug);
+		Solution solt3 = new Solution(person2, weapon1, room2Sug);
+		Solution solt4 = new Solution(person2, weapon2, room2Sug);
 
 		//Checks to see if these random suggestions were made.
 		assertTrue(suggestions.contains(solt1));

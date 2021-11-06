@@ -27,6 +27,10 @@ public class ComputerPlayer extends Player {
 		this.unseen = unseen;
 	}
 	
+	public void setSeenRoom(ArrayList<Room> seenRoom) {
+		this.seenRoom = seenRoom;
+	}
+
 	public Solution createSuggestion() {
 		//If the player is in a room in need to create a suggestion.
 		//The weapon and person is randomly chosen out of the unseen list, and the room is the room the player is in.
@@ -68,7 +72,8 @@ public class ComputerPlayer extends Player {
 		board.getRoom(board.getCell(row, column));
 		
 		for(BoardCell target: targets) {
-			if(!this.seenRoom.contains(board.getRoom(target))) {
+			if(!this.seenRoom.contains(board.getRoom(target)) &&
+					target.isRoomCenter()) {
 				return target;
 			}
 		}
