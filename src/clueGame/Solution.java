@@ -39,9 +39,9 @@ public class Solution {
 	
 	@Override
 	public boolean equals(Object s) {
-		if(this.person == ((Solution) s).getPerson()
-			&& this.room == ((Solution) s).getRoom()
-			&& this.weapon == ((Solution)s).getWeapon()) {
+		if(this.person.getCardName().equals(((Solution) s).getPerson().getCardName())
+			&& this.room.getCardName().equals(((Solution) s).getRoom().getCardName())
+			&& this.weapon.getCardName().equals(((Solution)s).getWeapon().getCardName())) {
 			return true;
 		}
 		return false;

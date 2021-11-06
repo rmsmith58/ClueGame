@@ -185,7 +185,7 @@ public class ComputerAITest {
 		Set<Solution> suggestions = new HashSet<Solution>();
 
 		//randomly generates suggestions.
-		for(int i = 0; i < 100; i++) {
+		for(int i = 0; i < 300; i++) {
 			suggestions.add(player.createSuggestion());	
 		}
 
@@ -194,16 +194,27 @@ public class ComputerAITest {
 		tempUnseen.add(roomSug);
 
 		//Creates random solutions from the created card.
-		Solution sol1 = new Solution(person1, weapon1, roomSug);
-		Solution sol2 = new Solution(person1, weapon2, roomSug);
-		Solution sol3 = new Solution(person2, weapon1, roomSug);
-		Solution sol4 = new Solution(person2, weapon2, roomSug);
-
+		Solution sol1 = new Solution(person1, roomSug, weapon1);
+		Solution sol2 = new Solution(person1, roomSug, weapon2);
+		Solution sol3 = new Solution(person2, roomSug, weapon1);
+		Solution sol4 = new Solution(person2, roomSug, weapon2);
+		
 		//Checks to see if these random suggestions were made.
-		assertTrue(suggestions.contains(sol1));
-		assertTrue(suggestions.contains(sol2));
-		assertTrue(suggestions.contains(sol3));
-		assertTrue(suggestions.contains(sol4));
+		boolean found1 = false, found2 = false, found3 = false, found4 = false;
+		for(Solution sugg: suggestions) {
+			if(sugg.equals(sol1))
+				found1 = true;
+			if(sugg.equals(sol2))
+				found2 = true;
+			if(sugg.equals(sol3))
+				found3 = true;
+			if(sugg.equals(sol4))
+				found4 = true;
+		}
+		assert(found1);
+		assert(found2);
+		assert(found3);
+		assert(found4);
 
 		//Checks the suggestions in the Lounge
 		player.setLocation(2, 10); 
@@ -221,15 +232,29 @@ public class ComputerAITest {
 		tempUnseen.add(room2Sug);
 
 		//Creates random solutions from the created card.
-		Solution solt1 = new Solution(person1, weapon1, room2Sug);
-		Solution solt2 = new Solution(person1, weapon2, room2Sug);
-		Solution solt3 = new Solution(person2, weapon1, room2Sug);
-		Solution solt4 = new Solution(person2, weapon2, room2Sug);
+		Solution solt1 = new Solution(person1, room2Sug, weapon1);
+		Solution solt2 = new Solution(person1, room2Sug, weapon2);
+		Solution solt3 = new Solution(person2, room2Sug, weapon1);
+		Solution solt4 = new Solution(person2, room2Sug, weapon2);
 
 		//Checks to see if these random suggestions were made.
-		assertTrue(suggestions.contains(solt1));
-		assertTrue(suggestions.contains(solt2));
-		assertTrue(suggestions.contains(solt3));
-		assertTrue(suggestions.contains(solt4));
+		found1 = false;
+		found2 = false;
+		found3 = false;
+		found4 = false;
+		for(Solution sugg: suggestions) {
+			if(sugg.equals(solt1))
+				found1 = true;
+			if(sugg.equals(solt2))
+				found2 = true;
+			if(sugg.equals(solt3))
+				found3 = true;
+			if(sugg.equals(solt4))
+				found4 = true;
+		}
+		assert(found1);
+		assert(found2);
+		assert(found3);
+		assert(found4);
 	}
 }
