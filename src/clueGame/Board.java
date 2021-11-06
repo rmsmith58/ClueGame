@@ -77,7 +77,6 @@ public class Board {
 			System.out.println("Error: " + e.getClass().getName());
 			System.out.println(e.getMessage());
 		}
-		
 	}
 
 	/**
@@ -286,6 +285,16 @@ public class Board {
 	public void setConfigFiles(String layoutConfigFilename, String setupConfigFilename) {
 		this.layoutConfigFile = "data/" + layoutConfigFilename;
 		this.setupConfigFile = "data/" + setupConfigFilename;
+	}
+	
+	/**
+	 * 
+	 */
+	public void miscDataInit() {
+		for(Player player: this.players) {
+			if(player.isAI())
+				((ComputerPlayer) player).setUnseen(this.deck);
+		}
 	}
 	
 	/**

@@ -19,10 +19,10 @@ public class ComputerPlayer extends Player {
 		this.isAI = true;
 	}
 	
-	private void setUnseen(ArrayList<Card> unseen) {
+	public void setUnseen(ArrayList<Card> unseen) {
 		this.unseen = unseen;
 	}
-
+	
 	public Solution createSuggestion() {
 		//If the player is in a room in need to create a suggestion.
 		//The weapon and person is randomly chosen out of the unseen list, and the room is the room the player is in.
