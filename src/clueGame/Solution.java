@@ -37,5 +37,15 @@ public class Solution {
 		return weapon;
 	}
 	
+	@Override
+	public boolean equals(Object s) {
+		if(this.person == ((Solution) s).getPerson()
+			&& this.room == ((Solution) s).getRoom()
+			&& this.weapon == ((Solution)s).getWeapon()) {
+			return true;
+		}
+		return false;
+	}
+	
 	
 }
