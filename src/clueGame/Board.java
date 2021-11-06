@@ -128,7 +128,7 @@ public class Board {
 					this.players.add(player);
 				}
 				else {
-					Player player = new ComputerPlayer(name, color, rowLoc, colLoc);
+					Player player = new ComputerPlayer(name, color, rowLoc, colLoc, this);
 					this.players.add(player);
 				}
 				Card playerCard = new Card(name, CardType.PERSON);
@@ -358,6 +358,14 @@ public class Board {
 				&& weapon.equals(solution[2]))
 			return true;
 		return false;
+	}
+	
+	public Card getCard(String name) {
+		for(Card card: this.deck) {
+			if (card.getCardName() == name)
+				return card;
+		}
+		return null;
 	}
 
 	/**

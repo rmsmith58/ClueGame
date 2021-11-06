@@ -16,7 +16,7 @@ public abstract class Player {
 	private String name;
 	private Color color;
 	private ArrayList<Card> hand;
-	private ArrayList<Card> seen = hand;
+	protected ArrayList<Card> seen;
 	protected Boolean isAI;
 	protected int row, column;
 	

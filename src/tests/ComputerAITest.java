@@ -61,7 +61,7 @@ public class ComputerAITest {
 	@Test
 	public void selectTargets() {
 		//test when the player is on a walkway
-		ComputerPlayer player = new ComputerPlayer("AI", Color.red, 11, 16);
+		ComputerPlayer player = new ComputerPlayer("AI", Color.red, 11, 16, board);
 		Set<BoardCell> targets = new HashSet<BoardCell>();
 		for(int i = 0; i < 100; i++) {
 			targets.add(player.selectTargets());

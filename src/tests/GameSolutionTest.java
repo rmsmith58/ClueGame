@@ -67,7 +67,7 @@ class GameSolutionTest {
 		Card person1 = new Card("Mr. Smith", CardType.PERSON);
 		Card person2 = new Card("Ms. Sherwood", CardType.PERSON);
 		
-		ComputerPlayer player = new ComputerPlayer("AI", Color.red, 0, 0);
+		ComputerPlayer player = new ComputerPlayer("AI", Color.red, 0, 0, board);
 		player.updateHand(person2);
 		player.updateHand(room2);
 		player.updateHand(weapon2);
@@ -99,9 +99,9 @@ class GameSolutionTest {
 		Card person1 = new Card("Mr. Smith", CardType.PERSON);
 		Card person3 = new Card("Flint Lockwood", CardType.PERSON);
 		
-		ComputerPlayer accuser = new ComputerPlayer("accuser", Color.red, 0, 0);
-		ComputerPlayer player1 = new ComputerPlayer("player1", Color.blue, 0, 0);
-		ComputerPlayer player2 = new ComputerPlayer("player2", Color.green, 0, 0);
+		ComputerPlayer accuser = new ComputerPlayer("accuser", Color.red, 0, 0, board);
+		ComputerPlayer player1 = new ComputerPlayer("player1", Color.blue, 0, 0, board);
+		ComputerPlayer player2 = new ComputerPlayer("player2", Color.green, 0, 0, board);
 		
 		accuser.updateHand(person1);
 		accuser.updateHand(room1);
