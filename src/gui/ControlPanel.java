@@ -15,6 +15,13 @@ import javax.swing.border.TitledBorder;
 import clueGame.HumanPlayer;
 import clueGame.Player;
 
+/**
+ * 
+ * 
+ * @author Ryne Smith
+ * @author Mikayla Sherwood
+ *
+ */
 public class ControlPanel extends JPanel {
 	private Player currentPlayer; //used to display which player's turn it currently is, using player name and color
 	private String rollValue; //used to display the value of last dice roll
@@ -26,7 +33,7 @@ public class ControlPanel extends JPanel {
 		JFrame frame = new JFrame();
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setTitle("Control GUI - Test");
-		frame.setSize(600, 150);	
+		frame.setSize(600, 150);
 		// Create the JPanel and add it to the JFrame
 		ControlPanel controlPanel = new ControlPanel();
 		controlPanel.setCurrentPlayer(new HumanPlayer("Me", Color.green, 0, 0));
@@ -37,8 +44,6 @@ public class ControlPanel extends JPanel {
 		frame.add(controlPanel, BorderLayout.CENTER);
 		// Now let's view it
 		frame.setVisible(true);
-		
-		// TODO setup for test
 
 	}
 	
@@ -66,6 +71,7 @@ public class ControlPanel extends JPanel {
 		turnPanel.add(new JLabel("Active player:"));
 		
 		JLabel turnPlayerDisplay = new JLabel(currentPlayer.getName());
+		turnPlayerDisplay.setOpaque(true);
 		turnPlayerDisplay.setBackground(currentPlayer.getColor());
 		turnPlayerDisplay.setBorder(new EtchedBorder());
 		turnPanel.add(turnPlayerDisplay);
