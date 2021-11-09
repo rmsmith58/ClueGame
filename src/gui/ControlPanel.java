@@ -1,6 +1,7 @@
 package gui;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.GridLayout;
 
 import javax.swing.JButton;
@@ -11,6 +12,7 @@ import javax.swing.JTextField;
 import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
 
+import clueGame.HumanPlayer;
 import clueGame.Player;
 
 public class ControlPanel extends JPanel {
@@ -19,17 +21,32 @@ public class ControlPanel extends JPanel {
 	private String guessData; //used to display current guesses
 	private String guessResult; //used to display guess result info
 	
-	
 	public static void main(String[] args) {
+		// Create a JFrame with all the normal functionality
+		JFrame frame = new JFrame();
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setTitle("Control GUI - Test");
+		frame.setSize(600, 150);	
+		// Create the JPanel and add it to the JFrame
+		ControlPanel controlPanel = new ControlPanel();
+		controlPanel.setCurrentPlayer(new HumanPlayer("Me", Color.green, 0, 0));
+		controlPanel.setRollValue(1);
+		controlPanel.setGuessData("This is a guess");
+		controlPanel.setGuessResult("This is the result of the guess");
+		controlPanel.drawPanel();
+		frame.add(controlPanel, BorderLayout.CENTER);
+		// Now let's view it
+		frame.setVisible(true);
+		
 		// TODO setup for test
 
 	}
 	
-	//TODO add setters for dynamic data
-	
-	private void createMainPanel() {
+	public ControlPanel() {
 		setLayout(new GridLayout(0, 2));
-		
+	}
+	
+	public void drawPanel() {
 		JPanel turnAccusationContinuePanel = createTACPanel();
 		JPanel guessPanel = createGuessPanel();
 		
@@ -91,11 +108,29 @@ public class ControlPanel extends JPanel {
 		
 		//space for information about guess results
 		JLabel guessResults = new JLabel(guessResult);
-		guessResults.setBorder(new TitledBorder(new EtchedBorder(), "Guess"));
+		guessResults.setBorder(new TitledBorder(new EtchedBorder(), "Guess Result"));
 
 		thisPanel.add(guessResults);
 		
 		//return panel
 		return thisPanel;
 	}
+
+	public void setCurrentPlayer(Player currentPlayer) {
+		this.currentPlayer = currentPlayer;
+	}
+
+	public void setRollValue(Integer rollValue) {
+		this.rollValue = rollValue.toString();
+	}
+
+	public void setGuessData(String guessData) {
+		this.guessData = guessData;
+	}
+
+	public void setGuessResult(String guessResult) {
+		this.guessResult = guessResult;
+	}
+	
+	
 }
