@@ -16,7 +16,9 @@ import clueGame.HumanPlayer;
 import clueGame.Player;
 
 /**
- * 
+ * ControlPanel: uses Swing to build a GUI panel that contains information for this turn: current player, dice roll value,
+ * accusation and continue buttons, and information about recent guesses and their results. Also has a main function to display
+ * the panel with test data.
  * 
  * @author Ryne Smith
  * @author Mikayla Sherwood
@@ -28,6 +30,7 @@ public class ControlPanel extends JPanel {
 	private String guessData; //used to display current guesses
 	private String guessResult; //used to display guess result info
 	
+	//function to display the gui with test data
 	public static void main(String[] args) {
 		// Create a JFrame with all the normal functionality
 		JFrame frame = new JFrame();
@@ -47,10 +50,12 @@ public class ControlPanel extends JPanel {
 
 	}
 	
+	//construtor, only needed to create initial layout
 	public ControlPanel() {
 		setLayout(new GridLayout(0, 2));
 	}
 	
+	//drawPanel, can be called repeatedly to update values in the panel
 	public void drawPanel() {
 		JPanel turnAccusationContinuePanel = createTACPanel();
 		JPanel guessPanel = createGuessPanel();
@@ -59,7 +64,8 @@ public class ControlPanel extends JPanel {
 		add(guessPanel);
 		
 	}
-
+	
+	//creates a panel that holds accusation/continue buttons, current player info, and roll value.
 	private JPanel createTACPanel() {
 		JPanel thisPanel = new JPanel();
 		thisPanel.setLayout(new GridLayout(2, 2));
@@ -102,6 +108,7 @@ public class ControlPanel extends JPanel {
 		return thisPanel;
 	}
 	
+	//creates a panel that holds information about guesses and their results
 	private JPanel createGuessPanel() {
 		JPanel thisPanel = new JPanel();
 		thisPanel.setLayout(new GridLayout(2, 1));
@@ -121,7 +128,8 @@ public class ControlPanel extends JPanel {
 		//return panel
 		return thisPanel;
 	}
-
+	
+	//setters to update displayed data
 	public void setCurrentPlayer(Player currentPlayer) {
 		this.currentPlayer = currentPlayer;
 	}
