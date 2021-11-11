@@ -87,14 +87,13 @@ public class CardPanel extends JPanel{
 		JPanel thisPanel = new JPanel();
 		thisPanel.setLayout(new GridLayout(8,0));
 		thisPanel.setBorder(new TitledBorder (new EtchedBorder(), "People"));
-		JLabel hand = new JLabel("In Hand:");
-		thisPanel.add(hand);
-		if(this.hand.size() != 0) {
-			for(int i = 0; i < this.hand.size(); i++) {
-				if(this.hand.get(i).getCardType() == CardType.PERSON) {
-					JLabel person = new JLabel(this.hand.get(i).getCardName());
+		JLabel handLabel = new JLabel("In Hand:");
+		thisPanel.add(handLabel);
+		if(hand.size() != 0) {
+			for(int i = 0; i < hand.size(); i++) {
+				if(hand.get(i).getCardType() == CardType.PERSON) {
+					JLabel person = new JLabel(hand.get(i).getCardName());
 					person.setOpaque(true);
-					person.setBackground(currPlayer.getColor());
 					person.setBorder(new EtchedBorder());
 					thisPanel.add(person);
 				}
@@ -108,14 +107,13 @@ public class CardPanel extends JPanel{
 			
 		}
 		
-		JLabel seen = new JLabel("Seen:");
-		thisPanel.add(seen);
-		if(this.seen.size() != 0) {
-			for(int i = 0; i < this.seen.size(); i++) {
-				if(this.seen.get(i).getCardType() == CardType.PERSON) {
-					JLabel person = new JLabel(this.seen.get(i).getCardName());
+		JLabel seenLabel = new JLabel("Seen:");
+		thisPanel.add(seenLabel);
+		if(seen.size() != 0) {
+			for(int i = 0; i < seen.size(); i++) {
+				if(seen.get(i).getCardType() == CardType.PERSON) {
+					JLabel person = new JLabel(seen.get(i).getCardName());
 					person.setOpaque(true);
-					//person.setBackground(currPlayer.getColor());
 					person.setBorder(new EtchedBorder());
 					thisPanel.add(person);
 				}
@@ -135,16 +133,15 @@ public class CardPanel extends JPanel{
 		JPanel thisPanel = new JPanel();
 		thisPanel.setLayout(new GridLayout(11,0));
 		thisPanel.setBorder(new TitledBorder (new EtchedBorder(), "Rooms"));
-		JLabel hand = new JLabel("In Hand:");
-		thisPanel.add(hand);
-		if(this.hand.size() != 0) {
-			for(int i = 0; i < this.hand.size(); i++) {
-				if(this.hand.get(i).getCardType() == CardType.ROOM) {
-					JLabel person = new JLabel(this.hand.get(i).getCardName());
-					person.setOpaque(true);
-					person.setBackground(currPlayer.getColor());
-					person.setBorder(new EtchedBorder());
-					thisPanel.add(person);
+		JLabel handLabel = new JLabel("In Hand:");
+		thisPanel.add(handLabel);
+		if(hand.size() != 0) {
+			for(int i = 0; i < hand.size(); i++) {
+				if(hand.get(i).getCardType() == CardType.ROOM) {
+					JLabel room = new JLabel(hand.get(i).getCardName());
+					room.setOpaque(true);
+					room.setBorder(new EtchedBorder());
+					thisPanel.add(room);
 			}
 			}
 		}
@@ -156,14 +153,13 @@ public class CardPanel extends JPanel{
 			
 		}
 		
-		JLabel seen = new JLabel("Seen:");
-		thisPanel.add(seen);
-		if(this.seen.size() != 0) {
-			for(int i = 0; i < this.seen.size(); i++) {
-				if(this.seen.get(i).getCardType() == CardType.ROOM) {
-					JLabel person = new JLabel(this.seen.get(i).getCardName());
+		JLabel seenLabel = new JLabel("Seen:");
+		thisPanel.add(seenLabel);
+		if(seen.size() != 0) {
+			for(int i = 0; i < seen.size(); i++) {
+				if(seen.get(i).getCardType() == CardType.ROOM) {
+					JLabel person = new JLabel(seen.get(i).getCardName());
 					person.setOpaque(true);
-					//person.setBackground(currPlayer.getColor());
 					person.setBorder(new EtchedBorder());
 					thisPanel.add(person);
 				}
@@ -183,16 +179,15 @@ public class CardPanel extends JPanel{
 		JPanel thisPanel = new JPanel();
 		thisPanel.setLayout(new GridLayout(8,0));
 		thisPanel.setBorder(new TitledBorder (new EtchedBorder(), "Weapons"));
-		JLabel hand = new JLabel("In Hand:");
-		thisPanel.add(hand);
-		if(this.hand.size() != 0) {
-			for(int i = 0; i < this.hand.size(); i++) {
-				if(this.hand.get(i).getCardType() == CardType.WEAPON) {
-					JLabel person = new JLabel(this.hand.get(i).getCardName());
-					person.setOpaque(true);
-					person.setBackground(currPlayer.getColor());
-					person.setBorder(new EtchedBorder());
-					thisPanel.add(person);
+		JLabel handLabel = new JLabel("In Hand:");
+		thisPanel.add(handLabel);
+		if(hand.size() != 0) {
+			for(int i = 0; i < hand.size(); i++) {
+				if(hand.get(i).getCardType() == CardType.WEAPON) {
+					JLabel weapon = new JLabel(hand.get(i).getCardName());
+					weapon.setOpaque(true);
+					weapon.setBorder(new EtchedBorder());
+					thisPanel.add(weapon);
 				}
 			}
 		}
@@ -204,16 +199,15 @@ public class CardPanel extends JPanel{
 			
 		}
 		
-		JLabel seen = new JLabel("Seen:");
-		thisPanel.add(seen);
-		if(this.seen.size() != 0) {
-			for(int i = 0; i < this.seen.size(); i++) {
-				if(this.seen.get(i).getCardType() == CardType.WEAPON) {
-					JLabel person = new JLabel(this.seen.get(i).getCardName());
-					person.setOpaque(true);
-					//person.setBackground(currPlayer.getColor());
-					person.setBorder(new EtchedBorder());
-					thisPanel.add(person);
+		JLabel seenLabel = new JLabel("Seen:");
+		thisPanel.add(seenLabel);
+		if(seen.size() != 0) {
+			for(int i = 0; i < seen.size(); i++) {
+				if(seen.get(i).getCardType() == CardType.WEAPON) {
+					JLabel weapon = new JLabel(seen.get(i).getCardName());
+					weapon.setOpaque(true);
+					weapon.setBorder(new EtchedBorder());
+					thisPanel.add(weapon);
 				}
 			}
 		}
