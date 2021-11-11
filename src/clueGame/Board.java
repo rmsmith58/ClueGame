@@ -1,12 +1,16 @@
 package clueGame;
 
 import java.awt.Color;
+import java.awt.Graphics;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Scanner;
 import java.util.Set;
+
+import javax.swing.JPanel;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -22,7 +26,7 @@ import java.util.Random;
  * @author Mikayla Sherwood
  *
  */
-public class Board {
+public class Board extends JPanel{
 	private Set<BoardCell> targets;
 	private BoardCell[][] grid;
 	private int numRows, numColumns;
@@ -311,6 +315,28 @@ public class Board {
 			}
 		}
 		return null;
+	}
+	
+	public void paintComponent(Graphics g) {
+		//draw super first to avoid issues
+		super.paintComponent(g);
+		
+		//draw every board cell
+		for(int i = 0; i < this.numRows; i++) {
+			for(int j = 0; j < this.numColumns; j++) {
+				this.grid[i][j].drawCell(); //TODO implement this
+			}
+		}
+		
+		//draw room labels over the board cells
+		for(Room room: this.roomMap) {
+			room.drawRoomLabel();
+		}
+		
+		//draw markers for player locations
+		for(Player player: this.players) {
+			player.drawPlayer(); //TODO implement this
+		}
 	}
 
 	/**
