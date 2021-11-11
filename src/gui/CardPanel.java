@@ -96,13 +96,15 @@ public class CardPanel extends JPanel{
 		thisPanel.setBorder(new TitledBorder (new EtchedBorder(), "People"));
 		JLabel hand = new JLabel("In Hand:");
 		thisPanel.add(hand);
-		if(handPeople.size() != 0) {
-			for(int i = 0; i < handPeople.size(); i++) {
-					JLabel person = new JLabel(handPeople.get(i).getCardName());
+		if(this.hand.size() != 0) {
+			for(int i = 0; i < this.hand.size(); i++) {
+				if(this.hand.get(i).getCardType() == CardType.PERSON) {
+					JLabel person = new JLabel(this.hand.get(i).getCardName());
 					person.setOpaque(true);
-					person.setBackground(currPlayer.getColor());
+					//person.setBackground(currPlayer.getColor());
 					person.setBorder(new EtchedBorder());
 					thisPanel.add(person);
+				}
 			}
 		}
 		else {
@@ -115,13 +117,15 @@ public class CardPanel extends JPanel{
 		
 		JLabel seen = new JLabel("Seen:");
 		thisPanel.add(seen);
-		if(seenPeople.size() != 0) {
+		if(this.seen.size() != 0) {
 			for(int i = 0; i < seenPeople.size(); i++) {
-					JLabel person = new JLabel(seenPeople.get(i).getCardName());
+				if(this.hand.get(i).getCardType() == CardType.PERSON) {
+					JLabel person = new JLabel(this.hand.get(i).getCardName());
 					person.setOpaque(true);
 					//person.setBackground(currPlayer.getColor());
 					person.setBorder(new EtchedBorder());
 					thisPanel.add(person);
+				}
 			}
 		}
 		else {
