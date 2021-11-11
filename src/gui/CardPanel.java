@@ -60,22 +60,28 @@ public class CardPanel extends JPanel{
 		frame.setVisible(true);
 		
 	}
-
+	
+	//constructor, only creates the initial layout.
 	public CardPanel() {
 		setLayout(new GridLayout(0,1));
 	}
 	
+	//begins to draw the panel
 	public void drawPanel() {
+		// create the main panel (Known Cards) and sub-panels (People, Rooms, Weapons)
 		JPanel knowCardPanel = knowCardPanel();
 		JPanel peoplePanel = peoplePanel();
 		JPanel roomPanel = roomPanel();
 		JPanel weaponPanel = weaponPanel();
+		//creates the main panel
 		add(knowCardPanel);
+		//place the sub-panels inside the main one.
 		knowCardPanel.add(peoplePanel);
 		knowCardPanel.add(roomPanel);
 		knowCardPanel.add(weaponPanel);
 	}
 	
+	//creates the known card panel.
 	private JPanel knowCardPanel() {
 		JPanel thisPanel = new JPanel();
 		thisPanel.setLayout(new GridLayout(3,0));
@@ -83,13 +89,17 @@ public class CardPanel extends JPanel{
 		return thisPanel;	
 	}
 	
+	//creates the people panel.
 	private JPanel peoplePanel() {
 		JPanel thisPanel = new JPanel();
 		thisPanel.setLayout(new GridLayout(8,0));
 		thisPanel.setBorder(new TitledBorder (new EtchedBorder(), "People"));
+		
+		//starts with the hand deck.
 		JLabel handLabel = new JLabel("In Hand:");
 		thisPanel.add(handLabel);
-		if(hand.size() != 0) {
+		//checks to see if any card are a person type.
+		if(hand.contains(CardType.PERSON)) { //issue
 			for(int i = 0; i < hand.size(); i++) {
 				if(hand.get(i).getCardType() == CardType.PERSON) {
 					JLabel person = new JLabel(hand.get(i).getCardName());
@@ -99,6 +109,7 @@ public class CardPanel extends JPanel{
 				}
 			}
 		}
+		//if no cards are person type, then is displays none.
 		else {
 			JLabel none = new JLabel("None");
 			none.setOpaque(true);
@@ -107,9 +118,11 @@ public class CardPanel extends JPanel{
 			
 		}
 		
+		//then moves onto the seen deck.
 		JLabel seenLabel = new JLabel("Seen:");
 		thisPanel.add(seenLabel);
-		if(seen.size() != 0) {
+		//checks to see if any card are a person type.
+		if(seen.contains(CardType.PERSON)) {
 			for(int i = 0; i < seen.size(); i++) {
 				if(seen.get(i).getCardType() == CardType.PERSON) {
 					JLabel person = new JLabel(seen.get(i).getCardName());
@@ -119,6 +132,7 @@ public class CardPanel extends JPanel{
 				}
 			}
 		}
+		//if no cards are person type, then is displays none.
 		else {
 			JLabel none = new JLabel("None");
 			none.setOpaque(true);
@@ -129,13 +143,17 @@ public class CardPanel extends JPanel{
 		return thisPanel;
 	}
 	
+	//creates the room panel.
 	private JPanel roomPanel() {
 		JPanel thisPanel = new JPanel();
 		thisPanel.setLayout(new GridLayout(11,0));
 		thisPanel.setBorder(new TitledBorder (new EtchedBorder(), "Rooms"));
+		
+		//starts with the hand section.
 		JLabel handLabel = new JLabel("In Hand:");
 		thisPanel.add(handLabel);
-		if(hand.size() != 0) {
+		//checks to see if hand deck contains a card type of room.
+		if(hand.contains(CardType.ROOM)) {
 			for(int i = 0; i < hand.size(); i++) {
 				if(hand.get(i).getCardType() == CardType.ROOM) {
 					JLabel room = new JLabel(hand.get(i).getCardName());
@@ -145,6 +163,7 @@ public class CardPanel extends JPanel{
 			}
 			}
 		}
+		//if not, it will display a none panel.
 		else {
 			JLabel none = new JLabel("None");
 			none.setOpaque(true);
@@ -153,9 +172,11 @@ public class CardPanel extends JPanel{
 			
 		}
 		
+		//then moves to the seen deck
 		JLabel seenLabel = new JLabel("Seen:");
 		thisPanel.add(seenLabel);
-		if(seen.size() != 0) {
+		//checks if any cards are card type room in the seen deck.
+		if(seen.contains(CardType.ROOM)) {
 			for(int i = 0; i < seen.size(); i++) {
 				if(seen.get(i).getCardType() == CardType.ROOM) {
 					JLabel person = new JLabel(seen.get(i).getCardName());
@@ -165,6 +186,7 @@ public class CardPanel extends JPanel{
 				}
 			}
 		}
+		//if not, it will display a none panel.
 		else {
 			JLabel none = new JLabel("None");
 			none.setOpaque(true);
@@ -175,13 +197,17 @@ public class CardPanel extends JPanel{
 		return thisPanel;
 	}
 	
+	//creates the weapon panel.
 	private JPanel weaponPanel() {
 		JPanel thisPanel = new JPanel();
 		thisPanel.setLayout(new GridLayout(8,0));
 		thisPanel.setBorder(new TitledBorder (new EtchedBorder(), "Weapons"));
+		
+		//starts with the hand deck.
 		JLabel handLabel = new JLabel("In Hand:");
 		thisPanel.add(handLabel);
-		if(hand.size() != 0) {
+		//checks to see if any cards are a weapon type.
+		if(hand.contains(CardType.WEAPON)) {
 			for(int i = 0; i < hand.size(); i++) {
 				if(hand.get(i).getCardType() == CardType.WEAPON) {
 					JLabel weapon = new JLabel(hand.get(i).getCardName());
@@ -191,6 +217,7 @@ public class CardPanel extends JPanel{
 				}
 			}
 		}
+		//if not, it displays a none panel.
 		else {
 			JLabel none = new JLabel("None");
 			none.setOpaque(true);
@@ -199,9 +226,11 @@ public class CardPanel extends JPanel{
 			
 		}
 		
+		//then moves to the seen panel.
 		JLabel seenLabel = new JLabel("Seen:");
 		thisPanel.add(seenLabel);
-		if(seen.size() != 0) {
+		//checks to see if any card types are weapon type.
+		if(seen.contains(CardType.WEAPON)) {
 			for(int i = 0; i < seen.size(); i++) {
 				if(seen.get(i).getCardType() == CardType.WEAPON) {
 					JLabel weapon = new JLabel(seen.get(i).getCardName());
@@ -211,6 +240,7 @@ public class CardPanel extends JPanel{
 				}
 			}
 		}
+		//if not, displays a none panel.
 		else {
 			JLabel none = new JLabel("None");
 			none.setOpaque(true);
@@ -221,6 +251,7 @@ public class CardPanel extends JPanel{
 		return thisPanel;
 	}
 	
+	//setters to help the main function.
 	public void setCurrentPlayer(Player currentPlayer) {
 		this.currPlayer = currentPlayer;
 	}
