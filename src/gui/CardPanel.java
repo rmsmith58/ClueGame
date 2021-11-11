@@ -256,16 +256,16 @@ public class CardPanel extends JPanel{
 		this.currPlayer = currentPlayer;
 	}
 
-	private void setHand(ArrayList<Card> hand) {
+	public void setHand(ArrayList<Card> hand) {
 		this.hand = hand;
 	}
 
-	private void setSeen(ArrayList<Card> seen) {
+	public void setSeen(ArrayList<Card> seen) {
 		this.seen = seen;
 	}
 	
 	//fixes the branch logic by actually looking through the deck.
-	public boolean cardTypeIn(ArrayList<Card> deck, String name) {
+	private boolean cardTypeIn(ArrayList<Card> deck, String name) {
 		for(int i = 0; i < deck.size(); i++) {
 			if(deck.get(i).getCardType() == CardType.valueOf(name)) {
 				return true;
