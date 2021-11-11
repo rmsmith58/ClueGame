@@ -26,6 +26,7 @@ public abstract class Player {
 		this.row = rowLoc;
 		this.column = colLoc;
 		this.hand = new ArrayList<Card>();
+		this.seen = new ArrayList<Card>();
 	}
 	
 	/**
