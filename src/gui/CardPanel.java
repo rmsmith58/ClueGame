@@ -99,7 +99,7 @@ public class CardPanel extends JPanel{
 		JLabel handLabel = new JLabel("In Hand:");
 		thisPanel.add(handLabel);
 		//checks to see if any card are a person type.
-		if(hand.contains(CardType.PERSON)) { //issue
+		if(cardTypeIn(hand, "PERSON")) { 
 			for(int i = 0; i < hand.size(); i++) {
 				if(hand.get(i).getCardType() == CardType.PERSON) {
 					JLabel person = new JLabel(hand.get(i).getCardName());
@@ -122,7 +122,7 @@ public class CardPanel extends JPanel{
 		JLabel seenLabel = new JLabel("Seen:");
 		thisPanel.add(seenLabel);
 		//checks to see if any card are a person type.
-		if(seen.contains(CardType.PERSON)) {
+		if(cardTypeIn(seen, "PERSON")) {
 			for(int i = 0; i < seen.size(); i++) {
 				if(seen.get(i).getCardType() == CardType.PERSON) {
 					JLabel person = new JLabel(seen.get(i).getCardName());
@@ -153,7 +153,7 @@ public class CardPanel extends JPanel{
 		JLabel handLabel = new JLabel("In Hand:");
 		thisPanel.add(handLabel);
 		//checks to see if hand deck contains a card type of room.
-		if(hand.contains(CardType.ROOM)) {
+		if(cardTypeIn(hand, "ROOM")) {
 			for(int i = 0; i < hand.size(); i++) {
 				if(hand.get(i).getCardType() == CardType.ROOM) {
 					JLabel room = new JLabel(hand.get(i).getCardName());
@@ -176,7 +176,7 @@ public class CardPanel extends JPanel{
 		JLabel seenLabel = new JLabel("Seen:");
 		thisPanel.add(seenLabel);
 		//checks if any cards are card type room in the seen deck.
-		if(seen.contains(CardType.ROOM)) {
+		if(cardTypeIn(seen, "ROOM")) {
 			for(int i = 0; i < seen.size(); i++) {
 				if(seen.get(i).getCardType() == CardType.ROOM) {
 					JLabel person = new JLabel(seen.get(i).getCardName());
@@ -207,7 +207,7 @@ public class CardPanel extends JPanel{
 		JLabel handLabel = new JLabel("In Hand:");
 		thisPanel.add(handLabel);
 		//checks to see if any cards are a weapon type.
-		if(hand.contains(CardType.WEAPON)) {
+		if(cardTypeIn(hand, "WEAPON")) {
 			for(int i = 0; i < hand.size(); i++) {
 				if(hand.get(i).getCardType() == CardType.WEAPON) {
 					JLabel weapon = new JLabel(hand.get(i).getCardName());
@@ -230,7 +230,7 @@ public class CardPanel extends JPanel{
 		JLabel seenLabel = new JLabel("Seen:");
 		thisPanel.add(seenLabel);
 		//checks to see if any card types are weapon type.
-		if(seen.contains(CardType.WEAPON)) {
+		if(cardTypeIn(seen, "WEAPON")) {
 			for(int i = 0; i < seen.size(); i++) {
 				if(seen.get(i).getCardType() == CardType.WEAPON) {
 					JLabel weapon = new JLabel(seen.get(i).getCardName());
@@ -264,4 +264,13 @@ public class CardPanel extends JPanel{
 		this.seen = seen;
 	}
 	
+	//fixes the branch logic by actually looking through the deck.
+	public boolean cardTypeIn(ArrayList<Card> deck, String name) {
+		for(int i = 0; i < deck.size(); i++) {
+			if(deck.get(i).getCardType() == CardType.valueOf(name)) {
+				return true;
+			}
+		}
+		return false;
+	}
 }
