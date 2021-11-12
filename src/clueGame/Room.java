@@ -1,5 +1,7 @@
 package clueGame;
 
+import java.awt.Color;
+import java.awt.Graphics;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -18,6 +20,7 @@ public class Room {
 	private Set<BoardCell> doorways;
 	private Boolean hasSecretPassage;
 	private char secretPassageDestinationInitial;
+	private Color roomColor;
 
 	//constructor with only name parameter
 	public Room(String name) {
@@ -27,12 +30,25 @@ public class Room {
 	}
 
 	//constructor with all parameters
-	public Room(String name, BoardCell centerCell, BoardCell labelCell) {
+	public Room(String name, BoardCell centerCell, BoardCell labelCell, Color color) {
 		this.name = name;
 		this.centerCell = centerCell;
 		this.labelCell = labelCell;	
 		this.doorways = new HashSet<BoardCell>();
 		this.hasSecretPassage = false;
+		this.roomColor = color;
+	}
+	
+	public void drawRoomLabel(Graphics g, int x, int y) {
+		g.drawString(this.name, x, y);
+	}
+
+	public Color getRoomColor() {
+		return roomColor;
+	}
+
+	public void setRoomColor(Color roomColor) {
+		this.roomColor = roomColor;
 	}
 
 	public String getName() {

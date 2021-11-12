@@ -106,6 +106,7 @@ public class Board extends JPanel{
 				String roomName = lineValues[1];
 				String roomInitial = lineValues[2];
 				Room newRoom = new Room(roomName);
+				newRoom.setRoomColor(Color.blue);
 				this.roomMap.put(roomInitial.charAt(0), newRoom);
 				Card roomCard = new Card(roomName, CardType.ROOM);
 				this.deck.add(roomCard);
@@ -117,6 +118,10 @@ public class Board extends JPanel{
 				String roomName = lineValues[1];
 				String roomInitial = lineValues[2];
 				Room newRoom = new Room(roomName);
+				if(lineValues[1].equals("Walkway"))
+					newRoom.setRoomColor(Color.yellow);
+				else
+					newRoom.setRoomColor(Color.black);
 				this.roomMap.put(roomInitial.charAt(0), newRoom);
 			}
 			
@@ -320,14 +325,17 @@ public class Board extends JPanel{
 	public void paintComponent(Graphics g) {
 		//draw super first to avoid issues
 		super.paintComponent(g);
+		//g.drawRect(0,  0, 5, 5);
 		
 		//draw every board cell
 		for(int i = 0; i < this.numRows; i++) {
 			for(int j = 0; j < this.numColumns; j++) {
-				this.grid[i][j].drawCell(); //TODO implement this
+				int width = 10;
+				this.grid[i][j].drawCell(g, i*10, j*10, width); //TODO implement this
 			}
 		}
 		
+		/*
 		//draw room labels over the board cells
 		for(Room room: this.roomMap) {
 			room.drawRoomLabel();
@@ -336,7 +344,7 @@ public class Board extends JPanel{
 		//draw markers for player locations
 		for(Player player: this.players) {
 			player.drawPlayer(); //TODO implement this
-		}
+		}*/
 	}
 
 	/**

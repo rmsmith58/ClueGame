@@ -1,5 +1,7 @@
 package clueGame;
 
+import java.awt.Color;
+import java.awt.Graphics;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -19,6 +21,7 @@ public class BoardCell {
 	private int row, col;
 	private char initial, secretPassage;
 	private DoorDirection doorDirection;
+	private Board board = Board.getInstance();
 
 	/**
 	 * Public constructor, creates cell at specified
@@ -36,6 +39,15 @@ public class BoardCell {
 		this.doorway = false;
 		this.roomLabel = false;
 		this.roomCenter = false;
+	}
+	
+	public void drawCell(Graphics g, int x, int y, int width) {
+		g.setColor(board.getRoom(this.initial).getRoomColor());
+		g.fillRect(x, y, width, width);
+		if(board.getRoom(this.initial).getRoomColor().equals(Color.yellow)) { //draw outline boxes if cell is a walkway
+			g.setColor(Color.black);
+			g.drawRect(x, y, width, width);
+		}
 	}
 
 	/**
@@ -114,5 +126,13 @@ public class BoardCell {
 
 	public Boolean isRoomCenter() {
 		return roomCenter;
+	}
+
+	public int getRow() {
+		return row;
+	}
+
+	public int getCol() {
+		return col;
 	}
 }
