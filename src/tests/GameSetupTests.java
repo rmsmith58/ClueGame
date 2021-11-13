@@ -56,7 +56,7 @@ public class GameSetupTests {
 		assertEquals(11, players.get(1).getRow());
 		assertEquals(6, players.get(2).getColumn());
 		assertEquals("Judy Edwards", players.get(3).getName());
-		assertEquals(Color.yellow, players.get(4).getColor());
+		assertEquals(Color.gray, players.get(4).getColor());
 		assertTrue(players.get(5).isAI());
 	}
 	
