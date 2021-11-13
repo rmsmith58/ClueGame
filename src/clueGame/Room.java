@@ -1,5 +1,6 @@
 package clueGame;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.util.HashSet;
@@ -42,6 +43,26 @@ public class Room {
 	public void drawRoomLabel(Graphics g, int y, int x, int width) {
 		g.setColor(Color.white);
 		g.drawString(this.name, x*width, y*width);
+	}
+	
+	public void drawDoorways(Graphics g, int width, int offset) {
+		for(BoardCell d: this.getDoorways()) {
+			g.setColor(Color.cyan);
+			switch(d.getDoorDirection()) {
+				case UP:
+					g.drawLine(d.getCol()*width, d.getRow()*width-offset, d.getCol()*width+width, d.getRow()*width-offset);
+					break;
+				case DOWN:
+					g.drawLine(d.getCol()*width, d.getRow()*width+width+offset, d.getCol()*width+width, d.getRow()*width+width+offset);
+					break;
+				case LEFT:
+					g.drawLine(d.getCol()*width-offset, d.getRow()*width, d.getCol()*width-offset, d.getRow()*width+width);
+					break;
+				case RIGHT:
+					g.drawLine(d.getCol()*width+width+offset, d.getRow()*width, d.getCol()*width+width+offset, d.getRow()*width+width);
+					break;
+			}
+		}
 	}
 
 	public Color getRoomColor() {

@@ -328,6 +328,7 @@ public class Board extends JPanel{
 		//g.drawRect(0,  0, 5, 5);
 		
 		int width = 20;
+		int offset = 2;
 		
 		//draw every board cell
 		for(int i = 0; i < this.numRows; i++) {
@@ -338,11 +339,14 @@ public class Board extends JPanel{
 		
 		
 		//draw room labels over the board cells
+		//also draw lines to indicate doorways
 		for(Room room: this.roomMap.values()) {
 			if(!room.getName().equals("Walkway") && !room.getName().equals("Unused")) {
 				room.drawRoomLabel(g, room.getCenterCell().getRow(), room.getCenterCell().getCol(), width);
+				room.drawDoorways(g, width, offset);
 			}
 		}
+		
 		
 		//draw markers for player locations
 		for(Player player: this.players) {
