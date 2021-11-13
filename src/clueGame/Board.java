@@ -327,24 +327,27 @@ public class Board extends JPanel{
 		super.paintComponent(g);
 		//g.drawRect(0,  0, 5, 5);
 		
+		int width = 20;
+		
 		//draw every board cell
 		for(int i = 0; i < this.numRows; i++) {
 			for(int j = 0; j < this.numColumns; j++) {
-				int width = 10;
-				this.grid[i][j].drawCell(g, i*10, j*10, width); //TODO implement this
+				this.grid[i][j].drawCell(g, i, j, width); //TODO implement this
 			}
 		}
 		
-		/*
+		
 		//draw room labels over the board cells
-		for(Room room: this.roomMap) {
-			room.drawRoomLabel();
+		for(Room room: this.roomMap.values()) {
+			if(!room.getName().equals("Walkway") && !room.getName().equals("Unused")) {
+				room.drawRoomLabel(g, room.getCenterCell().getRow(), room.getCenterCell().getCol(), width);
+			}
 		}
 		
 		//draw markers for player locations
 		for(Player player: this.players) {
-			player.drawPlayer(); //TODO implement this
-		}*/
+			player.drawPlayer(g, width); //TODO implement this
+		}
 	}
 
 	/**

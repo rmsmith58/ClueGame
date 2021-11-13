@@ -41,12 +41,12 @@ public class BoardCell {
 		this.roomCenter = false;
 	}
 	
-	public void drawCell(Graphics g, int x, int y, int width) {
+	public void drawCell(Graphics g, int y, int x, int width) {
 		g.setColor(board.getRoom(this.initial).getRoomColor());
-		g.fillRect(x, y, width, width);
+		g.fillRect(x*width, y*width, width, width);
 		if(board.getRoom(this.initial).getRoomColor().equals(Color.yellow)) { //draw outline boxes if cell is a walkway
 			g.setColor(Color.black);
-			g.drawRect(x, y, width, width);
+			g.drawRect(x*width, y*width, width, width);
 		}
 	}
 

@@ -39,8 +39,9 @@ public class Room {
 		this.roomColor = color;
 	}
 	
-	public void drawRoomLabel(Graphics g, int x, int y) {
-		g.drawString(this.name, x, y);
+	public void drawRoomLabel(Graphics g, int y, int x, int width) {
+		g.setColor(Color.white);
+		g.drawString(this.name, x*width, y*width);
 	}
 
 	public Color getRoomColor() {

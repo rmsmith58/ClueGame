@@ -76,9 +76,13 @@ public class ControlPanel extends JPanel {
 		turnPanel.setBorder(new EtchedBorder());
 		turnPanel.add(new JLabel("Active player:"));
 		
-		JLabel turnPlayerDisplay = new JLabel(currentPlayer.getName());
+		JLabel turnPlayerDisplay = new JLabel("<no player>");
 		turnPlayerDisplay.setOpaque(true);
-		turnPlayerDisplay.setBackground(currentPlayer.getColor());
+		turnPlayerDisplay.setBackground(Color.white);
+		if(currentPlayer != null) {
+			turnPlayerDisplay = new JLabel(currentPlayer.getName());
+			turnPlayerDisplay.setBackground(currentPlayer.getColor());
+		}
 		turnPlayerDisplay.setBorder(new EtchedBorder());
 		turnPanel.add(turnPlayerDisplay);
 		
