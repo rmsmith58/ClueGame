@@ -39,6 +39,8 @@ public class Board extends JPanel{
 	//TODO it might be better to have these as local variables in deal()? double check this
 	//TODO also fix typo in line below
 	private Card solutionRoom, solutionPerson, soltionWeapon;
+	private int dieVal; 
+	private int curPlayerIndex; //index location of current player in player list
 
 	/**
 	 * Private constructor to ensure only one instance is created.
@@ -297,7 +299,7 @@ public class Board extends JPanel{
 	}
 	
 	/**
-	 * 
+	 * miscellanous data setup 
 	 */
 	public void miscDataInit() {
 		for(Player player: this.players) {
@@ -671,5 +673,46 @@ public class Board extends JPanel{
 				}
 			}
 		}
+	}
+	
+	/**
+	 * handles turn advancement and updating current player/die value, also calls functions to process turns
+	 */
+	private void advanceTurn() {
+		//advance to next player
+		curPlayerIndex++;
+		if(curPlayerIndex == this.players.size())
+			curPlayerIndex = 0;
+		
+		//roll dice
+		Random rand = new Random();
+		this.dieVal = rand.nextInt(this.players.size());
+		
+		if(this.players.get(curPlayerIndex).isAI())
+			processAITurn();
+		else
+			processHumanTurn();
+	}
+	
+	/**
+	 * process a turn for computer players
+	 */
+	private void processAITurn() {
+		//find the possible targets for this move
+		BoardCell curCell = this.getCell(this.players.get(curPlayerIndex).getRow(), this.players.get(curPlayerIndex).getColumn());
+		calcTargets(curCell, dieVal);
+		
+		//have the ai select a board cell to move to
+		((ComputerPlayer)this.players.get(curPlayerIndex)).selectTargets((ArrayList<BoardCell>) this.targets);
+		
+		//TODO this is where we would create a suggestion and/or possibly an accusation
+	}
+	
+	/**
+	 * process a turn for human players
+	 */
+	private void processHumanTurn() {
+		//TODO movement stuff for human
+		//TODO also literally everything else lol
 	}
 }
