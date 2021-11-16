@@ -41,6 +41,7 @@ public class Board extends JPanel{
 	private Card solutionRoom, solutionPerson, soltionWeapon;
 	private int dieVal; 
 	private int curPlayerIndex; //index location of current player in player list
+	private Boolean playerInputNeeded; //boolean to block advancement while we're waiting on a player's input
 
 	/**
 	 * Private constructor to ensure only one instance is created.
@@ -605,6 +606,7 @@ public class Board extends JPanel{
 				//way or else the target list builds of the other center of the room.
 				if(cell.isRoomCenter() || numSteps == 1) {
 					targets.add(cell);
+					cell.setIsTarget(true);
 				}
 				else {
 					findAllTargets(cell, numSteps-1, visited);
@@ -615,6 +617,7 @@ public class Board extends JPanel{
 			//also enter the room.
 			else if(cell.getOccupied() && cell.isRoomCenter()) {
 				targets.add(cell);
+				cell.setIsTarget(true);
 			}
 		}
 	}
@@ -712,7 +715,10 @@ public class Board extends JPanel{
 	 * process a turn for human players
 	 */
 	private void processHumanTurn() {
+		this.playerInputNeeded = true;
 		//TODO movement stuff for human
 		//TODO also literally everything else lol
+		
+		this.playerInputNeeded = false;
 	}
 }

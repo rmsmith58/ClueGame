@@ -22,6 +22,7 @@ public class BoardCell {
 	private char initial, secretPassage;
 	private DoorDirection doorDirection;
 	private Board board = Board.getInstance();
+	private Boolean isTarget;
 
 	/**
 	 * Public constructor, creates cell at specified
@@ -39,6 +40,7 @@ public class BoardCell {
 		this.doorway = false;
 		this.roomLabel = false;
 		this.roomCenter = false;
+		this.isTarget = false;
 	}
 	
 	public void drawCell(Graphics g, int y, int x, int width) {
@@ -47,6 +49,11 @@ public class BoardCell {
 		if(board.getRoom(this.initial).getRoomColor().equals(Color.yellow)) { //draw outline boxes if cell is a walkway
 			g.setColor(Color.black);
 			g.drawRect(x*width, y*width, width, width);
+		}
+		if(this.isTarget) { //draw highlights for target locations
+			g.setColor(Color.orange);
+			g.drawRect(x*width, y*width, width, width);
+			this.isTarget = false;
 		}
 	}
 
@@ -135,4 +142,14 @@ public class BoardCell {
 	public int getCol() {
 		return col;
 	}
+
+	public Boolean isTarget() {
+		return isTarget;
+	}
+
+	public void setIsTarget(Boolean isTarget) {
+		this.isTarget = isTarget;
+	}
+	
+	
 }
