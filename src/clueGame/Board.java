@@ -715,9 +715,16 @@ public class Board extends JPanel{
 	 * process a turn for human players
 	 */
 	private void processHumanTurn() {
-		this.playerInputNeeded = true;
-		//TODO movement stuff for human
-		//TODO also literally everything else lol
+		this.playerInputNeeded = true; //set flag to block advancement until we have all input
+		
+		Player humanPlayer = this.players.get(curPlayerIndex);
+		this.calcTargets(this.getCell(humanPlayer.getRow(), humanPlayer.getColumn()), dieVal);
+		
+		//TODO this is where we get player input for movement target
+		
+		humanPlayer.setLocation(newRow, newCol);
+		
+		//TODO this is where we would handle suggestions as needed
 		
 		this.playerInputNeeded = false;
 	}
