@@ -26,11 +26,12 @@ import clueGame.Player;
  * @author Mikayla Sherwood
  *
  */
-public class ControlPanel extends JPanel implements ActionListener{
+public class ControlPanel extends JPanel{
 	private Player currentPlayer; //used to display which player's turn it currently is, using player name and color
 	private String rollValue; //used to display the value of last dice roll
 	private String guessData; //used to display current guesses
 	private String guessResult; //used to display guess result info
+	private JButton cont;
 	
 	//function to display the gui with test data
 	public static void main(String[] args) {
@@ -106,22 +107,22 @@ public class ControlPanel extends JPanel implements ActionListener{
 		thisPanel.add(acc);
 		
 		//next space to hold continue button
-		JButton cont = new JButton("Next Turn");
+		cont = new JButton("Next Turn");
 		
 		//added a action listener to check if the button has been pressed
-		cont.addActionListener(this);
+		cont.addActionListener(new ButtonListener());
 		thisPanel.add(cont);
 		
 		//return panel
 		return thisPanel;
 	}
 	
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		//change the flag from false to true for the human player.
-		//rewrite the control panel.
-		
-		
+	private class ButtonListener implements ActionListener{
+		public void actionPerformed(ActionEvent e) {
+			if(cont.isSelected()) {
+				board.advanceTurn();	//if the button is pressed it should display the next player on the control panel.
+			}
+		}
 	}
 	
 	//creates a panel that holds information about guesses and their results
