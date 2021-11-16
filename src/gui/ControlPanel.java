@@ -3,6 +3,8 @@ package gui;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -24,7 +26,7 @@ import clueGame.Player;
  * @author Mikayla Sherwood
  *
  */
-public class ControlPanel extends JPanel {
+public class ControlPanel extends JPanel implements ActionListener{
 	private Player currentPlayer; //used to display which player's turn it currently is, using player name and color
 	private String rollValue; //used to display the value of last dice roll
 	private String guessData; //used to display current guesses
@@ -106,10 +108,20 @@ public class ControlPanel extends JPanel {
 		//next space to hold continue button
 		JButton cont = new JButton("Next Turn");
 		
+		//added a action listener to check if the button has been pressed
+		cont.addActionListener(this);
 		thisPanel.add(cont);
 		
 		//return panel
 		return thisPanel;
+	}
+	
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		//change the flag from false to true for the human player.
+		//rewrite the control panel.
+		
+		
 	}
 	
 	//creates a panel that holds information about guesses and their results
