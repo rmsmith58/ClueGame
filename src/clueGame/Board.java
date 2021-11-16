@@ -2,6 +2,8 @@ package clueGame;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.HashSet;
@@ -26,7 +28,7 @@ import java.util.Random;
  * @author Mikayla Sherwood
  *
  */
-public class Board extends JPanel{
+public class Board extends JPanel implements MouseListener{
 	private Set<BoardCell> targets;
 	private BoardCell[][] grid;
 	private int numRows, numColumns;
@@ -445,6 +447,14 @@ public class Board extends JPanel{
 		this.theAnswer = newSolution;
 	}
 	
+	public Boolean getPlayerInputNeeded() {
+		return playerInputNeeded;
+	}
+
+	public void setPlayerInputNeeded(Boolean playerInputNeeded) {
+		this.playerInputNeeded = playerInputNeeded;
+	}
+
 	/**
 	 * Resets all data structures associated with this board, to prepare for another data load/initialization.
 	 * Only intended for use in testing.
@@ -728,4 +738,38 @@ public class Board extends JPanel{
 		
 		this.playerInputNeeded = false;
 	}
+
+	/*
+	 * ==================================================
+	 * MouseListener functions
+	 * ==================================================
+	 */
+	@Override
+	public void mouseClicked(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mousePressed(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseExited(MouseEvent e) {
+		// TODO Auto-generated method stub
+	} 
 }
