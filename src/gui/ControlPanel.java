@@ -14,6 +14,7 @@ import javax.swing.JTextField;
 import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
 
+import clueGame.Board;
 import clueGame.HumanPlayer;
 import clueGame.Player;
 
@@ -32,6 +33,7 @@ public class ControlPanel extends JPanel{
 	private String guessData; //used to display current guesses
 	private String guessResult; //used to display guess result info
 	private JButton cont;
+	private Board board;
 	
 	//function to display the gui with test data
 	public static void main(String[] args) {
@@ -120,7 +122,7 @@ public class ControlPanel extends JPanel{
 	private class ButtonListener implements ActionListener{
 		public void actionPerformed(ActionEvent e) {
 			if(cont.isSelected()) {
-				board.advanceTurn();	//if the button is pressed it should display the next player on the control panel.
+				board.getInstance().advanceTurn();	//if the button is pressed it should display the next player on the control panel.
 			}
 		}
 	}
