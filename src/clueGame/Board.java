@@ -44,6 +44,9 @@ public class Board extends JPanel implements MouseListener{
 	private int dieVal; 
 	private int curPlayerIndex; //index location of current player in player list
 	private Boolean playerInputNeeded; //boolean to block advancement while we're waiting on a player's input
+	private int width = 20; //width of board cells drawn in gui
+	private int offset = 2; //offset for door indicators
+	private int targetRow, targetCol; 
 
 	/**
 	 * Private constructor to ensure only one instance is created.
@@ -331,9 +334,6 @@ public class Board extends JPanel implements MouseListener{
 		//draw super first to avoid issues
 		super.paintComponent(g);
 		//g.drawRect(0,  0, 5, 5);
-		
-		int width = 20;
-		int offset = 2;
 		
 		//draw every board cell
 		for(int i = 0; i < this.numRows; i++) {
@@ -691,7 +691,7 @@ public class Board extends JPanel implements MouseListener{
 	/**
 	 * handles turn advancement and updating current player/die value, also calls functions to process turns
 	 */
-	private void advanceTurn() {
+	public void advanceTurn() {
 		//advance to next player
 		curPlayerIndex++;
 		if(curPlayerIndex == this.players.size())
@@ -729,16 +729,21 @@ public class Board extends JPanel implements MouseListener{
 		
 		Player humanPlayer = this.players.get(curPlayerIndex);
 		this.calcTargets(this.getCell(humanPlayer.getRow(), humanPlayer.getColumn()), dieVal);
+		repaint();
 		
 		//TODO this is where we get player input for movement target
 		
-		humanPlayer.setLocation(newRow, newCol);
+		//suspend function until we have a valid player input
+		while(this.playerInputNeeded)
+			continue;
+		
+		humanPlayer.setLocation(this.targetRow, this.targetCol);
 		
 		//TODO this is where we would handle suggestions as needed
 		
-		this.playerInputNeeded = false;
 	}
 
+	
 	/*
 	 * ==================================================
 	 * MouseListener functions
@@ -746,30 +751,36 @@ public class Board extends JPanel implements MouseListener{
 	 */
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		// TODO Auto-generated method stub
+		if(!this.playerInputNeeded)
+			return;
 		
+		double x = e.getX();
+		double y = e.getY();
+		
+		//convert x and y to row, col locations for board cells
+		int correctedX = (int) Math.ceil(x / (double) width);
+		int correctedY = (int) Math.ceil(x / (double) width);
+		
+		if(grid[correctedX][correctedY].isTarget()) {
+			//TODO return the coordinates for the target location
+			this.targetRow = correctedX;
+			this.targetCol = correctedY;
+			this.playerInputNeeded = false;
+		}
+		else {
+			//TODO possibly issue error message or do nothing
+		}
 	}
 
 	@Override
-	public void mousePressed(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void mousePressed(MouseEvent e) {}
 
 	@Override
-	public void mouseReleased(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void mouseReleased(MouseEvent e) {}
 
 	@Override
-	public void mouseEntered(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void mouseEntered(MouseEvent e) {}
 
 	@Override
-	public void mouseExited(MouseEvent e) {
-		// TODO Auto-generated method stub
-	} 
+	public void mouseExited(MouseEvent e) {} 
 }
