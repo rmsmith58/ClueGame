@@ -33,7 +33,6 @@ public class ControlPanel extends JPanel{
 	private String guessData; //used to display current guesses
 	private String guessResult; //used to display guess result info
 	private JButton cont;
-	private Board board;
 	
 	//function to display the gui with test data
 	public static void main(String[] args) {
@@ -62,6 +61,9 @@ public class ControlPanel extends JPanel{
 	
 	//drawPanel, can be called repeatedly to update values in the panel
 	public void drawPanel() {
+		this.currentPlayer = Board.getInstance().getCurrentPlayer();
+		this.rollValue = "" + Board.getInstance().getDieVal();
+		
 		JPanel turnAccusationContinuePanel = createTACPanel();
 		JPanel guessPanel = createGuessPanel();
 		
@@ -122,7 +124,7 @@ public class ControlPanel extends JPanel{
 	private class ButtonListener implements ActionListener{
 		public void actionPerformed(ActionEvent e) {
 			if(cont.isSelected()) {
-				board.getInstance().advanceTurn();	//if the button is pressed it should display the next player on the control panel.
+				Board.getInstance().advanceTurn();	//if the button is pressed it should display the next player on the control panel.
 			}
 		}
 	}

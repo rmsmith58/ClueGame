@@ -44,16 +44,14 @@ public class BoardCell {
 	}
 	
 	public void drawCell(Graphics g, int y, int x, int width) {
-		g.setColor(board.getRoom(this.initial).getRoomColor());
+		if(this.isTarget)
+			g.setColor(Color.orange);
+		else
+			g.setColor(board.getRoom(this.initial).getRoomColor());
 		g.fillRect(x*width, y*width, width, width);
 		if(board.getRoom(this.initial).getRoomColor().equals(Color.yellow)) { //draw outline boxes if cell is a walkway
 			g.setColor(Color.black);
 			g.drawRect(x*width, y*width, width, width);
-		}
-		if(this.isTarget) { //draw highlights for target locations
-			g.setColor(Color.orange);
-			g.drawRect(x*width, y*width, width, width);
-			this.isTarget = false;
 		}
 	}
 

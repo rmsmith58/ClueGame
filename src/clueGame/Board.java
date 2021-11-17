@@ -28,7 +28,7 @@ import java.util.Random;
  * @author Mikayla Sherwood
  *
  */
-public class Board extends JPanel implements MouseListener{
+public class Board extends JPanel{
 	private Set<BoardCell> targets;
 	private BoardCell[][] grid;
 	private int numRows, numColumns;
@@ -44,9 +44,9 @@ public class Board extends JPanel implements MouseListener{
 	private int dieVal; 
 	private int curPlayerIndex; //index location of current player in player list
 	private Boolean playerInputNeeded; //boolean to block advancement while we're waiting on a player's input
-	private int width = 20; //width of board cells drawn in gui
-	private int offset = 2; //offset for door indicators
-	private int targetRow, targetCol; 
+	public final int WIDTH = 20; //width of board cells drawn in gui
+	public final int OFFSET = 2; //offset for door indicators
+	protected int targetRow, targetCol; 
 
 	/**
 	 * Private constructor to ensure only one instance is created.
@@ -64,6 +64,9 @@ public class Board extends JPanel implements MouseListener{
 		this.deck = new ArrayList<Card>();
 		this.players = new ArrayList<Player>();
 		this.theAnswer = new Solution();
+		
+		//add click listener for gui
+		this.addMouseListener(new BoardClickListener());
 	}
 
 	//TODO possibly reorder the functions in board, maybe alphabetically
@@ -312,6 +315,13 @@ public class Board extends JPanel implements MouseListener{
 			if(player.isAI())
 				((ComputerPlayer) player).setUnseen(this.deck);
 		}
+		for(int i = 0; i < this.players.size(); i++) {
+			if(!players.get(i).isAI()) {
+				this.curPlayerIndex = i-1;
+				break;
+			}
+		}
+		this.advanceTurn();
 	}
 	
 	/**
@@ -338,7 +348,7 @@ public class Board extends JPanel implements MouseListener{
 		//draw every board cell
 		for(int i = 0; i < this.numRows; i++) {
 			for(int j = 0; j < this.numColumns; j++) {
-				this.grid[i][j].drawCell(g, i, j, width); //TODO implement this
+				this.grid[i][j].drawCell(g, i, j, WIDTH); //TODO implement this
 			}
 		}
 		
@@ -347,15 +357,15 @@ public class Board extends JPanel implements MouseListener{
 		//also draw lines to indicate doorways
 		for(Room room: this.roomMap.values()) {
 			if(!room.getName().equals("Walkway") && !room.getName().equals("Unused")) {
-				room.drawRoomLabel(g, room.getCenterCell().getRow(), room.getCenterCell().getCol(), width);
-				room.drawDoorways(g, width, offset);
+				room.drawRoomLabel(g, room.getCenterCell().getRow(), room.getCenterCell().getCol(), WIDTH);
+				room.drawDoorways(g, WIDTH, OFFSET);
 			}
 		}
 		
 		
 		//draw markers for player locations
 		for(Player player: this.players) {
-			player.drawPlayer(g, width); //TODO implement this
+			player.drawPlayer(g, WIDTH); //TODO implement this
 		}
 	}
 
@@ -507,8 +517,7 @@ public class Board extends JPanel implements MouseListener{
 		Set<BoardCell> visited = new HashSet<BoardCell>();
 		visited.add(startCell);
 		
-		//reset targets set
-		targets.clear();
+		this.resetTargets();
 		
 		//call recursive helper function
 		findAllTargets(startCell, pathLength, visited);
@@ -688,6 +697,10 @@ public class Board extends JPanel implements MouseListener{
 		}
 	}
 	
+	public int getDieVal() {
+		return dieVal;
+	}
+
 	/**
 	 * handles turn advancement and updating current player/die value, also calls functions to process turns
 	 */
@@ -699,12 +712,12 @@ public class Board extends JPanel implements MouseListener{
 		
 		//roll dice
 		Random rand = new Random();
-		this.dieVal = rand.nextInt(this.players.size());
+		this.dieVal = rand.nextInt(6)+1;
 		
 		if(this.players.get(curPlayerIndex).isAI())
 			processAITurn();
 		else
-			processHumanTurn();
+			setupHumanTurn();
 	}
 	
 	/**
@@ -722,25 +735,47 @@ public class Board extends JPanel implements MouseListener{
 	}
 	
 	/**
-	 * process a turn for human players
+	 * setup for human player to pick a valid movement location
 	 */
-	private void processHumanTurn() {
+	private void setupHumanTurn() {
 		this.playerInputNeeded = true; //set flag to block advancement until we have all input
 		
 		Player humanPlayer = this.players.get(curPlayerIndex);
 		this.calcTargets(this.getCell(humanPlayer.getRow(), humanPlayer.getColumn()), dieVal);
 		repaint();
-		
-		//TODO this is where we get player input for movement target
-		
-		//suspend function until we have a valid player input
-		while(this.playerInputNeeded)
-			continue;
-		
-		humanPlayer.setLocation(this.targetRow, this.targetCol);
-		
+
+		//exit and wait for valid input to call finishHumanTurn
+	}
+	
+	/**
+	 * Finish human turn after valid location has been selected
+	 * 
+	 */
+	private void finishHumanTurn() {
+		this.players.get(curPlayerIndex).setLocation(this.targetRow, this.targetCol);
+		this.playerInputNeeded = false;
 		//TODO this is where we would handle suggestions as needed
+	}
+	
+	public Player getCurrentPlayer() {
+		return this.players.get(curPlayerIndex);
+	}
+
+	public BoardCell[][] getGrid() {
+		// TODO Auto-generated method stub
+		return this.grid;
+	}
+	
+	private void resetTargets() {
+		//reset targets set
+		targets.clear();
 		
+		//reset cell flags
+		for(BoardCell[] row: this.grid) {
+			for(BoardCell cell: row) {
+				cell.setIsTarget(false);
+			}
+		}
 	}
 
 	
@@ -749,38 +784,46 @@ public class Board extends JPanel implements MouseListener{
 	 * MouseListener functions
 	 * ==================================================
 	 */
-	@Override
-	public void mouseClicked(MouseEvent e) {
-		if(!this.playerInputNeeded)
-			return;
-		
-		double x = e.getX();
-		double y = e.getY();
-		
-		//convert x and y to row, col locations for board cells
-		int correctedX = (int) Math.ceil(x / (double) width);
-		int correctedY = (int) Math.ceil(x / (double) width);
-		
-		if(grid[correctedX][correctedY].isTarget()) {
-			//TODO return the coordinates for the target location
-			this.targetRow = correctedX;
-			this.targetCol = correctedY;
-			this.playerInputNeeded = false;
+	private class BoardClickListener implements MouseListener{
+		@Override
+		public void mouseClicked(MouseEvent e) {
+			if(!playerInputNeeded)
+				return;
+			
+			double x = e.getX();
+			double y = e.getY();
+			
+			//convert x and y to row, col locations for board cells
+			int correctedX = (int) Math.ceil(x / (double) WIDTH);
+			
+			int correctedY = (int) Math.ceil(y / (double) WIDTH);
+			
+			System.out.println("Raw X, Y: " + x + " " + y);
+			System.out.println("Corrected Row, Col: " + correctedY + " " + correctedX);
+			
+			if(getGrid()[correctedY-1][correctedX-1].isTarget()) {
+				//TODO return the coordinates for the target location
+				targetRow = correctedY-1;
+				targetCol = correctedX-1;
+				finishHumanTurn();
+				resetTargets();
+				repaint();
+			}
+			else {
+				//TODO possibly issue error message or do nothing
+			}
 		}
-		else {
-			//TODO possibly issue error message or do nothing
-		}
+
+		@Override
+		public void mousePressed(MouseEvent e) {}
+
+		@Override
+		public void mouseReleased(MouseEvent e) {}
+
+		@Override
+		public void mouseEntered(MouseEvent e) {}
+
+		@Override
+		public void mouseExited(MouseEvent e) {} 
 	}
-
-	@Override
-	public void mousePressed(MouseEvent e) {}
-
-	@Override
-	public void mouseReleased(MouseEvent e) {}
-
-	@Override
-	public void mouseEntered(MouseEvent e) {}
-
-	@Override
-	public void mouseExited(MouseEvent e) {} 
 }

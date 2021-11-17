@@ -24,6 +24,7 @@ public class ClueGame extends javax.swing.JFrame {
 		cg.setTitle("Clue");
 		board.setConfigFiles("BoardLayout.csv", "ClueSetup.txt");
 		board.initialize();
+		board.miscDataInit();
 		cg.drawGameBoard();
 		cg.setVisible(true);
 	}
