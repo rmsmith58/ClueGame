@@ -123,9 +123,9 @@ public class ControlPanel extends JPanel{
 	
 	private class ButtonListener implements ActionListener{
 		public void actionPerformed(ActionEvent e) {
-			if(cont.isSelected()) {
+			System.out.println("Continue button pressed");
+			if(!Board.getInstance().getPlayerInputNeeded())
 				Board.getInstance().advanceTurn();	//if the button is pressed it should display the next player on the control panel.
-			}
 		}
 	}
 	

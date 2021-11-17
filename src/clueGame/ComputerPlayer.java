@@ -22,6 +22,7 @@ public class ComputerPlayer extends Player {
 		super(name, color, rowLocation, colLocation);
 		this.isAI = true;
 		this.board = board;
+		this.seenRoom = new ArrayList<Room>();
 	}
 	
 	public void setUnseen(ArrayList<Card> unseen) {
@@ -73,8 +74,10 @@ public class ComputerPlayer extends Player {
 		board.getRoom(board.getCell(row, column));
 		
 		for(BoardCell target: targets) {
-			if(!this.seenRoom.contains(board.getRoom(target)) &&
+			if(this.seenRoom.size() > 0 &&
+					!this.seenRoom.contains(board.getRoom(target)) &&
 					target.isRoomCenter()) {
+				this.seenRoom.add(board.getRoom(target));
 				return target;
 			}
 		}

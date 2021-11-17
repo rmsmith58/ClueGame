@@ -729,8 +729,15 @@ public class Board extends JPanel{
 		calcTargets(curCell, dieVal);
 		
 		//have the ai select a board cell to move to
-		((ComputerPlayer)this.players.get(curPlayerIndex)).selectTargets((ArrayList<BoardCell>) this.targets);
+		//convert targets set to an arraylist
+		ArrayList<BoardCell> targetList = new ArrayList<BoardCell>();
+		for(BoardCell cell: this.targets)
+			targetList.add(cell);
 		
+		BoardCell targetCell = ((ComputerPlayer)this.players.get(curPlayerIndex)).selectTargets(targetList);
+		this.players.get(curPlayerIndex).setLocation(targetCell.getRow(), targetCell.getCol());
+		
+		repaint();
 		//TODO this is where we would create a suggestion and/or possibly an accusation
 	}
 	
