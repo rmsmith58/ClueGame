@@ -737,6 +737,7 @@ public class Board extends JPanel{
 		BoardCell targetCell = ((ComputerPlayer)this.players.get(curPlayerIndex)).selectTargets(targetList);
 		this.players.get(curPlayerIndex).setLocation(targetCell.getRow(), targetCell.getCol());
 		
+		resetTargets(); //call this to remove target highlighting
 		repaint();
 		//TODO this is where we would create a suggestion and/or possibly an accusation
 	}

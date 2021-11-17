@@ -61,6 +61,8 @@ public class ControlPanel extends JPanel{
 	
 	//drawPanel, can be called repeatedly to update values in the panel
 	public void drawPanel() {
+		this.removeAll();
+		
 		this.currentPlayer = Board.getInstance().getCurrentPlayer();
 		this.rollValue = "" + Board.getInstance().getDieVal();
 		
@@ -124,8 +126,14 @@ public class ControlPanel extends JPanel{
 	private class ButtonListener implements ActionListener{
 		public void actionPerformed(ActionEvent e) {
 			System.out.println("Continue button pressed");
-			if(!Board.getInstance().getPlayerInputNeeded())
-				Board.getInstance().advanceTurn();	//if the button is pressed it should display the next player on the control panel.
+			if(Board.getInstance().getPlayerInputNeeded())
+				return;
+			Board.getInstance().advanceTurn();	//if the button is pressed it should display the next player on the control panel.
+			rollValue = "" + Board.getInstance().getDieVal();
+			currentPlayer = Board.getInstance().getCurrentPlayer();
+			drawPanel();
+			System.out.println("redrawing panel");
+			revalidate();
 		}
 	}
 	

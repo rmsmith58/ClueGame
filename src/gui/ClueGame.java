@@ -35,6 +35,8 @@ public class ClueGame extends javax.swing.JFrame {
 	
 	//this will call other functions to draw and update the game board as needed
 	private void drawGameBoard() {
+		//this.removeAll();
+		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setLayout(new GridLayout(2, 2));
 		
@@ -65,5 +67,9 @@ public class ClueGame extends javax.swing.JFrame {
 		String introString = "Welcome to Clue!\nUse clues to solve the murder.\nCan you solve it before your opponents?";
 		window.showMessageDialog(null, introString, "Welcome!", window.INFORMATION_MESSAGE);
 		window.setVisible(true);
+	}
+	
+	public void redrawControlPanel() {
+		
 	}
 }
