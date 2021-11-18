@@ -340,6 +340,7 @@ public class Board extends JPanel{
 		return null;
 	}
 	
+	//TODO fix issue where dots will overlap if multiple players in one room
 	public void paintComponent(Graphics g) {
 		//draw super first to avoid issues
 		super.paintComponent(g);
@@ -810,7 +811,6 @@ public class Board extends JPanel{
 			System.out.println("Corrected Row, Col: " + correctedY + " " + correctedX);
 			
 			if(getGrid()[correctedY-1][correctedX-1].isTarget()) {
-				//TODO return the coordinates for the target location
 				targetRow = correctedY-1;
 				targetCol = correctedX-1;
 				finishHumanTurn();
