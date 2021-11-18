@@ -84,8 +84,10 @@ public abstract class Player {
 	}
 	
 	public void setLocation(int rowLoc, int colLoc) {
+		Board.getInstance().getCell(this.row, this.column).setOccupied(false);
 		this.row = rowLoc;
 		this.column = colLoc;
+		Board.getInstance().getCell(rowLoc, colLoc).setOccupied(true);
 	}
 	
 	public void updateSeen(Card card) {
