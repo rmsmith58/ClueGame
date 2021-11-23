@@ -13,6 +13,7 @@ import javax.swing.JTextField;
 import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
 
+import clueGame.Board;
 import clueGame.Card;
 import clueGame.CardType;
 import clueGame.HumanPlayer;
@@ -68,6 +69,11 @@ public class CardPanel extends JPanel{
 	
 	//begins to draw the panel
 	public void drawPanel() {
+		//this.removeAll();
+		this.currPlayer = Board.getInstance().getCurrentPlayer();
+		this.hand = currPlayer.getHand();
+		this.seen = currPlayer.getSeen();
+		
 		// create the main panel (Known Cards) and sub-panels (People, Rooms, Weapons)
 		JPanel knowCardPanel = knowCardPanel();
 		JPanel peoplePanel = peoplePanel();
