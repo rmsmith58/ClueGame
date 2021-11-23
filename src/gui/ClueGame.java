@@ -72,4 +72,8 @@ public class ClueGame extends javax.swing.JFrame {
 	public void redrawControlPanel() {
 		
 	}
+	
+	public void redrawCardPanel() {
+		
+	}
 }

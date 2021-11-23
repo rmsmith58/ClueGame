@@ -93,6 +93,7 @@ public class Board extends JPanel{
 
 			//add adjacencies for each cell on board, assuming board is not 1x1
 			calcAdjacencies();
+			deal();
 		} catch(Exception e) {
 			System.out.println("Error: " + e.getClass().getName());
 			System.out.println(e.getMessage());
