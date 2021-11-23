@@ -114,7 +114,8 @@ public class ControlPanel extends JPanel{
 
 		//next space to hold accusation button
 		JButton acc = new JButton("Make Accusation");
-
+		acc.addActionListener(new AccButtonListener());
+		
 		thisPanel.add(acc);
 
 		//next space to hold continue button

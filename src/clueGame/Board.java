@@ -57,7 +57,6 @@ public class Board extends JPanel{
 	public final int WIDTH = 20; //width of board cells drawn in gui
 	public final int OFFSET = 2; //offset for door indicators
 	protected int targetRow, targetCol;
-	private ClueGame gui = ClueGame.getTheInstance();
 
 	/**
 	 * Private constructor to ensure only one instance is created.
@@ -429,7 +428,7 @@ public class Board extends JPanel{
 			String introString = this.getCurrentPlayer().getName() + " has won the game!";
 			window.showMessageDialog(null, introString, "Game Over", window.INFORMATION_MESSAGE);
 			window.setVisible(true);
-			gui.endGame();
+			ClueGame.getTheInstance().endGame();
 		}
 		else {
 			//popup window to indicate player has lost
@@ -437,7 +436,7 @@ public class Board extends JPanel{
 			String introString = this.getCurrentPlayer().getName() + " has lost the game!";
 			window.showMessageDialog(null, introString, "Game Over", window.INFORMATION_MESSAGE);
 			window.setVisible(true);
-			gui.endGame();
+			ClueGame.getTheInstance().endGame();
 		}
 	}
 	
