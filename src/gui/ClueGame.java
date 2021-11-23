@@ -87,4 +87,5 @@ public class ClueGame extends javax.swing.JFrame {
 	public static ClueGame getTheInstance() {
 		return theInstance;
 	}
+	
 }

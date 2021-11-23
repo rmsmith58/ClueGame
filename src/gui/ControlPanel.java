@@ -77,7 +77,6 @@ public class ControlPanel extends JPanel{
 
 		add(turnAccusationContinuePanel);
 		add(guessPanel);
-
 	}
 
 	//creates a panel that holds accusation/continue buttons, current player info, and roll value.
@@ -139,6 +138,7 @@ public class ControlPanel extends JPanel{
 			rollValue = "" + Board.getInstance().getDieVal();
 			currentPlayer = Board.getInstance().getCurrentPlayer();
 			drawPanel();
+			repaint();
 			//System.out.println("redrawing panel");
 			revalidate();
 		}
