@@ -3,6 +3,8 @@ package clueGame;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.File;
@@ -336,6 +338,8 @@ public class Board extends JPanel{
 	 * could disprove the accusation.
 	 */
 	public Card handleSuggestion(Player accuser, Solution suggestion) {
+		//TODO teleport accused player to accuser's room location
+		//TODO display suggestion and result in gui
 		for (Player player: this.players) {
 			if (player != accuser) {
 				Card disprove = player.disproveSuggestion(suggestion);
@@ -542,6 +546,7 @@ public class Board extends JPanel{
 	
 	//Function to help deal the cards among the players.
 	public void deal() {
+		ArrayList<Card> deckCopy = new ArrayList<Card>();
 		ArrayList<Card> dealDeck = deck;
 		solutionDeal(dealDeck);
 		
@@ -555,35 +560,45 @@ public class Board extends JPanel{
 			case 0: 
 				players.get(0).updateHand(current);
 				dealDeck.remove(randIndex);
+				deckCopy.add(current);
 				count += 1;
 				break;
 			case 1:
 				players.get(1).updateHand(current);
 				dealDeck.remove(randIndex);
+				deckCopy.add(current);
 				count += 1;
 				break;
 			case 2:
 				players.get(2).updateHand(current);
 				dealDeck.remove(randIndex);
+				deckCopy.add(current);
 				count += 1;
 				break;
 			case 3:
 				players.get(3).updateHand(current);
 				dealDeck.remove(randIndex);
+				deckCopy.add(current);
 				count += 1;
 				break;
 			case 4:
 				players.get(4).updateHand(current);
 				dealDeck.remove(randIndex);
+				deckCopy.add(current);
 				count += 1;
 				break;
 			case 5:
 				players.get(5).updateHand(current);
 				dealDeck.remove(randIndex);
+				deckCopy.add(current);
 				count = 0;
 				break;
 			}
 		}while(dealDeck.size() != 0);
+		this.deck = deckCopy;
+		this.deck.add(this.soltionWeapon);
+		this.deck.add(this.solutionPerson);
+		this.deck.add(this.solutionRoom);
 	}
 	
 	private void solutionDeal(ArrayList<Card> deck) {
@@ -814,25 +829,61 @@ public class Board extends JPanel{
 		//get list of weapon and person name strings
 		ArrayList<String> weaponNames = new ArrayList<String>();
 		ArrayList<String> playerNames = new ArrayList<String>();
-		for(Card card: this.deck) {
+		for(Card card: deck) {
 			if(card.getCardType().equals(CardType.WEAPON))
 				weaponNames.add(card.getCardName());
 			else if(card.getCardType().equals(CardType.PERSON))
 				playerNames.add(card.getCardName());
 		}
 		
+		//create drop-down boxes for selecting weapon and person
+		JComboBox weapons = new JComboBox(weaponNames.toArray());
+		JComboBox players = new JComboBox(playerNames.toArray());
+		
+		//create buttons for submitting and cancelling the suggestion
+		JButton submit = new JButton("Submit");
+		JButton cancel = new JButton("Cancel");
+		
+		//if submit button is pressed, create a Solution for the suggestion and call handleSuggestion
+		submit.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				Card player = null;
+				Card weapon = null;
+				Card room = null;
+				for(Card card: deck) {
+					if(card.getCardType().equals(CardType.PERSON) && card.getCardName().equals(players.getSelectedItem()))
+						player = card;
+					else if(card.getCardType().equals(CardType.WEAPON) && card.getCardName().equals(weapons.getSelectedItem()))
+						weapon = card;
+					else if(card.getCardType().equals(CardType.ROOM) && card.getCardName().equals(roomName))
+						room = card;
+				}
+				Solution suggestion = new Solution(player, room, weapon);
+				handleSuggestion(getCurrentPlayer(), suggestion);
+				frame.dispose();
+			}
+		});
+		
+		//if cancel button is pressed close the window and do nothing
+		cancel.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				frame.dispose();
+			}
+		});
+		
 		frame.add(new JLabel("Current room: "));
 		frame.add(new JLabel(roomName));
 		frame.add(new JLabel("Weapon: "));
-		frame.add(new JComboBox(weaponNames.toArray()));
+		frame.add(weapons);
 		frame.add(new JLabel("Person: "));
-		frame.add(new JComboBox(playerNames.toArray()));
-		frame.add(new JButton("Submit"));
-		frame.add(new JButton("Cancel"));
+		frame.add(players);
+		frame.add(submit);
+		frame.add(cancel);
 		
 		frame.setVisible(true);		
 	}
-
 	
 	/*
 	 * ==================================================
