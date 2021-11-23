@@ -761,7 +761,25 @@ public class Board extends JPanel{
 		
 		resetTargets(); //call this to remove target highlighting
 		repaint();
-		//TODO this is where we would create a suggestion and/or possibly an accusation
+		
+		//if we are not on a walkway create a suggestion
+		Solution suggestion = null;
+		Card suggestionReturn = null;
+		if(!this.getRoom(this.getCell(targetRow, targetCol)).getName().equals("Walkway")) {
+			suggestion = ((ComputerPlayer)this.getCurrentPlayer()).createSuggestion();
+			suggestionReturn = this.handleSuggestion(getCurrentPlayer(), suggestion);
+		}	
+		//make accusation here if nobody could disprove the suggestion and none of the suggestion cards are in the current player's hand
+		if(suggestionReturn == null) {
+			for(Card card: this.getCurrentPlayer().getHand()) {
+				if(card.equals(suggestion.getPerson())
+						|| card.equals(suggestion.getRoom())
+						|| card.equals(suggestion.getWeapon())) {
+					return;
+				}
+			}
+			//TODO make accusation here
+		}
 	}
 	
 	/**
