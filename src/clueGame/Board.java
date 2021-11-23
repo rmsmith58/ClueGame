@@ -793,7 +793,7 @@ public class Board extends JPanel{
 			suggestionReturn = this.handleSuggestion(getCurrentPlayer(), suggestion);
 		}	
 		//make accusation here if nobody could disprove the suggestion and none of the suggestion cards are in the current player's hand
-		if(suggestionReturn == null) {
+		if(suggestionReturn == null && suggestion != null) {
 			for(Card card: this.getCurrentPlayer().getHand()) {
 				if(card.equals(suggestion.getPerson())
 						|| card.equals(suggestion.getRoom())
