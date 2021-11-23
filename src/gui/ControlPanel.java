@@ -148,17 +148,20 @@ public class ControlPanel extends JPanel{
 	//functionality for accusation button press
 	private class AccButtonListener implements ActionListener{
 		public void actionPerformed(ActionEvent e) {
+			if(!Board.getInstance().getCurrentPlayer().getName().equals("You")) {
+				return;
+			}
 			JFrame frame = new JFrame();
 			frame.setLayout(new GridLayout(4, 2));
 			frame.setTitle("Make a Suggestion");
 			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 			frame.setSize(200, 200);
-			
+
 			//get list of weapon and person name strings
 			ArrayList<String> roomNames = new ArrayList<String>();
 			ArrayList<String> weaponNames = new ArrayList<String>();
 			ArrayList<String> playerNames = new ArrayList<String>();
-			
+
 			for(Card card: Board.getInstance().getDeck()) {
 				if(card.getCardType().equals(CardType.WEAPON))
 					weaponNames.add(card.getCardName());
@@ -217,6 +220,7 @@ public class ControlPanel extends JPanel{
 
 			frame.setVisible(true);		
 		}
+
 	}
 
 	//creates a panel that holds information about guesses and their results
