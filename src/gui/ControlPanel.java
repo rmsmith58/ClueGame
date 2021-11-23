@@ -116,14 +116,15 @@ public class ControlPanel extends JPanel{
 		cont = new JButton("Next Turn");
 		
 		//added a action listener to check if the button has been pressed
-		cont.addActionListener(new ButtonListener());
+		cont.addActionListener(new ContinueButtonListener());
 		thisPanel.add(cont);
 		
 		//return panel
 		return thisPanel;
 	}
 	
-	private class ButtonListener implements ActionListener{
+	//functionality for continue button press
+	private class ContinueButtonListener implements ActionListener{
 		public void actionPerformed(ActionEvent e) {
 			//System.out.println("Continue button pressed");
 			if(Board.getInstance().getPlayerInputNeeded())
@@ -134,6 +135,13 @@ public class ControlPanel extends JPanel{
 			drawPanel();
 			//System.out.println("redrawing panel");
 			revalidate();
+		}
+	}
+	
+	//functionality for accusation button press
+	private class AccButtonListener implements ActionListener{
+		public void actionPerformed(ActionEvent e) {
+			
 		}
 	}
 	

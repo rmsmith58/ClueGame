@@ -2,6 +2,7 @@ package clueGame;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.GridLayout;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.File;
@@ -11,6 +12,10 @@ import java.util.Map;
 import java.util.Scanner;
 import java.util.Set;
 
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import java.util.ArrayList;
@@ -763,7 +768,10 @@ public class Board extends JPanel{
 	private void finishHumanTurn() {
 		this.players.get(curPlayerIndex).setLocation(this.targetRow, this.targetCol);
 		this.playerInputNeeded = false;
-		//TODO this is where we would handle suggestions as needed
+		
+		//if we are not on a walkway display the create suggestion gui
+		if(!this.getRoom(this.getCell(targetRow, targetCol)).getName().equals("Walkway"))
+			this.createSuggestionGUI();
 	}
 	
 	public Player getCurrentPlayer() {
@@ -786,6 +794,43 @@ public class Board extends JPanel{
 			}
 		}
 	}
+	
+	/**
+	 * Displays GUI for player to choose suggestion
+	 *
+	 */
+	public void createSuggestionGUI() {
+		JFrame frame = new JFrame();
+		frame.setLayout(new GridLayout(4, 2));
+		frame.setTitle("Make a Suggestion");
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setSize(200, 200);
+		
+		//get string name for current room
+		BoardCell curCell = this.getCell(this.getCurrentPlayer().getRow(), this.getCurrentPlayer().getColumn());
+		String roomName = this.getRoom(curCell).getName();
+		
+		//get list of weapon and person name strings
+		ArrayList<String> weaponNames = new ArrayList<String>();
+		ArrayList<String> playerNames = new ArrayList<String>();
+		for(Card card: this.deck) {
+			if(card.getCardType().equals(CardType.WEAPON))
+				weaponNames.add(card.getCardName());
+			else if(card.getCardType().equals(CardType.PERSON))
+				playerNames.add(card.getCardName());
+		}
+		
+		frame.add(new JLabel("Current room: "));
+		frame.add(new JLabel(roomName));
+		frame.add(new JLabel("Weapon: "));
+		frame.add(new JComboBox(weaponNames.toArray()));
+		frame.add(new JLabel("Person: "));
+		frame.add(new JComboBox(playerNames.toArray()));
+		frame.add(new JButton("Submit"));
+		frame.add(new JButton("Cancel"));
+		
+		frame.setVisible(true);		
+	}
 
 	
 	/*
@@ -807,8 +852,8 @@ public class Board extends JPanel{
 			
 			int correctedY = (int) Math.ceil(y / (double) WIDTH);
 			
-			System.out.println("Raw X, Y: " + x + " " + y);
-			System.out.println("Corrected Row, Col: " + correctedY + " " + correctedX);
+			//System.out.println("Raw X, Y: " + x + " " + y);
+			//System.out.println("Corrected Row, Col: " + correctedY + " " + correctedX);
 			
 			if(getGrid()[correctedY-1][correctedX-1].isTarget()) {
 				targetRow = correctedY-1;

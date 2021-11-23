@@ -30,7 +30,7 @@ public class ClueGame extends javax.swing.JFrame {
 	}
 	
 	public ClueGame() {
-		this.setSize(1100, 1000);
+		this.setSize(1100, 1250);
 	}
 	
 	//this will call other functions to draw and update the game board as needed
