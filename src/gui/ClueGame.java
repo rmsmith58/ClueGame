@@ -17,16 +17,16 @@ import clueGame.Board;
 public class ClueGame extends javax.swing.JFrame {
 	private static Board board = Board.getInstance();
 	private static Boolean firstDraw = true; //flag to display popup on game start
+	private static ClueGame theInstance = new ClueGame();
 	
 	//this will be our entry point for the full game
 	public static void main(String[] args) {
-		ClueGame cg = new ClueGame();
-		cg.setTitle("Clue");
+		theInstance.setTitle("Clue");
 		board.setConfigFiles("BoardLayout.csv", "ClueSetup.txt");
 		board.initialize();
 		board.miscDataInit();
-		cg.drawGameBoard();
-		cg.setVisible(true);
+		theInstance.drawGameBoard();
+		theInstance.setVisible(true);
 	}
 	
 	public ClueGame() {
@@ -69,11 +69,22 @@ public class ClueGame extends javax.swing.JFrame {
 		window.setVisible(true);
 	}
 	
+	/**
+	 * Will close the GUI to effectively end the game as needed
+	 */
+	public void endGame() {
+		this.dispose();
+	}
+	
 	public void redrawControlPanel() {
 		
 	}
 	
 	public void redrawCardPanel() {
 		
+	}
+
+	public static ClueGame getTheInstance() {
+		return theInstance;
 	}
 }

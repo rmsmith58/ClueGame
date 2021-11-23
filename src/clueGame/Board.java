@@ -18,7 +18,10 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+
+import gui.ClueGame;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -53,7 +56,8 @@ public class Board extends JPanel{
 	private Boolean playerInputNeeded; //boolean to block advancement while we're waiting on a player's input
 	public final int WIDTH = 20; //width of board cells drawn in gui
 	public final int OFFSET = 2; //offset for door indicators
-	protected int targetRow, targetCol; 
+	protected int targetRow, targetCol;
+	private ClueGame gui = ClueGame.getTheInstance();
 
 	/**
 	 * Private constructor to ensure only one instance is created.
@@ -416,6 +420,25 @@ public class Board extends JPanel{
 	 */
 	public Room getRoom(char initial) {
 		return roomMap.get(initial);
+	}
+	
+	public void handleAccusation(Player accuser, Solution accusation) {
+		if(checkAccusation(accusation.getPerson(), accusation.getRoom(), accusation.getWeapon())) {
+			//popup window to indicate player has won
+			JOptionPane window = new JOptionPane();
+			String introString = this.getCurrentPlayer().getName() + " has won the game!";
+			window.showMessageDialog(null, introString, "Game Over", window.INFORMATION_MESSAGE);
+			window.setVisible(true);
+			gui.endGame();
+		}
+		else {
+			//popup window to indicate player has lost
+			JOptionPane window = new JOptionPane();
+			String introString = this.getCurrentPlayer().getName() + " has lost the game!";
+			window.showMessageDialog(null, introString, "Game Over", window.INFORMATION_MESSAGE);
+			window.setVisible(true);
+			gui.endGame();
+		}
 	}
 	
 	public Boolean checkAccusation(Card person, Card room, Card weapon) {
