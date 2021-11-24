@@ -349,6 +349,7 @@ public class Board extends JPanel{
 				break;
 			}
 		}
+		repaint(); //repaint to update target player location on board
 		
 		Card disprove = null;
 		for (Player player: this.players) {
@@ -805,7 +806,7 @@ public class Board extends JPanel{
 		//if we are not on a walkway create a suggestion
 		Solution suggestion = null;
 		Card suggestionReturn = null;
-		if(!this.getRoom(this.getCell(targetRow, targetCol)).getName().equals("Walkway")) {
+		if(!this.getRoom(this.getCell(targetCell.getRow(), targetCell.getCol())).getName().equals("Walkway")) {
 			suggestion = ((ComputerPlayer)this.getCurrentPlayer()).createSuggestion();
 			suggestionReturn = this.handleSuggestion(getCurrentPlayer(), suggestion);
 		}	
