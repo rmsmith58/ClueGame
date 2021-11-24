@@ -8,6 +8,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import clueGame.Board;
+import clueGame.Card;
 
 /**
  * ClueGame: Creates and refreshes GUI for the game. Also contains the starting point for the full game (not yet implemented).
@@ -18,6 +19,8 @@ public class ClueGame extends javax.swing.JFrame {
 	private static Board board = Board.getInstance();
 	private static Boolean firstDraw = true; //flag to display popup on game start
 	private static ClueGame theInstance = new ClueGame();
+	private static ControlPanel control;
+	private static CardPanel card;
 	
 	//this will be our entry point for the full game
 	public static void main(String[] args) {
@@ -31,6 +34,8 @@ public class ClueGame extends javax.swing.JFrame {
 	
 	public ClueGame() {
 		this.setSize(1100, 1250);
+		control = new ControlPanel();
+		card = new CardPanel();
 	}
 	
 	//this will call other functions to draw and update the game board as needed
@@ -44,12 +49,10 @@ public class ClueGame extends javax.swing.JFrame {
 		add(board, BorderLayout.CENTER);
 		
 		//generate and add panel for card info
-		CardPanel cardPanel = new CardPanel();
-		cardPanel.drawPanel();
-		add(cardPanel);
+		card.drawPanel();
+		add(card);
 				
 		//generate and add control panel
-		ControlPanel control = new ControlPanel();
 		control.drawPanel();
 		add(control);
 		
@@ -74,6 +77,19 @@ public class ClueGame extends javax.swing.JFrame {
 	 */
 	public void endGame() {
 		this.dispose();
+	}
+	
+	/**
+	 * Calls function in Control Panel gui to update guess info bars
+	 * @param guess
+	 * @param guessResult
+	 */
+	public void updateGuessInfo(String guess, String guessResult) {
+		control.setGuessData(guess);
+		control.setGuessResult(guessResult);
+		control.drawPanel();
+		control.repaint();
+		control.revalidate();
 	}
 	
 	public void redrawControlPanel() {

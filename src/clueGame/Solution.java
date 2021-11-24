@@ -47,5 +47,10 @@ public class Solution {
 		return false;
 	}
 	
+	@Override
+	public String toString() {
+		return this.person.getCardName() + ", " + this.weapon.getCardName() + ", " + this.room.getCardName();
+	}
+	
 	
 }

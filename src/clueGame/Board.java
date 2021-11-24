@@ -341,16 +341,34 @@ public class Board extends JPanel{
 	 * could disprove the accusation.
 	 */
 	public Card handleSuggestion(Player accuser, Solution suggestion) {
-		//TODO teleport accused player to accuser's room location
-		//TODO display suggestion and result in gui
-		for (Player player: this.players) {
-			if (player != accuser) {
-				Card disprove = player.disproveSuggestion(suggestion);
-				if(disprove != null)
-					return disprove;
+		//teleport the accused player to the accuser's location
+		String accusedPlayer = suggestion.getPerson().getCardName();
+		for(Player player: this.players) {
+			if(player.getName().equals(accusedPlayer)) {
+				player.setLocation(accuser.getRow(), accuser.getColumn());
+				break;
 			}
 		}
-		return null;
+		
+		Card disprove = null;
+		for (Player player: this.players) {
+			if (player != accuser) {
+				disprove = player.disproveSuggestion(suggestion);
+				if(disprove != null)
+					break;
+			}
+		}
+		
+		//create strings for guess and guess result and update the gui
+		String guess = suggestion.toString();
+		String guessResult;
+		if(disprove == null)
+			guessResult = "Not Disproved";
+		else
+			guessResult = disprove.getCardName();
+		ClueGame.getTheInstance().updateGuessInfo(guess, guessResult);
+		
+		return disprove;
 	}
 	
 	//TODO fix issue where dots will overlap if multiple players in one room
