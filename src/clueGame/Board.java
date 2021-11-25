@@ -48,9 +48,7 @@ public class Board extends JPanel{
 	private ArrayList<Card> deck;
 	private ArrayList<Player> players;
 	private Solution theAnswer;
-	//TODO it might be better to have these as local variables in deal()? double check this
-	//TODO also fix typo in line below
-	private Card solutionRoom, solutionPerson, soltionWeapon;
+	private Card solutionRoom, solutionPerson, solutionWeapon;
 	private int dieVal; 
 	private int curPlayerIndex; //index location of current player in player list
 	private Boolean playerInputNeeded; //boolean to block advancement while we're waiting on a player's input
@@ -223,7 +221,6 @@ public class Board extends JPanel{
 				grid[i][j] = new BoardCell(i, j);
 			}
 		}
-		//TODO (possibly for next refactor) check if consecutive for loops are needed for room label/center setup or if they can be combined into one loop
 		//setup rooms
 		for(int i = 0; i < numRows; i++) {
 			for(int j = 0; j < numColumns; j++) {
@@ -376,15 +373,13 @@ public class Board extends JPanel{
 	public void paintComponent(Graphics g) {
 		//draw super first to avoid issues
 		super.paintComponent(g);
-		//g.drawRect(0,  0, 5, 5);
 		
 		//draw every board cell
 		for(int i = 0; i < this.numRows; i++) {
 			for(int j = 0; j < this.numColumns; j++) {
-				this.grid[i][j].drawCell(g, i, j, WIDTH); //TODO implement this
+				this.grid[i][j].drawCell(g, i, j, WIDTH);
 			}
 		}
-		
 		
 		//draw room labels over the board cells
 		//also draw lines to indicate doorways
@@ -395,10 +390,9 @@ public class Board extends JPanel{
 			}
 		}
 		
-		
 		//draw markers for player locations
 		for(Player player: this.players) {
-			player.drawPlayer(g, WIDTH); //TODO implement this
+			player.drawPlayer(g, WIDTH);
 		}
 	}
 
@@ -530,7 +524,7 @@ public class Board extends JPanel{
 		setupConfigFile = null;
 		solutionRoom = null;
 		solutionPerson = null;
-		soltionWeapon = null;
+		solutionWeapon = null;
 		
 		//intialize the targets array for this board
 		this.targets = new HashSet<BoardCell>();
@@ -637,7 +631,7 @@ public class Board extends JPanel{
 			}
 		}while(dealDeck.size() != 0);
 		this.deck = deckCopy;
-		this.deck.add(this.soltionWeapon);
+		this.deck.add(this.solutionWeapon);
 		this.deck.add(this.solutionPerson);
 		this.deck.add(this.solutionRoom);
 	}
@@ -661,14 +655,14 @@ public class Board extends JPanel{
 				personHolder = true;
 			}
 			else if(current.getCardType() == CardType.WEAPON && weaponHolder != true) {
-				soltionWeapon = current;
+				solutionWeapon = current;
 				deck.remove(randIndex);
 				weaponHolder = true;
 			}
 		
 		}while(roomHolder != true || personHolder != true || weaponHolder != true);
 		
-		theAnswer.setSolution(solutionPerson, solutionRoom, soltionWeapon);
+		theAnswer.setSolution(solutionPerson, solutionRoom, solutionWeapon);
 	}
 
 	/**
@@ -819,7 +813,6 @@ public class Board extends JPanel{
 					return;
 				}
 			}
-			//TODO make accusation here
 		}
 	}
 	
@@ -854,7 +847,6 @@ public class Board extends JPanel{
 	}
 
 	public BoardCell[][] getGrid() {
-		// TODO Auto-generated method stub
 		return this.grid;
 	}
 	
@@ -965,18 +957,12 @@ public class Board extends JPanel{
 			
 			int correctedY = (int) Math.ceil(y / (double) WIDTH);
 			
-			//System.out.println("Raw X, Y: " + x + " " + y);
-			//System.out.println("Corrected Row, Col: " + correctedY + " " + correctedX);
-			
 			if(getGrid()[correctedY-1][correctedX-1].isTarget()) {
 				targetRow = correctedY-1;
 				targetCol = correctedX-1;
 				finishHumanTurn();
 				resetTargets();
 				repaint();
-			}
-			else {
-				//TODO possibly issue error message or do nothing
 			}
 		}
 

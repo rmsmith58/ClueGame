@@ -2,7 +2,11 @@ package gui;
 
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
+import java.io.File;
 
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -30,6 +34,7 @@ public class ClueGame extends javax.swing.JFrame {
 		board.miscDataInit();
 		theInstance.drawGameBoard();
 		theInstance.setVisible(true);
+		playThemeMusic();
 	}
 	
 	public ClueGame() {
@@ -97,6 +102,21 @@ public class ClueGame extends javax.swing.JFrame {
 		card.drawPanel();
 		card.repaint();
 		card.revalidate();
+	}
+	
+	//original code from:
+	//https://stackoverflow.com/questions/6045384/playing-mp3-and-wav-in-java
+	//music source: https://www.youtube.com/watch?v=CbO14kV0MI0
+	public static void playThemeMusic() {
+	    try {
+	        AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File("data/themeMusic.wav").getAbsoluteFile());
+	        Clip clip = AudioSystem.getClip();
+	        clip.open(audioInputStream);
+	        clip.loop(Clip.LOOP_CONTINUOUSLY);
+	    } catch(Exception ex) {
+	        System.out.println("Error with playing sound.");
+	        ex.printStackTrace();
+	    }
 	}
 	
 	public void redrawControlPanel() {
