@@ -69,7 +69,7 @@ public class CardPanel extends JPanel{
 	
 	//begins to draw the panel
 	public void drawPanel() {
-		//this.removeAll();
+		this.removeAll();
 		this.currPlayer = Board.getInstance().getCurrentPlayer();
 		this.hand = currPlayer.getHand();
 		this.seen = currPlayer.getSeen();
@@ -268,6 +268,10 @@ public class CardPanel extends JPanel{
 
 	public void setSeen(ArrayList<Card> seen) {
 		this.seen = seen;
+	}
+	
+	public void addSeen(Card newSeen) {
+		this.seen.add(newSeen);
 	}
 	
 	//fixes the branch logic by actually looking through the deck.

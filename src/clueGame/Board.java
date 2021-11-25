@@ -919,7 +919,9 @@ public class Board extends JPanel{
 						room = card;
 				}
 				Solution suggestion = new Solution(player, room, weapon);
-				handleSuggestion(getCurrentPlayer(), suggestion);
+				Card disprove = handleSuggestion(getCurrentPlayer(), suggestion);
+				if(disprove != null)
+					ClueGame.getTheInstance().updateSeenCards(disprove);
 				frame.dispose();
 			}
 		});

@@ -92,6 +92,13 @@ public class ClueGame extends javax.swing.JFrame {
 		control.revalidate();
 	}
 	
+	public void updateSeenCards(Card newCard) {
+		card.addSeen(newCard);
+		card.drawPanel();
+		card.repaint();
+		card.revalidate();
+	}
+	
 	public void redrawControlPanel() {
 		
 	}
